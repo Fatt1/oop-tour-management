@@ -43,8 +43,8 @@ public class VehicleList implements IManager<Vehicle> {
             }
         } while (duplicateId >= 0);
         String name = MyUtil.getString("Input vehicle name: ", "The name vehicle is required");
-        String company = MyUtil.getString("Input company vehicle: ", "The company is required");
-        String phoneNumber = MyUtil.getString("Input phone vehicle: ", "The phone is required");
+        String company = MyUtil.getString("Input vehicle company: ", "The company is required");
+        String phoneNumber = MyUtil.getString("Input vehicle phone: ", "The phone is required");
         int numberOfSeats = MyUtil.getAnInteger("Input number of seat (1 -> 100): ", "Number of seat is from 1...100", 1, 100);
         vehicleList = Arrays.copyOf(vehicleList, vehicleList.length + 1); // cấp thêm vùng nhớ cho vehicleList
         vehicleList[existedVehicle++] = new Vehicle(id, name, company, phoneNumber, numberOfSeats); // sau khi thêm thì tăng biến đêm lên 
