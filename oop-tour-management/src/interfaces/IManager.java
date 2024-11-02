@@ -14,7 +14,7 @@ public interface IManager<T> {
     public void remove();
     public void printListAscendingById();
     public void searchById();
-    public void searchById(String id);
+    public int searchById(String id);
     public T searchObjectById(String id);
     public void ReadData(LoadData loadData);
     public void saveToDate(SaveData saveData);
