@@ -4,6 +4,8 @@
  */
 package lists;
 
+import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -108,13 +110,31 @@ public class VehicleList implements IManager<Vehicle>{
 
     @Override
     public void ReadData(LoadData loadData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object [] obj = loadData.read(); // vì hàm loadData.read trả về mảng Object[] nên phải khái báo 1 mảng object
+                                         // không thể ép kiểu về như vehicleList = (Vehicle[])loadData.read()
+                                         // vì java không cho phép ép 1 mảng tổng quát về 1 mảng cụ thể
+        for (Object o : obj) {
+            vehicleList = Arrays.copyOf(vehicleList, vehicleList.length + 1);
+            vehicleList[existedVehicle++] = (Vehicle) o; // chỉ có thể ép kiểu từ 1 Object về 1 object cụ thể
+                                                         // cho nên để giải quyế phải ép kiểu cho từng phần từ 1
+        }
+         
     }
 
     @Override
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        saveData.save(vehicleList);
     }
     
+    // test
+    public static void main(String[] args) {
+        VehicleList v = new VehicleList();
+        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
+        
+        v.printListAscendingById();
+        
+        v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
+        
+    }
    
 }

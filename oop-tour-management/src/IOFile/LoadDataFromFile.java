@@ -18,10 +18,15 @@ import javax.tools.FileObject;
  *
  * @author User
  */
-public class LoadDataFromFile implements LoadData {
+public class LoadDataFromFile implements LoadData { // đọc file theo kiểu nhị phân
+    private String fName;
 
+    public LoadDataFromFile(String fName) {
+        this.fName = fName;
+    }
+    
     @Override
-    public Object[] read(String fName) {
+    public Object[] read() {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         Object result[] = null;
@@ -36,8 +41,6 @@ public class LoadDataFromFile implements LoadData {
                 result[count++] = x;
             }
 
-            fis.close();
-            ois.close();
         } catch (EOFException ex) {
            
         } catch(Exception e){

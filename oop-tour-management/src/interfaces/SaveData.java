@@ -9,5 +9,5 @@ package interfaces;
  * @author User
  */
 public interface SaveData {
-    public void save(String fName, Object[] o);
+    public void save(Object[] o);
 }
