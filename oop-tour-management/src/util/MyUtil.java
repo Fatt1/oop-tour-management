@@ -97,7 +97,7 @@ public class MyUtil {
         String stringDate;
         while (true) {            
             try {
-            System.out.println(inputMsg);
+            System.out.print(inputMsg);
             stringDate = sc.nextLine();
             date = LocalDate.parse(stringDate, format); // chuyển từ String sang kiểu LocalDate có format ở trong để theo cái chuỗi định dạng nào đó
                                                         // vd: dd-mm-yyyy 
