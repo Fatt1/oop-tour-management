@@ -261,16 +261,15 @@ public class CustomerList implements IManager<Customer>{
         saveData.save(cusList);
     }
     
-    //test
-    public static void main(String[] args) {
-        CustomerList cl = new CustomerList();
-        cl.ReadData(new LoadDataFromFile("Files/Customers.dat"));
-        
-        cl.printListAscendingById();
-        cl.printListAscendingByName();
-        
-        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
-    }
-    
-    
+    //test bam shift + f6 de test thu
+//    public static void main(String[] args) {
+//        CustomerList cl = new CustomerList();
+//        cl.ReadData(new LoadDataFromFile("Files/Customers.dat"));
+//        
+//        cl.printListAscendingById();
+//        cl.printListAscendingByName();
+//        
+//        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
+//    }
+//      
 }
