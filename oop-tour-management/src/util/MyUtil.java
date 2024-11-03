@@ -2,11 +2,6 @@ package util;
 
 import java.util.Scanner;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 /**
  *
  * @author User
@@ -26,6 +21,7 @@ public class MyUtil {
                }
         } 
     }
+    // nhập vô 1 String và biến đổi thành Integer
     
     public static int getAnInteger(String inputMsg, String errorMsg, int lowerBound, int upperBound){
         if(lowerBound > upperBound){
@@ -47,6 +43,8 @@ public class MyUtil {
                }
         } 
     }
+    // Nhập vô 1 String và biến đổi thành Integer và có giới hạn nếu vượt 
+    // quá giới hạn thì throw
     
     public static String getString(String inputMsg, String errorMsg){
         String s;
@@ -88,5 +86,5 @@ public class MyUtil {
         }
 
     }
-    
+    // vd format "[A-Z]{3}\\d{4}": 3 chữ cái từ a->z và theo sau 4 số
 }
