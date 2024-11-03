@@ -1,5 +1,8 @@
 package util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -21,7 +24,6 @@ public class MyUtil {
                }
         } 
     }
-    // nhập vô 1 String và biến đổi thành Integer
     
     public static int getAnInteger(String inputMsg, String errorMsg, int lowerBound, int upperBound){
         if(lowerBound > upperBound){
@@ -43,8 +45,6 @@ public class MyUtil {
                }
         } 
     }
-    // Nhập vô 1 String và biến đổi thành Integer và có giới hạn nếu vượt 
-    // quá giới hạn thì throw
     
     public static String getString(String inputMsg, String errorMsg){
         String s;
@@ -86,5 +86,22 @@ public class MyUtil {
         }
 
     }
-    // vd format "[A-Z]{3}\\d{4}": 3 chữ cái từ a->z và theo sau 4 số
+
+    public static LocalDate getDate(String inputMsg, String errorMsg, DateTimeFormatter format) {
+        LocalDate date;
+        String stringDate;
+        while (true) {            
+            try {
+            System.out.print(inputMsg);
+            stringDate = sc.nextLine();
+            date = LocalDate.parse(stringDate, format); // chuyển từ String sang kiểu LocalDate có format ở trong để theo cái chuỗi định dạng nào đó
+                                                        // vd: dd-mm-yyyy 
+            return date;
+            } catch (DateTimeParseException e) { // đây để bắt lỗi nếu không nhập đúng định dạng hoặc nhập tháng kh tồn tại như tháng 13...
+                System.out.println(errorMsg);
+            }
+            
+        }
+    }
+    
 }

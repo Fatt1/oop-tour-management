@@ -24,9 +24,9 @@ public class Menu {
             System.out.println("Menu is empty!!");
             return;
         }
-        
+        System.out.println("===========" + tile + "===========");
         for (String option : optionList) {
-            System.out.println("1. " + option);
+            System.out.println(option);
         }
     }
     
@@ -38,8 +38,8 @@ public class Menu {
     public int getChoice (){
         int choice;
         int maxChoice = optionList.size();
-        String inputMsg = "Chon [1..." + maxChoice + "]";
-        String errorMsg = "Vui long chon [1..." + maxChoice + "]";
+        String inputMsg = "Choose [1..." + maxChoice + "]: ";
+        String errorMsg = "Please choose [1..." + maxChoice + "]";
         choice = MyUtil.getAnInteger(inputMsg, errorMsg, 1, maxChoice);
         return choice;
     }
