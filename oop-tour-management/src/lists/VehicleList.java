@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package lists;
 
 import IOFile.LoadDataFromFile;
@@ -13,10 +10,7 @@ import java.util.Arrays;
 import model.Vehicle;
 import util.MyUtil;
 
-/**
- *
- * @author User
- */
+
 public class VehicleList implements IManager<Vehicle>{
     private Vehicle[] vehicleList;
     private int existedVehicle;
@@ -35,7 +29,7 @@ public class VehicleList implements IManager<Vehicle>{
                 + "X stands for digit(0-9)", "^[v|V]\\d{3}$");
             duplicateId = searchById(id);
             if(duplicateId >= 0){
-                System.out.println("ID is duplicate. Please input another id!");
+                System.out.println("ID is duplicated. Please input another id!");
             }
         } while (duplicateId >= 0);
         String name = MyUtil.getString("Input vehicle name: ", "The name vehicle is required");
@@ -44,7 +38,7 @@ public class VehicleList implements IManager<Vehicle>{
         int numberOfSeats = MyUtil.getAnInteger("Input number of seat (1 -> 100): ", "Number of seat is from 1...100", 1, 100);
         vehicleList = Arrays.copyOf(vehicleList, vehicleList.length + 1);
         vehicleList[existedVehicle++] = new Vehicle(id, name, company, phoneNumber, numberOfSeats);
-        System.out.println("Vehicle has been added successully");
+        System.out.println("Vehicle has been added successfully");
         
     }
 
@@ -127,14 +121,14 @@ public class VehicleList implements IManager<Vehicle>{
     }
     
     // test
-    public static void main(String[] args) {
-        VehicleList v = new VehicleList();
-        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
-        
-        v.printListAscendingById();
-        
-        v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
-        
-    }
+//    public static void main(String[] args) {
+//        VehicleList v = new VehicleList();
+//        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
+//        
+//        v.printListAscendingById();
+//        
+//        v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
+//        
+//    }
    
 }
