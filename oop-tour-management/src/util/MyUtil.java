@@ -1,5 +1,8 @@
 package util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /*
@@ -87,6 +90,23 @@ public class MyUtil {
                 return id;
         }
 
+    }
+    
+    public static LocalDate getDate(String inputMsg, String errorMsg, DateTimeFormatter format) {
+        LocalDate date;
+        String stringDate;
+        while (true) {            
+            try {
+            System.out.print(inputMsg);
+            stringDate = sc.nextLine();
+            date = LocalDate.parse(stringDate, format); // chuyển từ String sang kiểu LocalDate có format ở trong để theo cái chuỗi định dạng nào đó
+                                                        // vd: dd-mm-yyyy 
+            return date;
+            } catch (DateTimeParseException e) { // đây để bắt lỗi nếu không nhập đúng định dạng hoặc nhập tháng kh tồn tại như tháng 13...
+                System.out.println(errorMsg);
+            }
+            
+        }
     }
     
 }

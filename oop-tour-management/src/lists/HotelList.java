@@ -66,7 +66,12 @@ public class HotelList implements IManager<Hotel> {
     }
 
     @Override
+<<<<<<< HEAD
     public void searchById(String id) {
+=======
+    public int searchById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+>>>>>>> 851f637284ab540b88f8a6099ba2d775907c9840
     }
 
     @Override

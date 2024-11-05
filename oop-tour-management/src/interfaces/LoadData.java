@@ -8,6 +8,6 @@ package interfaces;
  *
  * @author User
  */
-public interface LoadData {
-    public Object[] read(String fName);
+public interface LoadData { // tạo ra 1 interface để có thể đọc nhiều loại file khác nhau như file txt, file nhị phân
+    public Object[] read();
 }
