@@ -5,18 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-/**
- *
- * @author User
- */
 public class MyUtil {
     private static Scanner sc = new Scanner(System.in);
-    
+     
     public static int getAnInteger(String inputMsg, String errorMsg) {
            int n;
            while (true) {            
@@ -44,7 +36,7 @@ public class MyUtil {
                    if(n < lowerBound || n > upperBound){
                        throw new Exception();
                    }
-                   return n;
+                   return n; 
                } catch (Exception e) {
                    System.out.println(errorMsg) ;
                }
@@ -98,9 +90,9 @@ public class MyUtil {
         while (true) {            
             try {
             System.out.print(inputMsg);
-            stringDate = sc.nextLine();
+            stringDate = sc.nextLine();                                                        // vd: dd-mm-yyyy 
+
             date = LocalDate.parse(stringDate, format); // chuyển từ String sang kiểu LocalDate có format ở trong để theo cái chuỗi định dạng nào đó
-                                                        // vd: dd-mm-yyyy 
             return date;
             } catch (DateTimeParseException e) { // đây để bắt lỗi nếu không nhập đúng định dạng hoặc nhập tháng kh tồn tại như tháng 13...
                 System.out.println(errorMsg);

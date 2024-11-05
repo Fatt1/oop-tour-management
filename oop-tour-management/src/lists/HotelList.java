@@ -33,73 +33,62 @@ public class HotelList implements IManager<Hotel> {
                 System.out.println("ID is duplicated. Please input another id!");
             }
         } while (duplicatedId >= 0);
-
-        String hotelID = MyUtil.getId("Please input the hotel Id: ", "!This information is crucial!", "^[h|H]\\d{3}");
         String hotelName = MyUtil.getString("Please input the hotel name: ", "!This information is crucial!");
         String phoneNumber = MyUtil.getString("Please input hotel's phone numebr: ", "!This information is crucial!");
         String address = MyUtil.getString("Please input hotel's address: ", "!This information is crucial!");
 
         hotelList = Arrays.copyOf(hotelList, hotelList.length + 1);
-        hotelList[existedHotel++] = new Hotel(hotelID, hotelName, phoneNumber, address);
+        hotelList[existedHotel++] = new Hotel(id, hotelName, phoneNumber, address);
         System.out.println("Hotel has been added completely!");
     }
 
     @Override
     public void update() {
-        int n;
+        int choice;
+        String id = MyUtil.getString("Enter the id you want to find(Hxxx)", "This information is crucial");
+        Hotel h1 = searchObjectById(id);
+        if (h1 == null) {
+            System.out.println("Not Found!");
+            return;
+        }
+
         do {
             System.out.println("#1.Update Hotel Name   ");
             System.out.println("#2.Update Phone Number ");
             System.out.println("#3.Update Address      ");
             System.out.println("#4.Exit update function");
-            n = MyUtil.getAnInteger("Opt from 1 to 3 different properties to update: ", "Please input a numeber!");
+            choice = MyUtil.getAnInteger("Opt from 1 to 3 different properties to update: ", "Please input a numeber!");
             System.out.println("------------------------------------------------");
             int point; // point to a particular object in the list
-            switch (n) {
+            switch (choice) {
                 case 1:
-                    point = MyUtil.getAnInteger("Enter the position of the object you want to update: ", "The position cant be found");
-                    if (point > existedHotel) {
-                        break;
-                    }
                     String newHotelName = MyUtil.getString("Enter new Hotel Name: ", "This information is crucial");
-                    hotelList[point].setHotelName(newHotelName);
-                    System.out.println("!-CHANGE SUCCESSFULLY-!");
-                    hotelList[point].display();
-                    System.out.println("            ");
+                    h1.setHotelName(newHotelName);
                     break;
                 case 2:
-                    point = MyUtil.getAnInteger("Enter the position of the object you want to update: ", "The position cant be found");
-                    if (point > existedHotel) {
-                        break;
-                    }
                     String newPhoneNumber = MyUtil.getString("Enter new Hotel New Phone Number: ", "This information is crucial");
-                    hotelList[point].setPhoneNumber(newPhoneNumber);
-                    System.out.println("!-CHANGE SUCCESSFULLY-!");
-                    hotelList[point].display();
-                    System.out.println("            ");
+                    h1.setPhoneNumber(newPhoneNumber);
                     break;
                 case 3:
-                    point = MyUtil.getAnInteger("Enter the position of the object you want to update: ", "The position cant be found");
-                    if (point > existedHotel) {
-                        break;
-                    }
                     String newAddress = MyUtil.getString("Enter new Hotel New Address: ", "This information is crucial");
-                    hotelList[point].setAddress(newAddress);
-                    System.out.println("!-CHANGE SUCCESSFULLY-!");
-                    hotelList[point].display();
-                    System.out.println("            ");
+                    h1.setAddress(newAddress);
                     break;
                 case 4:
                     break;
                 default:
                     throw new AssertionError("The option cant be found!");
             }
-        } while (n != 4);
+            if (choice > 0 && choice < 4) {
+                System.out.println("!-CHANGE SUCCESSFULLY-!");
+                h1.display();
+                System.out.println("");
+            }
+        } while (choice != 4);
     }
 
     @Override
     public void remove() {
-        String id = MyUtil.getString("Enter the ID you want to find: ", "This information is crucial");
+        String id = MyUtil.getString("Enter the HotelID you want to remove(Hxxx): ", "This information is crucial");
         int position = searchById(id);
         if (position < 0) {
             System.out.println("Not Found!");
@@ -110,17 +99,18 @@ public class HotelList implements IManager<Hotel> {
             System.out.print("Choose Y/N: ");
             choice = sc.nextLine().toLowerCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
-                for (int i = position; i < existedHotel - 1; i++)
+                for (int i = position; i < existedHotel - 1; i++) {
                     hotelList[i] = hotelList[i + 1];
+                }
 
                 hotelList = Arrays.copyOf(hotelList, hotelList.length - 1); // update the list length again
 
                 existedHotel--;
                 System.out.println("!-THE HOTEL HAS SUCCESSFULLY REMOVED-!");
                 return;
-            } else if (choice.equalsIgnoreCase("N")){
+            } else if (choice.equalsIgnoreCase("N")) {
                 return;
-            }else {
+            } else {
                 System.out.println("Please choose Y/N");
             }
         } while (true);
@@ -159,7 +149,7 @@ public class HotelList implements IManager<Hotel> {
         } else {
             for (int i = 0; i < existedHotel; i++) {
                 if (hotelList[i].getHotelID().equalsIgnoreCase(id)) {
-                    return 1;
+                    return i;
                 }
             }
             return -1;
@@ -168,12 +158,12 @@ public class HotelList implements IManager<Hotel> {
 
     @Override
     public Hotel searchObjectById(String id) {
-        if(hotelList.length == 0){
+        if (hotelList.length == 0) {
             System.out.println("Not Found!");
             return null;
         }
         for (Hotel x : hotelList) {
-            if(x.getHotelID().equalsIgnoreCase(id)){
+            if (x.getHotelID().equalsIgnoreCase(id)) {
                 return x;
             }
         }
@@ -188,5 +178,14 @@ public class HotelList implements IManager<Hotel> {
     public void saveToDate(SaveData saveData) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
+    public static void main(String[] args) {
+        HotelList hh1 = new HotelList();
+        hh1.add();
+        hh1.add();
+        hh1.printListAscendingById();
+        hh1.update();
+        hh1.remove();
+        hh1.printListAscendingById();
+    }
 }

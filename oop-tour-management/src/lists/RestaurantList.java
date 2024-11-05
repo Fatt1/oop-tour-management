@@ -95,7 +95,7 @@ public class RestaurantList implements IManager<Restaurant> {
             System.out.print("Choose Y/N: ");
             choice = sc.nextLine().toUpperCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
-                for (int i = 0; i < existedRestaurant - 1; i++) {
+                for (int i = point; i < existedRestaurant - 1; i++) {
                     RestaurantList[i] = RestaurantList[i + 1];
 
                     RestaurantList = Arrays.copyOf(RestaurantList, RestaurantList.length - 1);
@@ -103,9 +103,10 @@ public class RestaurantList implements IManager<Restaurant> {
                     System.out.println("!-THE RESTAURANT HAS SUCCESSFULLY REMOVED-!");
                     return;
                 }
-            } else if (choice.equalsIgnoreCase("N")) {
+            } else if (choice.equalsIgnoreCase("N")){
                 return;
-            } else {
+            }
+             else {
                 System.out.println("Please choose Y/N");
             }
 
@@ -147,7 +148,7 @@ public class RestaurantList implements IManager<Restaurant> {
         }
         for (int i = 0; i < existedRestaurant; i++) {
             if (RestaurantList[i].getRestaurantID().equalsIgnoreCase(id)) {
-                return 1;
+                return i;
             }
         }
         return -1;
