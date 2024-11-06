@@ -4,13 +4,14 @@
  */
 package model.tour;
 
+import java.io.Serializable;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class InternationalTour extends Tour {
+public class InternationalTour extends Tour implements Serializable{
 
     private String country;
     private boolean visaRequired;
@@ -44,13 +45,13 @@ public class InternationalTour extends Tour {
     @Override
     public void showInfor() {
         super.showInfor();
-        System.out.printf("|%-10s|%-5s|     |\n", this.country, this.visaRequired);
+        System.out.printf("%-15s|%-5s|%4s|\n", this.country, this.visaRequired, "-");
     }
 
     @Override
     public void input() {
         super.input();
-        this.country = MyUtil.getString("ENTER COUNTRY", "ERROR");
+        this.country = MyUtil.getString("ENTER COUNTRY: ", "ERROR");
         while (true) {
             System.out.println("VISA REQUIRED: YES OR NO");
             String s = MyUtil.getString("ENTER: ", "ERROR");

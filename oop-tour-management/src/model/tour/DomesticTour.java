@@ -4,13 +4,14 @@
  */
 package model.tour;
 
+import java.io.Serializable;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class DomesticTour extends Tour{
+public class DomesticTour extends Tour implements Serializable{
     private double localDiscount;
 
     public DomesticTour(double localDiscount, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
@@ -32,7 +33,7 @@ public class DomesticTour extends Tour{
     @Override
     public void showInfor(){
         super.showInfor();
-        System.out.printf("|          |     |%-4.1f|\n", this.localDiscount);
+        System.out.printf("%15s|%5s|%-4.1f|\n","-", "-", this.localDiscount);
     }
     
     @Override
