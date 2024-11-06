@@ -4,11 +4,12 @@
  */
 package lists;
 
+import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.util.Arrays;
-import model.Customer;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -20,88 +21,58 @@ import util.MyUtil;
  * @author nghialam
  */
 public class ListTour implements IManager<Tour> {
-
+    public static ListTour instance; // đây là Singleton Pattern của nghĩa đó, biến cái cái ListTour thành chứ không phải là 1 cái class
+                                    // ngoài giống bữa nghĩa thiết kế
     private int existedTour;
     private Tour tourList[];
-    private final String header = String.format("|%-6s|%-10s|%-10s|%-10s|%-10s|%-10s|%-5s|%-10s|%-5s|%-5s|",
+    private final String header = String.format("|%-6s|%-10s|%-10s|%-10s|%-10s|%-10s|%-5s|%-15s|%-5s|%-5s|",
             "ID", "NAME", "DESTINATION", "DEPARTURE LOCAL", "VEHICLE ID", "PRICE", "QUANTITY", "COUNTRY", "VISA", "DISCOUNT");
 
-    public ListTour() {
-        tourList = new Tour[1];
+    private ListTour() {
+        tourList = new Tour[0];
         existedTour = 0;
+        ReadData(new LoadDataFromFile("Files/Tours.dat"));
+    }
+    
+    public static ListTour getInstance() {  // nghĩa có thể đọc thêm về cách implmemnt cái này, có rất nhiều cách, nhưng fat sử dụng '
+                                            // cách lazy intialization...
+        if(instance == null){
+           instance = new ListTour();
+        }
+        return instance;
     }
 
     @Override
     public void add() {
-
-        int choice = choiceKindOfTour();
-        String id = enterTourID();
-
+        Menu menuAdd = new Menu("Choose type of tour");
+        menuAdd.addNewOption("1. Demestic Tour");
+        menuAdd.addNewOption("2. International Tour");
+        menuAdd.printMenu();
+        int choice = menuAdd.getChoice();
+        Tour tour = null;
         if (choice == 1) {
-            this.addAInternationalTour();
+            tour = new DomesticTour();
         }
         if (choice == 2) {
-            this.addDomesticTour();
+            tour = new InternationalTour();
         }
+        tour.input();
+        tourList = Arrays.copyOf(tourList, tourList.length + 1);
+        tourList[existedTour++] = tour;
+        System.out.println("The tour has been add successully");
     }
 
-    private String enterTourID() {
+    public String getUniqueTourID() { // viết cái này để lấy ra id duy nhất không bị trùng lặp để sử dụng bên Tour
         int isDuplicate;
         String id;
         do {
-            System.out.println("ENTER YOUR ID: ");
-            id = MyUtil.getId("ENTER YOUR ID(VD: TO1234): ", "ERROR", "TO\\d{4}$");
+            id = MyUtil.getId("ENTER TOUR ID(VD: TO1234): ", "ERROR", "TO\\d{4}$");
             isDuplicate = searchById(id);
+            if(isDuplicate >= 0){ 
+                System.out.println("Id is duplicated. Please input another id");
+            }
         } while (isDuplicate >= 0);
         return id;
-    }
-
-    private int choiceKindOfTour() {
-        System.out.println("1. International Tour");
-        System.out.println("2. Dometics Tour");
-        return MyUtil.getAnInteger("Enter Your CHOICE: ", "Error", 1, 2);
-
-    }
-
-    private void addAInternationalTour() {
-        System.out.println(header);
-        String tourName = MyUtil.getString("ENTER YOUR TOUR NAME: ", "ERROR");
-        String destination = MyUtil.getString("ENTER YOUR DESTINATION: ", "ERROR");
-        String departureLocation = MyUtil.getString("ENTER YOUR DEPARTURE LOCATION: ", "ERROR");
-        String vehicleID = MyUtil.getString("ENTER YOUR VEHICLE ID: ", "ERROR"); // cần tìm 1 id phù hợp bên vehicle
-        int price = MyUtil.getAnInteger("ENTER YOUR PRICE: ", "ERROR");
-        String quantity = MyUtil.getString("ENTER YOUR QUATITY: ", "ERROR"); // đề xuất để chọn 1 -> 5 s
-
-        String country = MyUtil.getString("ENTER YOUR COUNTRY: ", "ERROR");
-        boolean visaRequired;
-
-        while (true) {
-            System.out.println("VISA REQUIRED: TRUE OR FALSE");
-            String s = MyUtil.getString("ENTER: ", "ERROR");
-            if (s.isEmpty() || s.length() == 0 || s.compareToIgnoreCase("true") != 0 || s.compareToIgnoreCase("false") != 0) {
-                System.out.println("ERROR");
-            } else {
-                visaRequired = Boolean.parseBoolean(s);
-                break;
-            }
-        }
-        tourList = Arrays.copyOf(tourList, tourList.length + 1);
-        tourList[existedTour++] = new InternationalTour(country, visaRequired, tourName, tourName, destination, departureLocation, vehicleID, price, quantity);
-    }
-
-    private void addDomesticTour() {
-        System.out.println(header);
-        String tourName = MyUtil.getString("ENTER YOUR TOUR NAME: ", "ERROR");
-        String destination = MyUtil.getString("ENTER YOUR DESTINATION: ", "ERROR");
-        String departureLocation = MyUtil.getString("ENTER YOUR DEPARTURE LOCATION: ", "ERROR");
-        String vehicleID = MyUtil.getString("ENTER YOUR VEHICLE ID: ", "ERROR"); // cần tìm 1 id phù hợp bên vehicle
-        int price = MyUtil.getAnInteger("ENTER YOUR PRICE: ", "ERROR");
-        String quantity = MyUtil.getString("ENTER YOUR QUATITY: ", "ERROR"); // đề xuất để chọn 1 -> 5 s
-
-        double localDiscount = MyUtil.getAnDouble("ENTER YOU LOCAL DISCOUNT: ", "ERROR");
-
-        tourList = Arrays.copyOf(tourList, tourList.length + 1);
-        tourList[existedTour++] = new DomesticTour(localDiscount, tourName, tourName, destination, departureLocation, vehicleID, price, quantity);
     }
 
     @Override
@@ -154,7 +125,7 @@ public class ListTour implements IManager<Tour> {
                     break;
 
                 case 5:
-                    String quantity = MyUtil.getString("ENTER QUANTITY: ", "ERROR");
+                    int quantity = MyUtil.getAnInteger("ENTER QUANTITY: ", "ERROR");
                     tour.setQuantity(quantity);
                     break;
 
@@ -224,7 +195,7 @@ public class ListTour implements IManager<Tour> {
                     break;
 
                 case 5:
-                    String quantity = MyUtil.getString("ENTER QUANTITY: ", "ERROR");
+                    int quantity = MyUtil.getAnInteger("ENTER QUANTITY: ", "ERROR");
                     tour.setQuantity(quantity);
                     break;
 
@@ -271,16 +242,16 @@ public class ListTour implements IManager<Tour> {
             System.out.println("NO MORE THAN A TOUR IN LIST");
             return;
         }
-        for (int i = 0; i < existedTour; i++) {
-            for (int j = i + 1; j > existedTour - 1; j++) {
+        for (int i = 0; i < existedTour - 1; i++) {
+            for (int j = i + 1; j < existedTour; j++) {
                 if (tourList[i].getTourID().compareToIgnoreCase(tourList[j].getTourID()) > 0) {
-                    Tour tour = tourList[i];
+                    Tour temp = tourList[i];
                     tourList[i] = tourList[j];
-                    tourList[j] = tour;
+                    tourList[j] = temp;
                 }
             }
         }
-
+        System.out.println(header);
         for (int i = 0; i < existedTour; i++) {
             tourList[i].showInfor();
         }
@@ -289,7 +260,7 @@ public class ListTour implements IManager<Tour> {
     @Override
     public void searchById() {
         if (existedTour == 0) {
-            System.out.println("NO MORE THAN A TOUR IN THE LIST");;
+                System.out.println("NO MORE THAN A TOUR IN THE LIST");
         } else {
             String id = MyUtil.getString("ENTER YOUR ID: ", "SORRY, ERROR");
             for (int i = 0; i < existedTour; i++) {
@@ -303,16 +274,13 @@ public class ListTour implements IManager<Tour> {
 
     @Override
     public int searchById(String id) {
-        if (existedTour == 0) {
+        if (existedTour == 0) 
             return -1;
-        } else {
-            for (int i = 0; i < existedTour; i++) {
-                if (tourList[i].getTourID().compareToIgnoreCase(id) == 0) {
+        for (int i = 0; i < existedTour; i++) 
+                if (tourList[i].getTourID().equalsIgnoreCase(id)) 
                     return i;
-                }
-            }
-            return -1;
-        }
+        return -1;
+        
     }
 
     @Override
@@ -331,15 +299,27 @@ public class ListTour implements IManager<Tour> {
 
     @Override
     public void ReadData(LoadData loadData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] object = loadData.read();
+        if(object == null){
+            System.out.println("kh co du lieu");
+            return;
+        }
+        for (Object o : object) {
+            tourList = Arrays.copyOf(tourList, tourList.length + 1);
+            tourList[existedTour++] = (Tour)o;
+        }
+            
     }
 
     @Override
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       saveData.save(tourList);
     }
-//    public static void main(String[] args) {
-//        ListTour l = new ListTour();
+    public static void main(String[] args) {
+        ListTour l = ListTour.getInstance();
 //        l.add();
-//    }
+//        l.add();
+        l.printListAscendingById();
+ //       l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
+    }
 }

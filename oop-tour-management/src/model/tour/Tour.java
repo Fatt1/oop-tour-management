@@ -4,13 +4,15 @@
  */
 package model.tour;
 
+import java.io.Serializable;
+import lists.ListTour;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class Tour {
+public class Tour implements Serializable{
 
     protected String tourID, tourName, destination, departureLocation, vehicleID;
     protected int price;
@@ -87,12 +89,12 @@ public class Tour {
     }
 
     public void input() {
-        this.tourID = MyUtil.getId("ENTER ID: ", "ERROR", "TO\\d{4}$");
+        this.tourID = ListTour.getInstance().getUniqueTourID();
         this.tourName = MyUtil.getString("ENTER TOUR NAME: ", "ERROR");
         this.destination = MyUtil.getString("ENTER DESTINATION: ", "ERROR");
-        this.departureLocation = MyUtil.getString("ENTER DEPARTURE LOCATION", "ERROR");
-        this.vehicleID = MyUtil.getId("ENTER VEHICLE ID: ", "ERROR", "VE\\d{4}$");;
-        this.price = MyUtil.getAnInteger("ENTER PRICE: ", "ERROR", 1000, 50000000);
+        this.departureLocation = MyUtil.getString("ENTER DEPARTURE LOCATION: ", "ERROR");
+        this.vehicleID = MyUtil.getId("ENTER VEHICLE ID (VXXX): ", "ERROR", "^[v|V]\\d{3}$");
+        this.price = MyUtil.getAnInteger("ENTER PRICE: ", "ERROR", 1000, 50000000); 
         this.quantity = MyUtil.getAnInteger("ENTER QUANTITY: ", "ERROR", 0, 100);
     }
 
