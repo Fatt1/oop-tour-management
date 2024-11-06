@@ -4,16 +4,19 @@
  */
 package model.tour;
 
+import util.MyUtil;
+
 /**
  *
  * @author nghialam
  */
 public class Tour {
-    protected String tourID, tourName, destination, departureLocation, vehicleID;
-    protected int price; 
-    protected String quantity;
 
-    public Tour(String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, String quantity) {
+    protected String tourID, tourName, destination, departureLocation, vehicleID;
+    protected int price;
+    protected int quantity;
+
+    public Tour(String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
         this.tourID = tourID;
         this.tourName = tourName;
         this.destination = destination;
@@ -21,6 +24,9 @@ public class Tour {
         this.vehicleID = vehicleID;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public Tour() {
     }
 
     public String getTourID() {
@@ -67,11 +73,11 @@ public class Tour {
         this.price = price;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -79,9 +85,19 @@ public class Tour {
     public String toString() {
         return "Tour{" + "tourID=" + tourID + ", tourName=" + tourName + ", destination=" + destination + ", departureLocation=" + departureLocation + ", vehicleID=" + vehicleID + ", price=" + price + ", quantity=" + quantity + '}';
     }
-    
-    public void showInfor(){
-        System.out.printf("|%-5s|%-10s|%-10s|%-10s|%-10s|%-10d|%-5s|          |     |     |",
-                    tourID, tourName, destination, departureLocation , vehicleID, price, quantity );
+
+    public void input() {
+        this.tourID = MyUtil.getId("ENTER ID: ", "ERROR", "TO\\d{4}$");
+        this.tourName = MyUtil.getString("ENTER TOUR NAME: ", "ERROR");
+        this.destination = MyUtil.getString("ENTER DESTINATION: ", "ERROR");
+        this.departureLocation = MyUtil.getString("ENTER DEPARTURE LOCATION", "ERROR");
+        this.vehicleID = MyUtil.getId("ENTER VEHICLE ID: ", "ERROR", "VE\\d{4}$");;
+        this.price = MyUtil.getAnInteger("ENTER PRICE: ", "ERROR", 1000, 50000000);
+        this.quantity = MyUtil.getAnInteger("ENTER QUANTITY: ", "ERROR", 0, 100);
+    }
+
+    public void showInfor() {
+        System.out.printf("|%-5s|%-10s|%-10s|%-10s|%-10s|%-10d|%-5s|",
+                tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
     }
 }

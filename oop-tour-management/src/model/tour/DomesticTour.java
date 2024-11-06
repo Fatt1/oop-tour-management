@@ -4,6 +4,8 @@
  */
 package model.tour;
 
+import util.MyUtil;
+
 /**
  *
  * @author nghialam
@@ -11,9 +13,12 @@ package model.tour;
 public class DomesticTour extends Tour{
     private double localDiscount;
 
-    public DomesticTour(double localDiscount, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, String quantity) {
+    public DomesticTour(double localDiscount, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
         super(tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
         this.localDiscount = localDiscount;
+    }
+
+    public DomesticTour() {
     }
 
     public double getLocalDiscount() {
@@ -26,7 +31,13 @@ public class DomesticTour extends Tour{
     
     @Override
     public void showInfor(){
-        System.out.printf("|%-5s|%-10s|%-10s|%-10s|%-10s|%-10d|%-5s|          |     |%-5f|\n",
-                    tourID, tourName, destination, departureLocation , vehicleID, price, quantity, localDiscount);
+        super.showInfor();
+        System.out.printf("|          |     |%-4.1f|\n", this.localDiscount);
+    }
+    
+    @Override
+    public void input(){
+        super.input();
+        this.localDiscount = MyUtil.getAnDouble("ENTER LOCAL DISCOUNT: ", "ERROR");
     }
 }
