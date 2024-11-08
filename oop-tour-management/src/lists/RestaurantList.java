@@ -10,12 +10,12 @@ import util.MyUtil;
 
 public class RestaurantList implements IManager<Restaurant> {
 
-    private Restaurant[] RestaurantList;
+    private Restaurant[] restaurantList;
     private int existedRestaurant;
     private Scanner sc = new Scanner(System.in);
 
     public RestaurantList() {
-        RestaurantList = new Restaurant[0];
+        restaurantList = new Restaurant[0];
         existedRestaurant = 0;
     }
 
@@ -34,14 +34,14 @@ public class RestaurantList implements IManager<Restaurant> {
         String phoneNumber = MyUtil.getString("Please input restaurant's phone numebr: ", "!This information is crucial!");
         String address = MyUtil.getString("Please input restaurant's address: ", "!This information is crucial!");
 
-        RestaurantList = Arrays.copyOf(RestaurantList, RestaurantList.length + 1);
-        RestaurantList[existedRestaurant++] = new Restaurant(id, restaurantName, phoneNumber, address);
+        restaurantList = Arrays.copyOf(restaurantList, restaurantList.length + 1);
+        restaurantList[existedRestaurant++] = new Restaurant(id, restaurantName, phoneNumber, address);
         System.out.println("The Restaurant has been added completely!");
     }
 
     @Override
     public void update() {
-        String id = MyUtil.getString("Enter the id you want to find(Rxxx): ", "This information is crucial!");
+        String id = MyUtil.getString("Enter the id you want to update(RXX): ", "This information is crucial!");
         Restaurant x = searchObjectById(id);
         if (x == null) {
             System.out.println("Not Found!");
@@ -96,9 +96,9 @@ public class RestaurantList implements IManager<Restaurant> {
             choice = sc.nextLine().toUpperCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
                 for (int i = 0; i < existedRestaurant - 1; i++) {
-                    RestaurantList[i] = RestaurantList[i + 1];
+                    restaurantList[i] = restaurantList[i + 1];
 
-                    RestaurantList = Arrays.copyOf(RestaurantList, RestaurantList.length - 1);
+                    restaurantList = Arrays.copyOf(restaurantList, restaurantList.length - 1);
                     existedRestaurant--;
                     System.out.println("!-THE RESTAURANT HAS SUCCESSFULLY REMOVED-!");
                     return;
@@ -116,16 +116,16 @@ public class RestaurantList implements IManager<Restaurant> {
     public void printListAscendingById() {
         for (int i = 0; i < existedRestaurant - 1; i++) {
             for (int j = i + 1; j < existedRestaurant; j++) {
-                if (RestaurantList[i].getRestaurantID().compareTo(RestaurantList[j].getRestaurantID()) == 1) {
-                    Restaurant R1 = RestaurantList[i];
-                    RestaurantList[i] = RestaurantList[j];
-                    RestaurantList[j] = R1;
+                if (restaurantList[i].getRestaurantID().compareTo(restaurantList[j].getRestaurantID()) == 1) {
+                    Restaurant R1 = restaurantList[i];
+                    restaurantList[i] = restaurantList[j];
+                    restaurantList[j] = R1;
                 }
             }
         }
 
         for (int i = 0; i < existedRestaurant; i++) {
-            RestaurantList[i].display();
+            restaurantList[i].display();
         }
     }
 
@@ -142,11 +142,11 @@ public class RestaurantList implements IManager<Restaurant> {
 
     @Override
     public int searchById(String id) {
-        if (RestaurantList.length == 0) {
+        if (restaurantList.length == 0) {
             return -1;
         }
         for (int i = 0; i < existedRestaurant; i++) {
-            if (RestaurantList[i].getRestaurantID().equalsIgnoreCase(id)) {
+            if (restaurantList[i].getRestaurantID().equalsIgnoreCase(id)) {
                 return 1;
             }
         }
@@ -155,11 +155,11 @@ public class RestaurantList implements IManager<Restaurant> {
 
     @Override
     public Restaurant searchObjectById(String id) {
-        if (RestaurantList.length == 0) {
+        if (restaurantList.length == 0) {
             System.out.println("The List is empty");
             return null;
         }
-        for (Restaurant r : RestaurantList) {
+        for (Restaurant r : restaurantList) {
             if (r.getRestaurantID().equalsIgnoreCase(id)) {
                 return r;
             }
