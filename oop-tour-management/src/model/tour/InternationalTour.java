@@ -4,13 +4,14 @@
  */
 package model.tour;
 
+import java.io.Serializable;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class InternationalTour extends Tour {
+public class InternationalTour extends Tour implements Serializable{
 
     private String country;
     private boolean visaRequired;
@@ -43,6 +44,7 @@ public class InternationalTour extends Tour {
 
     @Override
     public void showInfor() {
+        System.out.print("|International Tour|");
         super.showInfor();
         System.out.printf("|%-10s|%-5s|     |\n", this.country, this.visaRequired);
     }
@@ -50,16 +52,16 @@ public class InternationalTour extends Tour {
     @Override
     public void input() {
         super.input();
-        this.country = MyUtil.getString("ENTER COUNTRY", "ERROR");
+        this.country = MyUtil.getString("enter country: ", "The COUNTRY input is incorrect");
+        System.out.println("visa required: YES or NO");
+        String s = MyUtil.getString("Enter: ", "Struture of data is String 'YES' or 'NO' ");
         while (true) {
-            System.out.println("VISA REQUIRED: YES OR NO");
-            String s = MyUtil.getString("ENTER: ", "ERROR");
-            if (s.compareToIgnoreCase("YES") != 0 || s.compareToIgnoreCase("NO") != 0) {
+            if (s.compareToIgnoreCase("YES") == 0 || s.compareToIgnoreCase("NO") == 0) {
                 this.visaRequired = Boolean.parseBoolean(s);
                 break;
             } else {
-                System.out.println("ERROR");
-
+                System.out.println("You must enter YES or NO");
+                s = MyUtil.getString("Enter: ", "Struture of data is String 'YES' or 'NO' ");
             }
         }
     }
