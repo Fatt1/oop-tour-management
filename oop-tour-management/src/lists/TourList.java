@@ -10,6 +10,7 @@ import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.util.Arrays;
+import java.util.Scanner;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -40,7 +41,8 @@ public class TourList implements IManager<Tour> {
         }
         return instance;
     }
-
+    
+    
     @Override
     public void add() {
         Tour tourTemp;
@@ -58,7 +60,30 @@ public class TourList implements IManager<Tour> {
         tourList[existedTour++] = tourTemp;
 
     }
+    
+    
+    public String enterTourID() {
+        int isDuplicate;
+        String id;
+        do {
+            id = MyUtil.getId("Enter ID(VD: TO123): ", "Format is incorect", "TO\\d{3}$");
+            isDuplicate = searchById(id);
 
+            if (isDuplicate >= 0) {
+                System.out.println("ID is dulicated!!!");
+            }
+
+        } while (isDuplicate >= 0);
+        return id;
+    }
+
+    private int choiceKindOfTour() {
+        System.out.println("1. International Tour");
+        System.out.println("2. Dometics Tour");
+        return MyUtil.getAnInteger("Enter Your CHOICE: ", "The input is of type integer!!!", 1, 2);
+
+    }
+    
     @Override
     public void update() {
         System.out.println("-------------------------------------------------------");
@@ -82,7 +107,12 @@ public class TourList implements IManager<Tour> {
             menuTour.printMenu();
             choice = menuTour.getChoice();
             tour.setData(tour, choice);
-        } while (choice > 1 && choice <= menuTour.getMaxChoice());
+            if(choice != 1){
+                System.out.println("Tour after updating");
+                tour.showInfor();
+            }
+                
+        } while (choice != 1);
     }
 
     @Override
@@ -97,13 +127,16 @@ public class TourList implements IManager<Tour> {
             return;
         }
         System.out.println("--------------------------------------------------------");
-
-        for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
+        String choice = MyUtil.getBoolean("Are you sure YES/NO: ", "Please input YES/NO");
+        if(choice.equalsIgnoreCase("YES")){
+             for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
             tourList[i] = tourList[i + 1];
         }
         tourList = Arrays.copyOf(tourList, tourList.length - 1);
         existedTour--;
         System.out.println("The process of removal is successful.");
+        }
+        
     }
 
     @Override
@@ -121,7 +154,7 @@ public class TourList implements IManager<Tour> {
                 }
             }
         }
-
+        System.out.println(header);
         for (int i = 0; i < existedTour; i++) {
             tourList[i].showInfor();
         }
@@ -192,8 +225,9 @@ public class TourList implements IManager<Tour> {
         String name = MyUtil.getString("Enter tour name to find: ", "the input is not space or enter");
         Tour[] tour = searchObjectByName(name);
         if (tour.length == 0) {
-            System.out.println("dont't find any tour as same as " + name);
+            System.out.println("Dont't find any tour as same as " + name);
         } else {
+            System.out.println(header);
             for (int i = 0; i < tour.length; i++)
                 tour[i].showInfor();
         }
@@ -203,7 +237,7 @@ public class TourList implements IManager<Tour> {
     public void ReadData(LoadData loadData) {
         Object[] obj = loadData.read();
         if (obj == null) {
-            System.out.println("kh co du lieu");
+            System.out.println("Not data");
             return;
         }
         for (Object o : obj) {
@@ -217,39 +251,18 @@ public class TourList implements IManager<Tour> {
         saveData.save(tourList);
     }
 
-    public String enterTourID() {
-        int isDuplicate;
-        String id;
-        do {
-            id = MyUtil.getId("Enter ID(VD: TO123): ", "Format is incorect", "TO\\d{3}$");
-            isDuplicate = searchById(id);
-
-            if (isDuplicate >= 0) {
-                System.out.println("ID is dulicated!!!");
-            }
-
-        } while (isDuplicate >= 0);
-        return id;
-    }
-
-    private int choiceKindOfTour() {
-        System.out.println("1. International Tour");
-        System.out.println("2. Dometics Tour");
-        return MyUtil.getAnInteger("Enter Your CHOICE: ", "The input is of type integer!!!", 1, 2);
-
-    }
 
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
-        // l.printListAscendingById();
-        //l.add();
-        //l.add();
-        //l.add();
-        // l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-        //l.printListAscendingById();
-       // l.remove();
-        //l.update();
+ //       l.printListAscendingById();
+//        l.add();
+//        l.add();
+//        l.add();
+//        l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
+        l.printListAscendingById();
+        l.remove();
+        l.update();
         l.searchObjectByName();
-        //l.printListAscendingById();
+        l.printListAscendingById();
     }
 }

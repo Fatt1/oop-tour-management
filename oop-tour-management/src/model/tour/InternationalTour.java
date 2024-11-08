@@ -54,7 +54,7 @@ public class InternationalTour extends Tour implements Serializable {
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
         menu.addNewOption("7. Update new country");
-        menu.addNewOption("8. Update new visaRequired");
+        menu.addNewOption("8. Update new visa");
     }
 
     @Override
@@ -69,6 +69,12 @@ public class InternationalTour extends Tour implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("|International Tour|" + super.toString() +"|%-15s|%-5s|        |\n", this.country, this.visaRequired);
+    }
+    
+    
     @Override
     public void input() {
         super.input();

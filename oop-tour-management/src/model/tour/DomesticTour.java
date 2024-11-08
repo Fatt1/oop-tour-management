@@ -42,7 +42,7 @@ public class DomesticTour extends Tour implements Serializable {
     @Override
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
-        menu.addNewOption("7. Update new localDiscount");
+        menu.addNewOption("7. Update new local discount");
     }
 
     @Override
@@ -54,6 +54,13 @@ public class DomesticTour extends Tour implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("|Domestic Tour     |" + super.toString() + "|               |     |%-8.1f|\n", this.localDiscount);
+    }
+
+    
+    
     @Override
     public void input() {
         super.input();

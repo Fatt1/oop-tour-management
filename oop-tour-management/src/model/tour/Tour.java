@@ -83,18 +83,19 @@ public class Tour implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
+ 
     @Override
     public String toString() {
-        return "Tour{" + "tourID=" + tourID + ", tourName=" + tourName + ", destination=" + destination + ", departureLocation=" + departureLocation + ", vehicleID=" + vehicleID + ", price=" + price + ", quantity=" + quantity + '}';
+        return String.format("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-8s",
+                tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
     }
 
     public void input() {
         this.tourID = TourList.getInstance().enterTourID();
-        this.tourName = MyUtil.getString("Enter tour name: ", "\"The input is of type STRING");
+        this.tourName = MyUtil.getString("Enter tour name: ", "The input is of type STRING");
         this.destination = MyUtil.getString("Enter destination: ", "The input is of type STRING");
         this.departureLocation = MyUtil.getString("Enter Departure location: ", "The input is of type STRING");
-        this.vehicleID = MyUtil.getId("Enter vehicle ID(VE123): ", "The format is incorrect", "VE\\d{3}$");;
+        this.vehicleID = MyUtil.getId("Enter vehicle ID(V123): ", "The format is incorrect", "^V\\d{3}$");;
         this.price = MyUtil.getAnInteger("Enter price(1000 <= price <= 50000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 50000000);
         this.quantity = MyUtil.getAnInteger("Enter Quantity(1 <= quantity <= 50): ", "The input is of type INT", 1, 50);
     }
@@ -126,7 +127,7 @@ public class Tour implements Serializable {
                 tour.setDepartureLocation(dLocation);
                 break;
             case 5:
-                int cost = MyUtil.getAnInteger("Enter price1000 (<= price <= 50000000): ", "The input is kind of INTEGER");
+                int cost = MyUtil.getAnInteger("Enter price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
                 tour.setPrice(cost);
                 break;
             case 6:

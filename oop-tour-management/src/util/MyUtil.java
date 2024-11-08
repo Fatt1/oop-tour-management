@@ -114,7 +114,7 @@ public class MyUtil {
     public static String getBoolean(String inputMsg, String errorMsg) {
         String s;
         while (true) {
-            System.out.println(inputMsg);
+            System.out.print(inputMsg);
             s = sc.nextLine().toUpperCase().trim();
             if (s.compareToIgnoreCase("YES") == 0) {
                 return s;
