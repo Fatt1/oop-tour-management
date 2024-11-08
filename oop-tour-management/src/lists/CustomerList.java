@@ -282,19 +282,19 @@ public class CustomerList implements IManager<Customer>{
     
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(cusList);
+        saveData.save(cusList, header);
     }
     
     //test bam shift + f6 de test thu
-    public static void main(String[] args) {
-        CustomerList cl = new CustomerList();
-        cl.ReadData(new LoadDataFromFile("Files/Customers.dat"));
-        cl.add();
-        cl.printListAscendingById();
-       
-        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
-        
-        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
-    }
-      
+//    public static void main(String[] args) {
+//        CustomerList cl = CustomerList.getInstance();
+//
+//        cl.add();
+//        cl.printListAscendingById();
+//
+//        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
+//        
+//        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
+//    }
+//      
 }

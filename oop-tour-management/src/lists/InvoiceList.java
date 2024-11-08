@@ -266,7 +266,7 @@ public class InvoiceList implements IManager<Invoice>{
 
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(invoiceList);
+        saveData.save(invoiceList,"");
     }
    
     //test, xóa comment, bấm shift + F6 để test
