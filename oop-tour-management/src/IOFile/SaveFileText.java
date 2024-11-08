@@ -19,11 +19,12 @@ public class SaveFileText implements SaveData{
         this.fName = fname;
     }
     @Override
-    public void save(Object[] o) {
+    public void save(Object[] o, String header) {
         try {
             File f = new File(fName);
             FileWriter fw = new FileWriter(f); // ghi dữ liệu
             PrintWriter pw = new PrintWriter(fw);// in dữ liệu
+            pw.println(header);
             for (Object object : o) {
                 pw.println(object);
             }
