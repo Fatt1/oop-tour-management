@@ -34,7 +34,9 @@ public class Menu {
      
         optionList.add(newOption);
     }
-    
+    public int getMaxChoice(){
+        return optionList.size();
+    }
     public int getChoice (){
         int choice;
         int maxChoice = optionList.size();

@@ -6,13 +6,14 @@ package model.tour;
 
 import java.io.Serializable;
 import lists.TourList;
+import ui.Menu;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class Tour implements Serializable{
+public class Tour implements Serializable {
 
     protected String tourID, tourName, destination, departureLocation, vehicleID;
     protected int price;
@@ -94,12 +95,49 @@ public class Tour implements Serializable{
         this.destination = MyUtil.getString("Enter destination: ", "The input is of type STRING");
         this.departureLocation = MyUtil.getString("Enter Departure location: ", "The input is of type STRING");
         this.vehicleID = MyUtil.getId("Enter vehicle ID(VE123): ", "The format is incorrect", "VE\\d{3}$");;
-        this.price = MyUtil.getAnInteger("Enter price: ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 50000000);
-        this.quantity = MyUtil.getAnInteger("Enter Quantity: ", "The input is of type INT", 0, 100);
+        this.price = MyUtil.getAnInteger("Enter price(1000 <= price <= 50000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 50000000);
+        this.quantity = MyUtil.getAnInteger("Enter Quantity(1 <= quantity <= 50): ", "The input is of type INT", 1, 50);
+    }
+
+    public void updateMenu(Menu menu) {
+        menu.addNewOption("1. Exit");
+        menu.addNewOption("2. Update new tour name");
+        menu.addNewOption("3. Update new destination");
+        menu.addNewOption("4. Update new departureLocation");
+        menu.addNewOption("5. Update new price");
+        menu.addNewOption("6. Update new quantity");
+    }
+
+    public void setData(Tour tour, int choice) {
+        switch (choice) {
+            case 1:
+                System.out.println("Bye bye!!");
+                break;
+            case 2:
+                String Name = MyUtil.getString("Enter tour name: ", "The input is kind of STRING!!!");
+                tour.setTourName(Name);
+                break;
+            case 3:
+                String des = MyUtil.getString("Enter destination: ", "The input is kind of STRING");
+                tour.setDestination(des);
+                break;
+            case 4:
+                String dLocation = MyUtil.getString("Enter departure location: ", "The input is kind of STRING");
+                tour.setDepartureLocation(dLocation);
+                break;
+            case 5:
+                int cost = MyUtil.getAnInteger("Enter price1000 (<= price <= 50000000): ", "The input is kind of INTEGER");
+                tour.setPrice(cost);
+                break;
+            case 6:
+                int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
+                tour.setQuantity(slot);
+                break;
+        }
     }
 
     public void showInfor() {
-        System.out.printf("|%-5s|%-30s|%-20s|%-20s|%-5s|%-10d|%-5s",
+        System.out.printf("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-8s",
                 tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
     }
 }

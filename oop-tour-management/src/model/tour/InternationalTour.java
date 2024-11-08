@@ -5,18 +5,19 @@
 package model.tour;
 
 import java.io.Serializable;
+import ui.Menu;
 import util.MyUtil;
 
 /**
  *
  * @author nghialam
  */
-public class InternationalTour extends Tour implements Serializable{
+public class InternationalTour extends Tour implements Serializable {
 
     private String country;
-    private boolean visaRequired;
+    private String visaRequired;
 
-    public InternationalTour(String country, boolean visaRequired, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
+    public InternationalTour(String country, String visaRequired, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
         super(tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
         this.country = country;
         this.visaRequired = visaRequired;
@@ -34,11 +35,11 @@ public class InternationalTour extends Tour implements Serializable{
         this.country = country;
     }
 
-    public boolean isVisaRequired() {
+    public String getVisaRequired() {
         return visaRequired;
     }
 
-    public void setVisaRequired(boolean visaRequired) {
+    public void setVisaRequired(String visaRequired) {
         this.visaRequired = visaRequired;
     }
 
@@ -46,23 +47,34 @@ public class InternationalTour extends Tour implements Serializable{
     public void showInfor() {
         System.out.print("|International Tour|");
         super.showInfor();
-        System.out.printf("|%-10s|%-5s|     |\n", this.country, this.visaRequired);
+        System.out.printf("|%-15s|%-5s|        |\n", this.country, this.visaRequired);
+    }
+
+    @Override
+    public void updateMenu(Menu menu) {
+        super.updateMenu(menu);
+        menu.addNewOption("7. Update new country");
+        menu.addNewOption("8. Update new visaRequired");
+    }
+
+    @Override
+    public void setData(Tour tour, int choice) {
+        super.setData(this, choice);
+        if (choice == 7) {
+            String country = MyUtil.getString("Enter country: ", "The input is kind of STRING ");
+            setCountry(country);
+        } else if (choice == 8) {
+            String visaRequired = MyUtil.getBoolean("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
+            setVisaRequired(visaRequired);
+        }
     }
 
     @Override
     public void input() {
         super.input();
-        this.country = MyUtil.getString("enter country: ", "The COUNTRY input is incorrect");
-        System.out.println("visa required: YES or NO");
-        String s = MyUtil.getString("Enter: ", "Struture of data is String 'YES' or 'NO' ");
-        while (true) {
-            if (s.compareToIgnoreCase("YES") == 0 || s.compareToIgnoreCase("NO") == 0) {
-                this.visaRequired = Boolean.parseBoolean(s);
-                break;
-            } else {
-                System.out.println("You must enter YES or NO");
-                s = MyUtil.getString("Enter: ", "Struture of data is String 'YES' or 'NO' ");
-            }
-        }
+
+        this.country = MyUtil.getString("Enter country: ", "The COUNTRY input is incorrect");
+        this.visaRequired = MyUtil.getBoolean("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
+
     }
 }
