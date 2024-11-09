@@ -64,7 +64,7 @@ public class InternationalTour extends Tour implements Serializable {
             String country = MyUtil.getString("Enter country: ", "The input is kind of STRING ");
             setCountry(country);
         } else if (choice == 9) {
-            String visaRequired = MyUtil.getBoolean("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
+            String visaRequired = MyUtil.getValueOrDefault("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
             setVisaRequired(visaRequired);
         }
     }
@@ -80,7 +80,7 @@ public class InternationalTour extends Tour implements Serializable {
         super.input();
 
         this.country = MyUtil.getString("Enter country: ", "The COUNTRY input is incorrect");
-        this.visaRequired = MyUtil.getBoolean("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
+        this.visaRequired = MyUtil.getValueOrDefault("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
 
     }
 }

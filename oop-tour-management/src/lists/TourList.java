@@ -127,7 +127,7 @@ public class TourList implements IManager<Tour> {
             return;
         }
         System.out.println("--------------------------------------------------------");
-        String choice = MyUtil.getBoolean("Are you sure YES/NO: ", "Please input YES/NO");
+        String choice = MyUtil.getValueOrDefault("Are you sure YES/NO: ", "Please input YES/NO");
         if(choice.equalsIgnoreCase("YES")){
              for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
             tourList[i] = tourList[i + 1];
@@ -248,7 +248,7 @@ public class TourList implements IManager<Tour> {
 
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(tourList);
+        saveData.save(tourList, header);
     }
 
 
