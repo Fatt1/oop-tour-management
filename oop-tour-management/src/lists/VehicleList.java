@@ -208,7 +208,7 @@ public class VehicleList implements IManager<Vehicle> {
 
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(vehicleList);
+        saveData.save(vehicleList,"");
     }
 
     // test
