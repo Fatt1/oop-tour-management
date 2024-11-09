@@ -101,7 +101,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
         do {
             menu.printMenu();
-            choice = MyUtil.getAnInteger("Enter Your Choice: ", "1 -> 9", 1, 9);
+            choice = menu.getChoice();
             switch (choice) {
                 case 1:
                     TourList tourList = TourList.getInstance();
