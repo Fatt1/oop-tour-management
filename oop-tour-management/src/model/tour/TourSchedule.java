@@ -12,20 +12,20 @@ import java.time.temporal.ChronoUnit;
  * @author nghialam
  */
 public class TourSchedule implements Serializable{
-    private String ID, tourID, guildID;
+    private String ID, tourID, EmployeeID;
     private LocalDate returnDay, departureDay;
-    private int emptySlots, donGia, adultPrice, childPrice;
+    private int emptySlots, currentPrice, adultPrice, childPrice;
     private int totalPrice;
     private long duration;
 
-    public TourSchedule(String ID, String tourID, String guildID, LocalDate returnDay, LocalDate departureDay, int emptySlots, int donGia, int adultPrice, int childPrice, int totalPrice, long duration) {
+    public TourSchedule(String ID, String tourID, String EmployeeID, LocalDate returnDay, LocalDate departureDay, int emptySlots, int currentPrice, int adultPrice, int childPrice, int totalPrice, long duration) {
         this.ID = ID;
         this.tourID = tourID;
-        this.guildID = guildID;
+        this.EmployeeID = EmployeeID;
         this.returnDay = returnDay;
         this.departureDay = departureDay;
         this.emptySlots = emptySlots;
-        this.donGia = donGia;
+        this.currentPrice = currentPrice;
         this.adultPrice = adultPrice;
         this.childPrice = childPrice;
         this.totalPrice = totalPrice;
@@ -33,23 +33,14 @@ public class TourSchedule implements Serializable{
     }
 
     public TourSchedule() {
-        this.ID = "TS1234";
-        this.tourID = "T1234";
-        this.guildID = "G1234";
-        this.returnDay = LocalDate.now();
-        this.departureDay = LocalDate.now();
-        this.emptySlots = 0;
-        this.donGia = 0;
-        this.adultPrice = 0;
-        this.childPrice = 0;
-        this.totalPrice = 0;
-        this.duration = ChronoUnit.DAYS.between(returnDay, departureDay);
     }
 
     public String getID() {
         return ID;
     }
-
+    public void setID(String ID){
+        this.ID = ID;
+    }
     public String getTourID() {
         return tourID;
     }
@@ -58,12 +49,12 @@ public class TourSchedule implements Serializable{
         this.tourID = tourID;
     }
 
-    public String getGuildID() {
-        return guildID;
+    public String getEmployeeID() {
+        return EmployeeID;
     }
 
-    public void setGuildID(String guildID) {
-        this.guildID = guildID;
+    public void setEmployeeID(String EmployeeID) {
+        this.EmployeeID = EmployeeID;
     }
 
     public LocalDate getReturnDay() {
@@ -90,12 +81,12 @@ public class TourSchedule implements Serializable{
         this.emptySlots = emptySlots;
     }
 
-    public int getDonGia() {
-        return donGia;
+    public int getCurrentPrice() {
+        return currentPrice;
     }
 
-    public void setDonGia(int donGia) {
-        this.donGia = donGia;
+    public void setCurrentPrice(int CurrentPrice) {
+        this.currentPrice = CurrentPrice;
     }
 
     public int getAdultPrice() {
@@ -129,9 +120,14 @@ public class TourSchedule implements Serializable{
     public void setDuration(long duration) {
         this.duration = duration;
     }
-    
-    public showInfor(){
-        System.out.println("|%-18s|%-5s|%-5s|%-5s|%-5s||||||");
+    @Override
+    public String toString(){
+        return String.format("|%-20s|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|\n", 
+                    "TourSchedule", this.ID, this.tourID, this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
+    }
+    public void showInfor(){
+        System.out.printf("|%-20s|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|%-15s|%-15s|%-15s|\n",
+                    "TourSchedule", this.ID, this.tourID,this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots,this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
     }
     
 }

@@ -23,7 +23,7 @@ import util.MyUtil;
  */
 public class TourList implements IManager<Tour> {
 
-    public static TourList instance;
+    private static TourList instance;
     private int existedTour;
     private Tour tourList[];
     private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-2s|%-15s|%-5s|%-5s|",
@@ -55,6 +55,8 @@ public class TourList implements IManager<Tour> {
         } else {
             tourTemp = new DomesticTour();
         }
+        String idTour = enterTourID();
+        tourTemp.input(idTour);
         tourTemp.input();
         tourList = Arrays.copyOf(tourList, tourList.length + 1);
         tourList[existedTour++] = tourTemp;
@@ -162,17 +164,16 @@ public class TourList implements IManager<Tour> {
 
     @Override
     public void searchById() {
-        if (existedTour == 0) {
-            System.out.println("No more than a tour in list");;
-        } else {
-            String id = MyUtil.getId("Enter ID(VD: TO123): ", "Format is incorect", "TO\\d{3}$");
-            for (int i = 0; i < existedTour; i++) {
-                if (tourList[i].getTourID().compareToIgnoreCase(id) == 0) {
-                    tourList[i].showInfor();
-                    return;
-                }
-            }
+        if (existedTour == 0){
+            System.out.println("No more than a tour in list");
+            return;
         }
+        String id = MyUtil.getString("Enter ID(VD: TO123): ", "Don't find ID");
+        for (int i = 0; i < existedTour; i++) 
+            if (tourList[i].getTourID().compareToIgnoreCase(id) == 0) {
+                tourList[i].showInfor();
+                return;
+            }
     }
 
     @Override
@@ -256,13 +257,13 @@ public class TourList implements IManager<Tour> {
         TourList l = TourList.getInstance();
  //       l.printListAscendingById();
 //        l.add();
-//        l.add();
+//       l.add();
 //        l.add();
 //        l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-        l.printListAscendingById();
-        l.remove();
-        l.update();
-        l.searchObjectByName();
+//        l.printListAscendingById();
+        //l.remove();
+        //l.update();
+        //l.searchObjectByName();
         l.printListAscendingById();
     }
 }
