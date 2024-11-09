@@ -53,17 +53,17 @@ public class InternationalTour extends Tour implements Serializable {
     @Override
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
-        menu.addNewOption("7. Update new country");
-        menu.addNewOption("8. Update new visa");
+        menu.addNewOption("8. Update new country");
+        menu.addNewOption("9. Update new visa");
     }
 
     @Override
     public void setData(Tour tour, int choice) {
         super.setData(this, choice);
-        if (choice == 7) {
+        if (choice == 8) {
             String country = MyUtil.getString("Enter country: ", "The input is kind of STRING ");
             setCountry(country);
-        } else if (choice == 8) {
+        } else if (choice == 9) {
             String visaRequired = MyUtil.getBoolean("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
             setVisaRequired(visaRequired);
         }

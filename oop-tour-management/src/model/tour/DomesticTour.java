@@ -42,13 +42,13 @@ public class DomesticTour extends Tour implements Serializable {
     @Override
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
-        menu.addNewOption("7. Update new local discount");
+        menu.addNewOption("8. Update new local discount");
     }
 
     @Override
     public void setData(Tour tour, int choice) {
         super.setData(this, choice);
-        if (choice == 7) {
+        if (choice == 8) {
             double discount = MyUtil.getAnDouble("Enter local discount: ", "The input is kind of DOUBLE");
             setLocalDiscount(discount);
         }

@@ -83,7 +83,7 @@ public class Tour implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
- 
+
     @Override
     public String toString() {
         return String.format("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-8s",
@@ -107,6 +107,8 @@ public class Tour implements Serializable {
         menu.addNewOption("4. Update new departureLocation");
         menu.addNewOption("5. Update new price");
         menu.addNewOption("6. Update new quantity");
+        menu.addNewOption("7. Update new VehicleID");
+
     }
 
     public void setData(Tour tour, int choice) {
@@ -133,6 +135,9 @@ public class Tour implements Serializable {
             case 6:
                 int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
                 tour.setQuantity(slot);
+            case 7:
+                String vID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
+                tour.setVehicleID(vID);
                 break;
         }
     }
