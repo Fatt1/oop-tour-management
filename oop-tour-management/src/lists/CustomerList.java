@@ -279,6 +279,23 @@ public class CustomerList implements IManager<Customer>{
         }
     }
 
+    public String getIdCustomer() {
+        System.out.printf("|%-10s|%-25s|\n", "ID", "FULLNAME");
+        for (Customer customer : cusList) {
+            System.out.printf("|%-10s|%-25s|\n", customer.getId(), customer.getLastName() + " " + customer.getFirstName());
+        }
+        Customer x;
+        String idCustomer;
+        do {            
+        idCustomer = MyUtil.getString("Input id customer (CXXX): ", "The customer id is required");
+        x = searchObjectById(idCustomer);
+        if(x == null)
+            System.out.println("Please input the customer has in the list");
+        
+        } while (x == null);
+        
+        return idCustomer;
+    }
     
     @Override
     public void saveToDate(SaveData saveData) {
