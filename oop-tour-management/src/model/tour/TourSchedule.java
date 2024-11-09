@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model.tour;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -10,15 +11,15 @@ import java.time.temporal.ChronoUnit;
  *
  * @author nghialam
  */
-public class TourSchedule {
-    private String tourScheduleID, tourID, guildID;
+public class TourSchedule implements Serializable{
+    private String ID, tourID, guildID;
     private LocalDate returnDay, departureDay;
     private int emptySlots, donGia, adultPrice, childPrice;
     private int totalPrice;
     private long duration;
 
-    public TourSchedule(String tourScheduleID, String tourID, String guildID, LocalDate returnDay, LocalDate departureDay, int emptySlots, int donGia, int adultPrice, int childPrice, int totalPrice, long duration) {
-        this.tourScheduleID = tourScheduleID;
+    public TourSchedule(String ID, String tourID, String guildID, LocalDate returnDay, LocalDate departureDay, int emptySlots, int donGia, int adultPrice, int childPrice, int totalPrice, long duration) {
+        this.ID = ID;
         this.tourID = tourID;
         this.guildID = guildID;
         this.returnDay = returnDay;
@@ -32,7 +33,7 @@ public class TourSchedule {
     }
 
     public TourSchedule() {
-        this.tourScheduleID = "TS1234";
+        this.ID = "TS1234";
         this.tourID = "T1234";
         this.guildID = "G1234";
         this.returnDay = LocalDate.now();
@@ -45,8 +46,8 @@ public class TourSchedule {
         this.duration = ChronoUnit.DAYS.between(returnDay, departureDay);
     }
 
-    public String getTourScheduleID() {
-        return tourScheduleID;
+    public String getID() {
+        return ID;
     }
 
     public String getTourID() {
@@ -127,6 +128,10 @@ public class TourSchedule {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+    
+    public showInfor(){
+        System.out.println("|%-18s|%-5s|%-5s|%-5s|%-5s||||||");
     }
     
 }

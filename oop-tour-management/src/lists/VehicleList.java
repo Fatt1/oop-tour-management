@@ -20,17 +20,23 @@ import util.MyUtil;
  * @author User
  */
 public class VehicleList implements IManager<Vehicle> {
-
+    public static VehicleList instance;
     private Vehicle[] vehicleList;
     private int existedVehicle;
     private String header = String.format("|%-6s|%-15s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
     private Scanner sc = new Scanner(System.in);
 
-    public VehicleList() {
+    private VehicleList() {
         vehicleList = new Vehicle[0];
         existedVehicle = 0;
+        ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
     }
-
+    
+    public VehicleList getInstance(){
+        if(instance == null)
+            return instance = new VehicleList();
+        return instance;
+    }
     @Override
     public void add() {
         String id;
@@ -138,7 +144,7 @@ public class VehicleList implements IManager<Vehicle> {
         } while (true);
 
     }
-
+    
     @Override
     public void printListAscendingById() {
         if (vehicleList.length == 0) {
@@ -205,7 +211,13 @@ public class VehicleList implements IManager<Vehicle> {
         }
 
     }
-
+    public Boolean getValueOfVehicleID(String vehicleID){
+        int check = searchById(vehicleID);
+        if(check >= 0){
+            return true;
+        }
+        return false;
+    }
     @Override
     public void saveToDate(SaveData saveData) {
         saveData.save(vehicleList,"");
