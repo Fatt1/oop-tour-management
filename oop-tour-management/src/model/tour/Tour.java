@@ -6,6 +6,7 @@ package model.tour;
 
 import java.io.Serializable;
 import lists.TourList;
+import lists.VehicleList;
 import ui.Menu;
 import util.MyUtil;
 
@@ -136,8 +137,17 @@ public class Tour implements Serializable {
                 int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
                 tour.setQuantity(slot);
             case 7:
-                String vID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
-                tour.setVehicleID(vID);
+                boolean isCheck;
+                do {
+                    String vID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
+                    isCheck = VehicleList.instance.getValueOfVehicleID(vID);
+                    if (isCheck) {
+                        tour.setVehicleID(vID);
+                    } else {
+                        System.out.println("Sr dont find " + vID +" please again!!!");
+                    }
+                } while (isCheck);
+
                 break;
         }
     }

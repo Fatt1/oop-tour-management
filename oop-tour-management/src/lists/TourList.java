@@ -23,7 +23,7 @@ import util.MyUtil;
  */
 public class TourList implements IManager<Tour> {
 
-    private static TourList instance;
+    public static TourList instance;
     private int existedTour;
     private Tour tourList[];
     private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-2s|%-15s|%-5s|%-5s|",
