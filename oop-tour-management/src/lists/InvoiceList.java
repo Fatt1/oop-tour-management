@@ -112,7 +112,6 @@ public class InvoiceList implements IManager<Invoice>{
                 
             }
             if(choice != 4){
-                x.setInvoiceDate(LocalDateTime.now()); // update luôn thời gian mình cập nhật lại cái invoice
                 System.out.println("Update successully");
                 System.out.println("The invoice after updating");
                 x.display();
@@ -251,7 +250,6 @@ public class InvoiceList implements IManager<Invoice>{
         i.printListAscendingById();
         //i.searchById();
         i.showInvoiceDetails();
-       
         i.update();
         
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));

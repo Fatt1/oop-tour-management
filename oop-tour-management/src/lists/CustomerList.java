@@ -12,7 +12,12 @@ import interfaces.LoadData;
 import interfaces.SaveData;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import model.Customer;
 import ui.Menu;
@@ -302,16 +307,33 @@ public class CustomerList implements IManager<Customer>{
         saveData.save(cusList, header);
     }
     
+    
+    public void countToursPerCustomer() {
+        InvoiceDetailsList invDetailList = InvoiceDetailsList.getInstance();
+       Map <Customer, Integer>  customerTourCount = new HashMap();
+        for (Customer c : cusList) {
+            
+            Integer count = invDetailList.getInvoiceDetails(o -> o.getCustomerId().equalsIgnoreCase(c.getId())).length;
+            customerTourCount.put(c, count);
+        }
+        System.out.printf("|%-6s|%-25s|%-15s|\n", "ID", "FULLNAME", "TOUR COUNT");
+        for (Map.Entry<Customer, Integer> c: customerTourCount.entrySet()) {
+            String id = c.getKey().getId();
+            String fullName = c.getKey().getLastName() + " " + c.getKey().getFirstName();
+            Integer tourCount = c.getValue();
+            System.out.printf("|%-6s|%-25s|%-15d|\n", id, fullName, tourCount);
+        }
+    }
     //test bam shift + f6 de test thu
-//    public static void main(String[] args) {
-//        CustomerList cl = CustomerList.getInstance();
-//
+    public static void main(String[] args) {
+        CustomerList cl = CustomerList.getInstance();
+        cl.countToursPerCustomer();
 //        cl.add();
 //        cl.printListAscendingById();
-//
+
 //        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
 //        
 //        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
-//    }
-//      
+    }
+      
 }

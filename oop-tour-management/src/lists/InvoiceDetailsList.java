@@ -8,6 +8,7 @@ import model.InvoiceDetails;
 import IOFile.LoadDataFromFile;
 import IOFile.SaveDataToFile;
 import IOFile.SaveFileText;
+import interfaces.Filter;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -83,6 +84,7 @@ public class InvoiceDetailsList implements Serializable{
     }
     
     
+    
     public void update(String invoiceId) {
                        
         String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
@@ -120,7 +122,21 @@ public class InvoiceDetailsList implements Serializable{
         return customerId;
     }
     
+
     
+    public InvoiceDetails[] getInvoiceDetails(Filter<InvoiceDetails> filter){
+        InvoiceDetails[] result = new InvoiceDetails[0];
+        int count = 0;
+        for (InvoiceDetails x : invDetailsList) {
+            if(filter.check(x)){
+                result = Arrays.copyOf(result, count + 1);
+                result[count++] = x;
+            }
+        }
+        return result;
+    }
+    
+
     
     public void editInvoiceDetails(Invoice x) {
         Menu updateDetailMenu = new Menu("Choose");
@@ -201,23 +217,13 @@ public class InvoiceDetailsList implements Serializable{
         return -1;
     }
 
-    public InvoiceDetails[] searchListByInvoiceId(String invoiceId){
-        InvoiceDetails[] result = new InvoiceDetails[0];
-        int count = 0;
-        for (InvoiceDetails x : invDetailsList) {
-            if(x.getInvoiceId().equalsIgnoreCase(invoiceId)){
-                result = Arrays.copyOf(result, count + 1);
-                result[count++] = x;
-            }
-        }
-        return result;
-    }
+    
     
     
     public void showInvoiceDetails (String invoiceId){ // cái hàm để dùng bên invoice để show chi tiết của invoice
         CustomerList cusList = CustomerList.getInstance();
         System.out.println("Invoice Details List");
-        InvoiceDetails result[] = searchListByInvoiceId(invoiceId); // trả về mảng invoiceId mà mình muốn tìm
+        InvoiceDetails result[] = getInvoiceDetails(o -> o.getInvoiceId().equalsIgnoreCase(invoiceId)); // trả về mảng invoiceId mà mình muốn tìm
         System.out.printf("|%-20s|%-12s|%-10s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
         for (InvoiceDetails x : result) {
             Customer cus = cusList.searchObjectById(x.getCustomerId());
