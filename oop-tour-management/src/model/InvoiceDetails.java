@@ -13,9 +13,9 @@ import java.io.Serializable;
 public class InvoiceDetails implements Serializable{
     private String invoiceId;
     private String customerId;
-    private double price;
+    private int price;
 
-    public InvoiceDetails(String invoiceId,String customerId, double price) {
+    public InvoiceDetails(String invoiceId,String customerId, int price) {
         this.invoiceId = invoiceId;
         this.customerId = customerId;
         this.price = price;
@@ -33,7 +33,7 @@ public class InvoiceDetails implements Serializable{
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -47,10 +47,10 @@ public class InvoiceDetails implements Serializable{
 
     @Override
     public String toString() {
-        return String.format("|%-12s|%-12s|%10.2f|\n",invoiceId, customerId, price);
+        return String.format("|%-12s|%-12s|%-14d|\n",invoiceId, customerId, price);
     }
     
     public void display(){
-        System.out.printf("|%-12s|%10.2f|\n", customerId, price);
+        System.out.printf("|%-12s|%-14d|\n", customerId, price);
     }
 }

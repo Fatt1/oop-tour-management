@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.Invoice;
+import model.tour.TourSchedule;
 import ui.Menu;
 import util.MyUtil;
 
@@ -25,7 +26,7 @@ public class InvoiceList implements IManager<Invoice>{
     private Invoice[] invoiceList;
     private int existedInvoice;
     private int surrogateKey = 0;
-    private String header = String.format("|%-9s|%-12s|%-14s|%-20s|%-25s|%-10s|",
+    private String header = String.format("|%-9s|%-12s|%-14s|%-20s|%-25s|%-20s|",
                                             "ID", "CUSTOMER ID", "EMPLOYEE ID","TOUR SCHEDULE ID", "DATE", "TOTAL");
     private SaveDataToFile saveBinaryFile = new SaveDataToFile("Files/Invoices.dat");
     public InvoiceList() {
@@ -35,19 +36,25 @@ public class InvoiceList implements IManager<Invoice>{
 
     @Override
     public void add() {
+        InvoiceDetailsList invoiceDetailList = InvoiceDetailsList.getInstance();
+        TourScheduleList tourScheduleList = TourScheduleList.getInstance();
         String invoiceId = String.format("INV-%03d", ++surrogateKey); // %03d có nghĩa là mặc định sẽ có 3 số 
                                                                         // nếu surrogateKey nếu không đủ 3 số nó sẽ tự thêm số 0 đằng trước để đủ định dạng 3 số
                                                                         // nếu surrogateKey = 1 thì sẽ tự động thêm 00 vào trc và tạo thành 001
         System.out.println("Invoice Id: " + invoiceId);
         String customerId = CustomerList.getInstance().getIdCustomer();
         String employeeId = MyUtil.getString("Input employee id (EXXX): ", "The employee id is required");
-        String tourScheduleId = MyUtil.getString("Input tour schedule id: ", "The tour schedule id is required");
-        InvoiceDetailsList invoiceDetailList = InvoiceDetailsList.getInstance();
-        
+        String tourScheduleId = tourScheduleList.getTourScheduleID();
+        TourSchedule tourSchedule = tourScheduleList.searchObjectById(tourScheduleId);
+        //check emptySlots trc khi cho nhập chi tiết, nếu mà nó = 0 thì return luôn không cho nhập tiếp
+        if( tourSchedule.getEmptySlots() == 0){
+            System.out.println("Slots are full. Can't add anymore");
+            return;
+        }
         System.out.println("Input invoice details");
         do {            
             
-            invoiceDetailList.add(invoiceId); // không cần phải nhập lại idInvoice và tourScheduleId trong invoiceDetailsList
+            invoiceDetailList.add(invoiceId, tourSchedule); // không cần phải nhập lại idInvoice và tourScheduleId trong invoiceDetailsList
             String choice = getUserConfirmation();
             if(choice.equalsIgnoreCase("N"))
                 break;
@@ -55,10 +62,13 @@ public class InvoiceList implements IManager<Invoice>{
         } while (true);
         invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);
         Invoice invoice = new Invoice(invoiceId,customerId, employeeId, tourScheduleId);
+        
         invoice.setTotalAmount(invoiceDetailList.getTotalPrice(invoiceId)); // set total amount sau khi nhập chi tiết hóa đơn
         invoiceList[existedInvoice++] = invoice;
         System.out.println("New invoice has been added successfully");
         saveToDate(saveBinaryFile);
+        // lưu lại những emptySlots đã thay đỏi sau khi nhập invoiceDetails
+        tourScheduleList.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
     
     private String getUserConfirmation() {
@@ -244,14 +254,14 @@ public class InvoiceList implements IManager<Invoice>{
     public static void main(String[] args) {
         InvoiceList i = new InvoiceList();
         i.ReadData(new LoadDataFromFile("Files/Invoices.dat"));
-       // i.add();
-       // i.add();
-        
+        i.add();
+//        i.add();
+//        
         i.printListAscendingById();
         //i.searchById();
         i.showInvoiceDetails();
-        i.update();
-        
+//        i.update();
+//        
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
     }
 }
