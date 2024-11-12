@@ -32,6 +32,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
     private TourScheduleList() {
         tourScheduleList = new TourSchedule[0];
         existedTourSchedule = 0;
+        ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
     }
 
     public static TourScheduleList getInstance() {
@@ -291,19 +292,20 @@ public class TourScheduleList implements IManager<TourSchedule> {
         } 
             String id;
             TourSchedule x; 
-             do {                 
-                 id =MyUtil.getString("Enter ID(VD: TS123): ", "The id is required");
-                 x = searchObjectById(id);
-                 if (x == null){
+            do {
+                printListAscendingById();
+                id =MyUtil.getString("Enter ID(VD: TS123): ", "The id is required");
+                x = searchObjectById(id);
+                if (x == null){
                      System.out.println("Please!!! input id in the list");
-                 }
-             } while (x ==null);
+                }
+            } while (x ==null);
             return id;
     }   
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
-        l.ReadData(new LoadDataFromFile("Files/TourShedule.dat"));
+ //       l.ReadData(new LoadDataFromFile("Files/TourShedule.dat"));
 //        l.add();
 //        l.add();
 //        l.add();
@@ -311,6 +313,6 @@ public class TourScheduleList implements IManager<TourSchedule> {
         l.remove();
         l.printListAscendingById();
 
-        //l.saveToDate(new SaveDataToFile("Files/TourShedule.dat"));
+        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }
