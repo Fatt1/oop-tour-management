@@ -19,26 +19,18 @@ public class Invoice implements Serializable{
     private String employeeId;
     private String tourScheduleId;
     private LocalDateTime invoiceDate;
-    private InvoiceDetailsList invoiceDetaiList;
     private double totalAmount;
 
-    public Invoice(String id, String customerId, String employeeId, String tourScheduleId, InvoiceDetailsList invoiceDetaiList) {
+    public Invoice(String id, String customerId, String employeeId, String tourScheduleId) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
         this.tourScheduleId = tourScheduleId;
         this.invoiceDate = LocalDateTime.now();
         this.totalAmount = 0;
-        this.invoiceDetaiList = invoiceDetaiList;
+        
     }
 
-    public InvoiceDetailsList getInvoiceDetaiList() {
-        return invoiceDetaiList;
-    }
-
-    public void setInvoiceDetaiList(InvoiceDetailsList invoiceDetaiList) {
-        this.invoiceDetaiList = invoiceDetaiList;
-    }
 
     public String getId() {
         return id;

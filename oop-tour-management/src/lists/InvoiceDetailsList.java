@@ -6,6 +6,9 @@ package lists;
 
 import model.InvoiceDetails;
 import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
+import IOFile.SaveFileText;
+import interfaces.Filter;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -13,32 +16,45 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.Customer;
+import model.Invoice;
+import ui.Menu;
 import util.MyUtil;
 
 /**
  *
  * @author User
  */
-public class InvoiceDetailsList implements IManager<InvoiceDetails>, Serializable{
+public class InvoiceDetailsList implements Serializable{
+    private static InvoiceDetailsList instance;
     private InvoiceDetails [] invDetailsList;
     private int exsitedInvoiceDetails;
-    private String tourScheduleId;
+    private String header = String.format("|%-12s|%-12s|%-10s|\n","INVOICE ID", "CUSTOMER ID", "PRICE");
+    private SaveDataToFile saveBinaryFile = new SaveDataToFile("Files/InvoiceDetails.dat");
     
-    
-    public InvoiceDetailsList(String tourScheduleId) {
+    private InvoiceDetailsList() {
         invDetailsList = new InvoiceDetails[0];
         exsitedInvoiceDetails = 0;
-        this.tourScheduleId = tourScheduleId;
+        ReadData(new LoadDataFromFile("Files/InvoiceDetails.dat"));
+        
     }
-    @Override
-    public void add(){
+    
+    public static InvoiceDetailsList getInstance() {
+        if(instance == null)
+            instance = new InvoiceDetailsList();
+        return instance;
+    }
+    
+    
+    public void add(String invoiceId){
         // còn phải code việc bắt không cho trùng id khách hàng nếu 1 chi tiết hóa đơn mà có 2 người
-        String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
+        String customerId = getUniqueAnCustomer(invoiceId);
         double price = getCustomerPrice(customerId);
         invDetailsList = Arrays.copyOf(invDetailsList, exsitedInvoiceDetails + 1);
-        invDetailsList[exsitedInvoiceDetails++] = new InvoiceDetails(tourScheduleId,customerId, price);
+        invDetailsList[exsitedInvoiceDetails++] = new InvoiceDetails(invoiceId,customerId, price);
         System.out.println("Add successfully");
-        printListAscendingById();
+        saveToDate(saveBinaryFile);
+        showInvoiceDetails(invoiceId);
+        
         
     }
     
@@ -58,39 +74,109 @@ public class InvoiceDetailsList implements IManager<InvoiceDetails>, Serializabl
         return customerPrice;
     }
     
-    public double getTotalPrice(){
+    public double getTotalPrice(String invoiceId){
         double totalPrice = 0;
         for (InvoiceDetails invDetails : invDetailsList) {
-            totalPrice += invDetails.getPrice();
+            if(invDetails.getInvoiceId().equalsIgnoreCase(invoiceId))
+                totalPrice += invDetails.getPrice();
         }
         return totalPrice;
     }
     
-    @Override
-    public void update() {
+    
+    
+    public void update(String invoiceId) {
                        
         String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
-        InvoiceDetails x = searchObjectById(customerId);
+        InvoiceDetails x = searchObjectById(invoiceId, customerId);
         if(x == null){
             System.out.println("Not found!!");
             return;
         }
         System.out.println("Here is the customer' invoice details that you want to update");
         x.display();
-        String newCustomerId = MyUtil.getString("Input new customer id (CXXX): ", "The new customer id is required");
+        String newCustomerId = getUniqueAnCustomer(invoiceId);
         x.setCustomerId(newCustomerId);
         x.setPrice(getCustomerPrice(newCustomerId));
         System.out.println("Update successfully");
+        saveToDate(saveBinaryFile);
         System.out.println("List after updating");
-        printListAscendingById();
-            
+        showInvoiceDetails(invoiceId);
+        
     }
+    
+    
+    private String getUniqueAnCustomer(String invoiceId){
+        String customerId;
+        int duplicate;
+        
+        do {    
+            customerId = CustomerList.getInstance().getIdCustomer();
+            duplicate = searchById(customerId, invoiceId);
+            if(duplicate >= 0){
+                System.out.println("In the invoice details have had this customer. Please input another customer id");
+                System.out.print("Press enter to continue...");
+                new Scanner(System.in).nextLine();
+            }
+        } while (duplicate >= 0);
+        return customerId;
+    }
+    
 
-    @Override
-    public void remove() {
+    
+    public InvoiceDetails[] getInvoiceDetails(Filter<InvoiceDetails> filter){
+        InvoiceDetails[] result = new InvoiceDetails[0];
+        int count = 0;
+        for (InvoiceDetails x : invDetailsList) {
+            if(filter.check(x)){
+                result = Arrays.copyOf(result, count + 1);
+                result[count++] = x;
+            }
+        }
+        return result;
+    }
+    
+
+    
+    public void editInvoiceDetails(Invoice x) {
+        Menu updateDetailMenu = new Menu("Choose");
+        updateDetailMenu.addNewOption("1. Add");
+        updateDetailMenu.addNewOption("2. Update customer id"); 
+        updateDetailMenu.addNewOption("3. Remove");
+        updateDetailMenu.addNewOption("4. Exit");
+        int choice;
+        
+        do {
+            updateDetailMenu.printMenu();
+            choice = updateDetailMenu.getChoice();
+            switch (choice) {
+            case 1:
+                add(x.getId());
+                
+                break;    
+                
+            case 2:
+                update(x.getId());
+                
+                break;
+            case 3:
+                remove(x.getId());
+                break;
+            }
+            if(choice != 4){
+                x.setTotalAmount(getTotalPrice(x.getId()));
+                
+            }
+                // cập nhật lại giá tổng vì có thể chỉnh lại id Khách hàng khách
+                                                                            // thì giá sẽ khác nên tổng giá sẽ khác.
+        } while (choice != 4);
+        
+    }
+    
+    public void remove(String invoiceId) { // cần thêm cái invoice nào để biết xóa chính xóa
         Scanner sc = new Scanner(System.in); 
         String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
-        int pos = searchById(customerId);
+        int pos = searchById(customerId, invoiceId);
         if(pos == -1){
             System.out.println("Not found!!");
             return;
@@ -106,8 +192,9 @@ public class InvoiceDetailsList implements IManager<InvoiceDetails>, Serializabl
                 invDetailsList = Arrays.copyOf(invDetailsList, exsitedInvoiceDetails - 1);
                 exsitedInvoiceDetails--;
                 System.out.println("The invoice details is removed successully");
+                saveToDate(saveBinaryFile);
                 System.out.println("List after deleting");
-                printListAscendingById();
+                showInvoiceDetails(invoiceId);
                 return;
             }
             else if(choice.equalsIgnoreCase("N"))
@@ -120,68 +207,57 @@ public class InvoiceDetailsList implements IManager<InvoiceDetails>, Serializabl
        
     }
 
-    @Override
-    public void printListAscendingById() { // in ra tang dan theo id cua khach hang
-        if(exsitedInvoiceDetails == 0) {
-            System.out.println("Empty List!!");
-            return;
-        }
-        CustomerList cusList = CustomerList.getInstance();
-        
-        Arrays.sort(invDetailsList, (o1, o2) -> o1.getCustomerId().compareToIgnoreCase(o2.getCustomerId()));
-        System.out.printf("|%-20s|%-12s|%-10s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
-        for (InvoiceDetails invDetails : invDetailsList) {
-            Customer x = cusList.searchObjectById(invDetails.getCustomerId());
-            if(x == null){
-                continue;
-            }
-            
-            System.out.printf("|%-20s",x.getLastName() + " " + x.getFirstName());
-            invDetails.display();
-        }
-    }
-
-    @Override
-    public void searchById() {
-        String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
-        InvoiceDetails x = searchObjectById(customerId);
-        if(x == null) {
-            System.out.println("Not found!!");
-            return;
-        }
-        System.out.println("Here is customer's the invoice details");
-        x.display();
-        
-    }
-
-    @Override
-    public int searchById(String id) {
+    public int searchById(String customerId, String invoiceId) {
         if(exsitedInvoiceDetails == 0) return -1;
         for (int i = 0; i < exsitedInvoiceDetails; i++) {
-            if(invDetailsList[i].getCustomerId().equalsIgnoreCase(id))
+            InvoiceDetails x = invDetailsList[i];
+            if(x.getCustomerId().equalsIgnoreCase(customerId) && x.getInvoiceId().equalsIgnoreCase(invoiceId))
                 return i;
         }
         return -1;
     }
 
-    @Override
-    public InvoiceDetails searchObjectById(String id) {
+    
+    
+    
+    public void showInvoiceDetails (String invoiceId){ // cái hàm để dùng bên invoice để show chi tiết của invoice
+        CustomerList cusList = CustomerList.getInstance();
+        System.out.println("Invoice Details List");
+        InvoiceDetails result[] = getInvoiceDetails(o -> o.getInvoiceId().equalsIgnoreCase(invoiceId)); // trả về mảng invoiceId mà mình muốn tìm
+        System.out.printf("|%-20s|%-12s|%-10s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
+        for (InvoiceDetails x : result) {
+            Customer cus = cusList.searchObjectById(x.getCustomerId());
+            System.out.printf("|%-20s",cus.getLastName() + " " + cus.getFirstName());
+            x.display();
+        }
+        
+    }
+    
+    public InvoiceDetails searchObjectById(String invoiceId, String customerId) {
         if(exsitedInvoiceDetails == 0) return null;
         for (InvoiceDetails invoiceDetails : invDetailsList) {
-            if(invoiceDetails.getCustomerId().equalsIgnoreCase(id))
+            if(invoiceDetails.getCustomerId().equalsIgnoreCase(customerId) && invoiceDetails.getInvoiceId().equalsIgnoreCase(invoiceId))
                 return invoiceDetails;
         }
         return null;
     }
 
-    @Override
+    
     public void ReadData(LoadData loadData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object [] object = loadData.read();
+        if(object == null){
+            System.out.println("No data");
+            return;
+        }
+        for (Object o : object) {
+        invDetailsList = Arrays.copyOf(invDetailsList, exsitedInvoiceDetails + 1);
+        invDetailsList[exsitedInvoiceDetails++] = (InvoiceDetails)o;
+        }
     }
 
-    @Override
+    
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        saveData.save(invDetailsList, header);
     }
     
 }

@@ -27,6 +27,7 @@ public class InvoiceList implements IManager<Invoice>{
     private int surrogateKey = 0;
     private String header = String.format("|%-9s|%-12s|%-14s|%-20s|%-25s|%-10s|",
                                             "ID", "CUSTOMER ID", "EMPLOYEE ID","TOUR SCHEDULE ID", "DATE", "TOTAL");
+    private SaveDataToFile saveBinaryFile = new SaveDataToFile("Files/Invoices.dat");
     public InvoiceList() {
         invoiceList = new Invoice[0];
         existedInvoice = 0;
@@ -34,30 +35,30 @@ public class InvoiceList implements IManager<Invoice>{
 
     @Override
     public void add() {
-        String formattedID = String.format("INV-%03d", ++surrogateKey); // %03d có nghĩa là mặc định sẽ có 3 số 
+        String invoiceId = String.format("INV-%03d", ++surrogateKey); // %03d có nghĩa là mặc định sẽ có 3 số 
                                                                         // nếu surrogateKey nếu không đủ 3 số nó sẽ tự thêm số 0 đằng trước để đủ định dạng 3 số
                                                                         // nếu surrogateKey = 1 thì sẽ tự động thêm 00 vào trc và tạo thành 001
-        System.out.println("Invoice Id: " + formattedID);
-        // có nên bắt lỗi khi nhập customerId, employeeId,... không. Vì id phải tồn tại mới cho nhập
-        String customerId = MyUtil.getString("Input customer id (CXXX): ", "The customer id is required");
+        System.out.println("Invoice Id: " + invoiceId);
+        String customerId = CustomerList.getInstance().getIdCustomer();
         String employeeId = MyUtil.getString("Input employee id (EXXX): ", "The employee id is required");
-        String tourScheduleId = MyUtil.getString("Input tour schedule id: ", "The employee id is required");
-        InvoiceDetailsList invoiceDetailList = new InvoiceDetailsList(tourScheduleId);
+        String tourScheduleId = MyUtil.getString("Input tour schedule id: ", "The tour schedule id is required");
+        InvoiceDetailsList invoiceDetailList = InvoiceDetailsList.getInstance();
         
         System.out.println("Input invoice details");
         do {            
             
-            invoiceDetailList.add();
+            invoiceDetailList.add(invoiceId); // không cần phải nhập lại idInvoice và tourScheduleId trong invoiceDetailsList
             String choice = getUserConfirmation();
             if(choice.equalsIgnoreCase("N"))
                 break;
             
         } while (true);
         invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);
-        Invoice invoice = new Invoice(formattedID,customerId, employeeId, tourScheduleId, invoiceDetailList);
-        invoice.setTotalAmount(invoiceDetailList.getTotalPrice()); // set total amount sau khi nhập chi tiết hóa đơn
+        Invoice invoice = new Invoice(invoiceId,customerId, employeeId, tourScheduleId);
+        invoice.setTotalAmount(invoiceDetailList.getTotalPrice(invoiceId)); // set total amount sau khi nhập chi tiết hóa đơn
         invoiceList[existedInvoice++] = invoice;
         System.out.println("New invoice has been added successfully");
+        saveToDate(saveBinaryFile);
     }
     
     private String getUserConfirmation() {
@@ -95,7 +96,7 @@ public class InvoiceList implements IManager<Invoice>{
             choice = menuUpdate.getChoice();
             switch (choice) {
                 case 1: // những cái customerId, emloyeeId,... nên hiện ra 1 cái list để lựa chọn instead of nhập mà kh nhìn thấy gì
-                    String newCustomerId = MyUtil.getString("Input new customer id(CXXX): ", "The customer id is required");
+                    String newCustomerId = CustomerList.getInstance().getIdCustomer();
                     x.setCustomerId(newCustomerId);
                     break;
                 
@@ -111,11 +112,11 @@ public class InvoiceList implements IManager<Invoice>{
                 
             }
             if(choice != 4){
-                x.setInvoiceDate(LocalDateTime.now()); // update luôn thời gian mình cập nhật lại cái invoice
                 System.out.println("Update successully");
                 System.out.println("The invoice after updating");
                 x.display();
-                System.out.println("Press enter to continue...");
+                saveToDate(saveBinaryFile);
+                System.out.print("Press enter to continue...");
                 sc.nextLine();
             }
         } while (choice != 4);
@@ -141,6 +142,7 @@ public class InvoiceList implements IManager<Invoice>{
                 invoiceList = Arrays.copyOf(invoiceList, existedInvoice - 1);
                 existedInvoice--;
                 System.out.println("The invoice is removed successully");
+                saveToDate(saveBinaryFile);
                 return;
             }
             else if(choice.equalsIgnoreCase("N"))
@@ -200,58 +202,27 @@ public class InvoiceList implements IManager<Invoice>{
     }
     
     public void showInvoiceDetails (){
-        
+        InvoiceDetailsList invDetails = InvoiceDetailsList.getInstance();
         String id = MyUtil.getString("Input invoice id: ", "The invoice id is required");
         Invoice x = searchObjectById(id);
         if(x == null) {
             System.out.println("Not found!!");
             return;
         }
-        System.out.println("Invoice Details List");
-        x.getInvoiceDetaiList().printListAscendingById();
-        updateInvoiceDetails(x);
+        invDetails.showInvoiceDetails(x.getId());
+        invDetails.editInvoiceDetails(x);
         
     }
     
-    public void updateInvoiceDetails(Invoice x) {
-        Menu updateDetailMenu = new Menu("Choose");
-        updateDetailMenu.addNewOption("1. Add");
-        updateDetailMenu.addNewOption("2. Update customer id"); // còn delete nữa, từ từ...
-        updateDetailMenu.addNewOption("3. Remove");
-        updateDetailMenu.addNewOption("4. Exit");
-        int choice;
-        
-        do {
-            updateDetailMenu.printMenu();
-            choice = updateDetailMenu.getChoice();
-            switch (choice) {
-            case 1:
-                x.getInvoiceDetaiList().add();
-                
-                break;    
-                
-            case 2:
-                x.getInvoiceDetaiList().update();
-                
-                break;
-            case 3:
-                x.getInvoiceDetaiList().remove();
-                break;
-            }
-            if(choice != 4){
-                x.setTotalAmount(x.getInvoiceDetaiList().getTotalPrice()); 
-                
-            }
-                // cập nhật lại giá tổng vì có thể chỉnh lại id Khách hàng khách
-                                                                            // thì giá sẽ khác nên tổng giá sẽ khác.
-        } while (choice != 4);
-        
-    }
     
     @Override
     public void ReadData(LoadData loadData) {
       
         Object[] obj = loadData.read();
+        if(obj == null){
+            System.out.println("No data");
+            return;
+        }
           for (Object o : obj) {
          invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1); // load dữ liệu từ file rồi gán vào invoiceList
          Invoice invoice = (Invoice) o;
@@ -266,20 +237,20 @@ public class InvoiceList implements IManager<Invoice>{
 
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(invoiceList,"");
+        saveData.save(invoiceList,header);
     }
    
     //test, xóa comment, bấm shift + F6 để test
     public static void main(String[] args) {
         InvoiceList i = new InvoiceList();
         i.ReadData(new LoadDataFromFile("Files/Invoices.dat"));
-//        i.add();
-//        i.remove();
-        i.add();
+       // i.add();
+       // i.add();
         
         i.printListAscendingById();
-//        i.searchById();
+        //i.searchById();
         i.showInvoiceDetails();
+        i.update();
         
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
     }
