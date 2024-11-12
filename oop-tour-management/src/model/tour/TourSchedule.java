@@ -122,12 +122,12 @@ public class TourSchedule implements Serializable{
     }
     @Override
     public String toString(){
-        return String.format("|%-20s|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|\n", 
-                    "TourSchedule", this.ID, this.tourID, this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
+        return String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|\n", 
+                     this.ID, this.tourID, this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
     }
     public void showInfor(){
-        System.out.printf("|%-20s|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|%-15s|%-15s|%-15s|\n",
-                    "TourSchedule", this.ID, this.tourID,this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots,this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
+        System.out.printf("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|%-15s|%-15s|%-15s|\n",
+                     this.ID, this.tourID,this.EmployeeID, this.returnDay, this.departureDay, this.emptySlots,this.duration, this.currentPrice, this.adultPrice, this.childPrice, this.totalPrice);
     }
     
 }
