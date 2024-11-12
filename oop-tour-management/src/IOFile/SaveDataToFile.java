@@ -34,7 +34,7 @@ public class SaveDataToFile implements SaveData{
             }
             fos.close();
             out.close();
-            System.out.println("Save successully");
+            
         } catch (Exception e) {
             System.out.println(e);
         }
