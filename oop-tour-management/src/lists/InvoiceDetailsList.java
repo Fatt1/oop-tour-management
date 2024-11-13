@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.Customer;
 import model.Invoice;
+import model.tour.TourSchedule;
 import ui.Menu;
 import util.MyUtil;
 
@@ -28,7 +29,7 @@ public class InvoiceDetailsList implements Serializable{
     private static InvoiceDetailsList instance;
     private InvoiceDetails [] invDetailsList;
     private int exsitedInvoiceDetails;
-    private String header = String.format("|%-12s|%-12s|%-10s|\n","INVOICE ID", "CUSTOMER ID", "PRICE");
+    private String header = String.format("|%-12s|%-12s|%-14s|\n","INVOICE ID", "CUSTOMER ID", "PRICE");
     private SaveDataToFile saveBinaryFile = new SaveDataToFile("Files/InvoiceDetails.dat");
     
     private InvoiceDetailsList() {
@@ -45,37 +46,46 @@ public class InvoiceDetailsList implements Serializable{
     }
     
     
-    public void add(String invoiceId){
+    public void add(String invoiceId, TourSchedule ts){
         // còn phải code việc bắt không cho trùng id khách hàng nếu 1 chi tiết hóa đơn mà có 2 người
+        int newEmptySlots = ts.getEmptySlots() - 1;
+        System.out.println(newEmptySlots);
+        if(newEmptySlots < 0) {
+            System.out.println("Full slot can't add more!!");
+            return;
+        }
         String customerId = getUniqueAnCustomer(invoiceId);
-        double price = getCustomerPrice(customerId);
+        int price = getCustomerPrice(customerId, ts);
         invDetailsList = Arrays.copyOf(invDetailsList, exsitedInvoiceDetails + 1);
         invDetailsList[exsitedInvoiceDetails++] = new InvoiceDetails(invoiceId,customerId, price);
         System.out.println("Add successfully");
+        // khi nhập thành công 1 hóa đơn chi tiết thì phải giảm số lượng chỗ còn trống xuống, nếu kh giảm xuống thì nó sẽ còn mãi mãi
+        
+        ts.setEmptySlots(newEmptySlots);
         saveToDate(saveBinaryFile);
         showInvoiceDetails(invoiceId);
         
         
     }
     
-    private double getCustomerPrice (String customerId) {
-        double customerPrice = 0;
+    private int getCustomerPrice (String customerId, TourSchedule ts) {
+        int customerPrice = 0;
         CustomerList cusList = CustomerList.getInstance();
         Customer x = cusList.searchObjectById(customerId);
         if(x == null){
             return customerPrice;
         }
-        else if(x.getAge() >= 14) {
-            customerPrice = 20.99; // tính theo tiền đô, đây là ví dụ, vì vẫn chưa có TourScheduleList để lấy giá người lớn và giá trẻ em
+        else if(x.getAge() > 9) { // lớn hơn 9 tuổi sẽ là vé người lớn
+            customerPrice = ts.getAdultPrice();
         }
-        else if(x.getAge() < 14) {
-            customerPrice = 10.99;
+        else if(x.getAge() <= 9) { // bè hơn 9 tuổi là vé trẻ em
+            customerPrice = ts.getChildPrice();
         }
         return customerPrice;
     }
     
-    public double getTotalPrice(String invoiceId){
-        double totalPrice = 0;
+    public int getTotalPrice(String invoiceId){
+        int totalPrice = 0;
         for (InvoiceDetails invDetails : invDetailsList) {
             if(invDetails.getInvoiceId().equalsIgnoreCase(invoiceId))
                 totalPrice += invDetails.getPrice();
@@ -85,7 +95,7 @@ public class InvoiceDetailsList implements Serializable{
     
     
     
-    public void update(String invoiceId) {
+    public void update(String invoiceId, TourSchedule ts) {
                        
         String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
         InvoiceDetails x = searchObjectById(invoiceId, customerId);
@@ -97,9 +107,10 @@ public class InvoiceDetailsList implements Serializable{
         x.display();
         String newCustomerId = getUniqueAnCustomer(invoiceId);
         x.setCustomerId(newCustomerId);
-        x.setPrice(getCustomerPrice(newCustomerId));
+        x.setPrice(getCustomerPrice(newCustomerId, ts));
         System.out.println("Update successfully");
         saveToDate(saveBinaryFile);
+        
         System.out.println("List after updating");
         showInvoiceDetails(invoiceId);
         
@@ -149,31 +160,38 @@ public class InvoiceDetailsList implements Serializable{
         do {
             updateDetailMenu.printMenu();
             choice = updateDetailMenu.getChoice();
+            TourScheduleList tourScheduleList = TourScheduleList.getInstance();
+            TourSchedule ts = tourScheduleList.searchObjectById(x.getTourScheduleId());
             switch (choice) {
+               
             case 1:
-                add(x.getId());
+                add(x.getId(), ts);
                 
                 break;    
                 
             case 2:
-                update(x.getId());
+                update(x.getId(), ts);
                 
                 break;
             case 3:
-                remove(x.getId());
+                remove(x.getId(), ts);
                 break;
             }
             if(choice != 4){
+                // cập nhật lại giá tổng vì có thể chỉnh lại id Khách hàng khách
+                // thì giá sẽ khác nên tổng giá sẽ khác.
                 x.setTotalAmount(getTotalPrice(x.getId()));
+                saveToDate(saveBinaryFile);
+                tourScheduleList.saveToDate(new SaveDataToFile("Files/TourSchedule.dat")); // cần phải lưu lại file
+                //tourSchedule nếu thêm hoặc xóa chi tiết hóa đơn vì emptySlots sẽ thay đổi nên cần phải lưu lại
                 
             }
-                // cập nhật lại giá tổng vì có thể chỉnh lại id Khách hàng khách
-                                                                            // thì giá sẽ khác nên tổng giá sẽ khác.
+               
         } while (choice != 4);
         
     }
     
-    public void remove(String invoiceId) { // cần thêm cái invoice nào để biết xóa chính xóa
+    public void remove(String invoiceId, TourSchedule ts) { // cần thêm cái invoice nào để biết xóa chính
         Scanner sc = new Scanner(System.in); 
         String customerId = MyUtil.getString("Input customer id: ", "The customer id is required");
         int pos = searchById(customerId, invoiceId);
@@ -192,7 +210,7 @@ public class InvoiceDetailsList implements Serializable{
                 invDetailsList = Arrays.copyOf(invDetailsList, exsitedInvoiceDetails - 1);
                 exsitedInvoiceDetails--;
                 System.out.println("The invoice details is removed successully");
-                saveToDate(saveBinaryFile);
+                ts.setEmptySlots(ts.getEmptySlots() + 1); // cập nhật lại emptySlots
                 System.out.println("List after deleting");
                 showInvoiceDetails(invoiceId);
                 return;
@@ -218,13 +236,11 @@ public class InvoiceDetailsList implements Serializable{
     }
 
     
-    
-    
     public void showInvoiceDetails (String invoiceId){ // cái hàm để dùng bên invoice để show chi tiết của invoice
         CustomerList cusList = CustomerList.getInstance();
         System.out.println("Invoice Details List");
         InvoiceDetails result[] = getInvoiceDetails(o -> o.getInvoiceId().equalsIgnoreCase(invoiceId)); // trả về mảng invoiceId mà mình muốn tìm
-        System.out.printf("|%-20s|%-12s|%-10s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
+        System.out.printf("|%-20s|%-12s|%-14s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
         for (InvoiceDetails x : result) {
             Customer cus = cusList.searchObjectById(x.getCustomerId());
             System.out.printf("|%-20s",cus.getLastName() + " " + cus.getFirstName());

@@ -19,7 +19,7 @@ public class Invoice implements Serializable{
     private String employeeId;
     private String tourScheduleId;
     private LocalDateTime invoiceDate;
-    private double totalAmount;
+    private int totalAmount;
 
     public Invoice(String id, String customerId, String employeeId, String tourScheduleId) {
         this.id = id;
@@ -76,7 +76,7 @@ public class Invoice implements Serializable{
         return totalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -86,7 +86,7 @@ public class Invoice implements Serializable{
     }
     
     public void display(){
-        System.out.printf("|%-9s|%-12s|%-14s|%-20s|%-25s|%-10.2f|\n",
+        System.out.printf("|%-9s|%-12s|%-14s|%-20s|%-25s|%-20d|\n",
                             id, customerId, employeeId, tourScheduleId, invoiceDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), totalAmount);
     }
     
