@@ -4,13 +4,11 @@
  */
 package lists;
 
-import IOFile.LoadDataFromFile;
-import IOFile.SaveDataToFile;
+import IOFile. *;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -252,18 +250,89 @@ public class TourList implements IManager<Tour> {
         saveData.save(tourList, header);
     }
 
-
+    public Tour[] checkInternationalTour(){
+        Tour [] tour = new Tour[0];
+        int count = 0;
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof InternationalTour){
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour [count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkDomesticTour(){
+        Tour [] tour = new Tour[0];
+        int count = 0;
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof DomesticTour){
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour [count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkVisa(String visaRequitement){
+        Tour[] tour = new Tour[0];
+        int count = 0;
+        
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof InternationalTour){
+                InternationalTour temp =(InternationalTour) tourList[i];
+                if(temp.getVisaRequired().compareToIgnoreCase(visaRequitement) == 0){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                }
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkDiscount(double discountToCheck, boolean isbigger){
+        Tour[] tour = new Tour[0];
+        int count = 0;
+        
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof DomesticTour){
+                DomesticTour temp =(DomesticTour) tourList[i];
+                if(temp.getLocalDiscount() >= discountToCheck && isbigger == true){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                }else if(temp.getLocalDiscount() <= discountToCheck && isbigger == false){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                }
+            }
+        }
+        return tour;
+    }
+       
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
  //       l.printListAscendingById();
 //        l.add();
 //       l.add();
 //        l.add();
-//        l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-//        l.printListAscendingById();
+//         l.add();
+//          l.add();
+//           l.add();
+//            l.add();
+//             l.add();
+//              l.add();
+ //             l.add();
+        Tour[] tour = new Tour[20];
+        tour = TourList.getInstance().checkDiscount(20, false);
+        System.out.println(TourList.getInstance().header);
+        for(int i =0 ; i < tour.length; i++){
+            tour[i].showInfor();
+    }
+        //l.printListAscendingById();
+        //l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
         //l.remove();
         //l.update();
         //l.searchObjectByName();
-        l.printListAscendingById();
+       // l.printListAscendingById();
     }
 }
