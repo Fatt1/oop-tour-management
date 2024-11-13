@@ -30,7 +30,7 @@ public class TourList implements IManager<Tour> {
     private TourList() {
         tourList = new Tour[0];
         existedTour = 0;
-        ReadData(new LoadDataFromFile("Files/Tours.dat"));
+        ReadData(new LoadTourFromFileText("FileText/Tours.txt"));
     }
 
     public static TourList getInstance() {
@@ -311,7 +311,7 @@ public class TourList implements IManager<Tour> {
        
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
- //       l.printListAscendingById();
+        l.printListAscendingById();
 //        l.add();
 //       l.add();
 //        l.add();
@@ -322,14 +322,9 @@ public class TourList implements IManager<Tour> {
 //             l.add();
 //              l.add();
  //             l.add();
-        Tour[] tour = new Tour[20];
-        tour = TourList.getInstance().checkDiscount(20, false);
-        System.out.println(TourList.getInstance().header);
-        for(int i =0 ; i < tour.length; i++){
-            tour[i].showInfor();
-    }
-        //l.printListAscendingById();
-        //l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
+
+       // l.printListAscendingById();
+       // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
         //l.remove();
         //l.update();
         //l.searchObjectByName();

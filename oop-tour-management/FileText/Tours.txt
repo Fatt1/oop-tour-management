@@ -1,0 +1,27 @@
+|Tour              |ID   |NAME                          |DESTINATION         |DEPARTURE LOCAL     |VEHICLE ID|PRICE     |QUANTITY|COUNTRY        |VISA |DISCOUNT|
+|International Tour|TO123|NGHIN LE 1 DEM                |SHIMAHARU           |BINH PHUOC          |V123      |22222222  |2       |DUBAI          |YES  |        |
+
+|International Tour|TO124|3D3N JAPAN                    |SAITAMA             |HO CHI MINH         |V123      |2000000   |3       |NHATBAN        |YES  |        |
+
+|Domestic Tour     |TO125|NGHIN LE 5 DEM                |PHU QUOC            |HOCHIMINH           |V123      |200000    |3       |               |     |20.3    |
+
+|International Tour|TO126|NGHIN LE 10 DEM FOREVER       |SAHARA THUDOCHSEC   |HANOI               |V123      |20000000  |10      |SEC            |YES  |        |
+
+|Domestic Tour     |TO128|HAIDAO                        |BINHPHUOC           |VUNGTAU             |V123      |200000    |2       |               |     |20.0    |
+
+|Domestic Tour     |TO232|AIKHOCNNOIDAUNAY              |VUNGTAU             |BINHPHUOC           |V123      |2333333   |23      |               |     |20.0    |
+
+|International Tour|TO321|NGHIN LE 2 DEM                |SAITAMA             |BINH PHUOC          |V123      |22222222  |2       |JAPAN          |YES  |        |
+
+|International Tour|TO666|ACQUYFREEFIRE                 |PHILIPIN            |VIETNAM             |V123      |2331112   |20      |PHILIPPIN      |YES  |        |
+
+|International Tour|TO867|THEGIOICONGNGHE               |USA                 |VN                  |V123      |200000    |2       |MY             |YES  |        |
+
+|International Tour|TO883|VUONDIADANG                   |EU                  |VN                  |V123      |2000000   |23      |VIETNA,        |YES  |        |
+
+|International Tour|TO888|KHUVUONGTRENMAY               |EVEREST             |VN                  |V123      |2000000   |23      |USA            |NO   |        |
+
+|International Tour|TO987|SAITAMA KHAMN PHA             |NHATBAN             |VN                  |V123      |20000000  |32      |JAPAN          |YES  |        |
+
+|Domestic Tour     |TO999|TIEU VUONG QUOC               |HAI PHONG           |BINH PHUOC          |V123      |1211111   |2       |               |     |20.0    |
+
