@@ -49,7 +49,6 @@ public class InvoiceDetailsList implements Serializable{
     public void add(String invoiceId, TourSchedule ts){
         // còn phải code việc bắt không cho trùng id khách hàng nếu 1 chi tiết hóa đơn mà có 2 người
         int newEmptySlots = ts.getEmptySlots() - 1;
-        System.out.println(newEmptySlots);
         if(newEmptySlots < 0) {
             System.out.println("Full slot can't add more!!");
             return;

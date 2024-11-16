@@ -310,9 +310,9 @@ public class TourScheduleList implements IManager<TourSchedule> {
 //        l.add();
 //        l.add();
     l.printListAscendingById();
-        l.remove();
-        l.printListAscendingById();
+//        l.remove();
+//        l.printListAscendingById();
 
-        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+       l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }
