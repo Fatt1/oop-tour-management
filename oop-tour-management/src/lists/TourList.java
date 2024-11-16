@@ -167,11 +167,8 @@ public class TourList implements IManager<Tour> {
             return;
         }
         String id = MyUtil.getString("Enter ID(VD: TO123): ", "Don't find ID");
-        for (int i = 0; i < existedTour; i++) 
-            if (tourList[i].getTourID().compareToIgnoreCase(id) == 0) {
-                tourList[i].showInfor();
-                return;
-            }
+        Tour tour = searchObjectById(id);
+        tour.showInfor();
     }
 
     @Override
@@ -290,17 +287,19 @@ public class TourList implements IManager<Tour> {
         return tour;
     }
     
-    public Tour[] checkDiscount(double discountToCheck, boolean isbigger){
+    public Tour[] checkDiscount(double discountToCheck, String isBigger){
         Tour[] tour = new Tour[0];
         int count = 0;
         
         for(int i = 0; i < existedTour; i++){
             if(tourList[i] instanceof DomesticTour){
                 DomesticTour temp =(DomesticTour) tourList[i];
-                if(temp.getLocalDiscount() >= discountToCheck && isbigger == true){
+                
+                if(temp.getLocalDiscount() >= discountToCheck && isBigger.compareToIgnoreCase("Yes") == 0){
                     tour = Arrays.copyOf(tour, tour.length + 1);
                     tour[count++] = tourList[i];
-                }else if(temp.getLocalDiscount() <= discountToCheck && isbigger == false){
+                    
+                }else if(temp.getLocalDiscount() <= discountToCheck && isBigger.compareToIgnoreCase("No") == 0){
                     tour = Arrays.copyOf(tour, tour.length + 1);
                     tour[count++] = tourList[i];
                 }
@@ -308,7 +307,55 @@ public class TourList implements IManager<Tour> {
         }
         return tour;
     }
-       
+    
+    
+    
+    public void printTour(Tour[] tour){
+        if(tour.length == 0){
+            System.out.println("Not found");
+        }
+        for(int i = 0; i < tour.length; i++)
+            tour[i].showInfor();
+    }
+    
+    public void menuForFilter(){
+        Menu menu = new Menu("Filter");
+        menu.addNewOption("1. Filter by discount local.");
+        menu.addNewOption("2. Filter by visa.");
+        menu.addNewOption("3. Filter by international tour.");
+        menu.addNewOption("4. Filter by domestic tour.");
+        menu.addNewOption("5. Filter by departure day.");
+        menu.addNewOption("6. Filter by destination.");
+        menu.addNewOption("7. Filter by country.");
+        menu.addNewOption("8. Exit.");
+        int choice;
+        do{
+            menu.printMenu();
+            choice = menu.getChoice();
+            switch (choice) {
+                case 1:
+                        double discountToCheck = MyUtil.getAnDouble("Enter discount to check: ", "The input is numbers");
+                        String isBigger = MyUtil.getValueOrDefault("Would you like enter greater than ones (Yes or No): ", "Yes or No");
+                        printTour(checkDiscount(discountToCheck, isBigger));
+                        break;
+                case 2:
+                        String visaRequired = MyUtil.getValueOrDefault("Enter Yes or No: ", "Not space or enter(Yes or no)");
+                        printTour(checkVisa(visaRequired));
+                        break;
+                case 3:
+                        printTour(checkInternationalTour());
+                        break;
+                case 4:
+                        printTour(checkDomesticTour());
+                        break;
+                case 5:
+                    
+                case 6:
+                case 7:
+            }
+        }while(choice >= 1 && choice <= menu.getMaxChoice());
+            
+    }
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
         l.printListAscendingById();
@@ -322,12 +369,16 @@ public class TourList implements IManager<Tour> {
 //             l.add();
 //              l.add();
  //             l.add();
-
-       // l.printListAscendingById();
+//        l.printListAscendingById();
        // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
         //l.remove();
         //l.update();
         //l.searchObjectByName();
        // l.printListAscendingById();
+       
+       
+
+       
+       
     }
 }
