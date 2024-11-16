@@ -31,7 +31,7 @@ public class TourList implements IManager<Tour> {
     private TourList() {
         tourList = new Tour[0];
         existedTour = 0;
-        ReadData(new LoadTourFromFileText("FileText/Tours.txt"));
+        ReadData(new LoadDataFromFile("Files/Tours.dat"));
     }
 
     public static TourList getInstance() {
@@ -106,11 +106,8 @@ public class TourList implements IManager<Tour> {
             menuTour.printMenu();
             choice = menuTour.getChoice();
             tour.setData(tour, choice);
-            if (choice != 1) {
-                System.out.println("Tour after updating");
-                tour.showInfor();
-            }
-
+            System.out.println(header);
+            tour.showInfor();
         } while (choice != 1);
     }
 
@@ -358,37 +355,35 @@ public class TourList implements IManager<Tour> {
 
     public String getTourId() {
         String id;
-        do{
-        System.out.println("--------------------------------------------------------");
-        printListAscendingById();
-        System.out.println("Choose TourID from this list");
-        id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
-        if (searchById(id) >= 0) 
-            return id;
-        System.out.println("Please input again!!");
-        }while(searchById(id) < 0);
+        do {
+            System.out.println("--------------------------------------------------------");
+            printListAscendingById();
+            System.out.println("Choose TourID from this list");
+            id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
+            if (searchById(id) >= 0) {
+                return id;
+            }
+            System.out.println("Please input again!!");
+        } while (searchById(id) < 0);
         return null;
     }
 
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
+       // l.printListAscendingById();
+
+//        l.update();
+
         l.printListAscendingById();
-//        l.add();
-//       l.add();
-//        l.add();
-//         l.add();
-//          l.add();
-//           l.add();
-//            l.add();
-//             l.add();
-//              l.add();
-        //             l.add();
-//        l.printListAscendingById();
-        // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
+        l.update();
+//        l.update();
+//        l.update();
+//        l.update();
+
+                
+         l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
         //l.remove();
-        //l.update();
         //l.searchObjectByName();
         // l.printListAscendingById();
-
     }
 }

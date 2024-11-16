@@ -118,16 +118,15 @@ public class TourScheduleList implements IManager<TourSchedule> {
     public void searchById() {
         if (existedTourSchedule == 0) {
             System.out.println("No more than a tour in list");
-        } else {
-            String id = MyUtil.getString("Enter ID(VD: TS123): ", "Don't find ID");
-            for (int i = 0; i < existedTourSchedule; i++) {
-                if (tourScheduleList[i].getTourID().compareToIgnoreCase(id) == 0) {
-                    tourScheduleList[i].showInfor();
-                    return;
-                }
-            }
-            System.out.println("Dont find " + id);
+            return;
         }
+        
+        String id = MyUtil.getString("Enter ID(VD: TS123): ", "Don't find ID");
+        if(searchById(id) >= 0){
+            searchObjectById(id).showInfor();
+            return;
+       }
+       System.out.println("Dont find " + id);     
     }
 
     @Override
@@ -333,20 +332,10 @@ public class TourScheduleList implements IManager<TourSchedule> {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
  //       l.ReadData(new LoadDataFromFile("Files/TourShedule.dat"));
-        l.add();
 
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-//        l.update();
+        l.update();
         l.printListAscendingById();
-
+        l.remove();
         l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }
