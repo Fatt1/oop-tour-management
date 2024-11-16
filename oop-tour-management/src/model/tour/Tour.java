@@ -137,11 +137,12 @@ public class Tour implements Serializable {
             case 6:
                 int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
                 tour.setQuantity(slot);
+                break;
             case 7:
                 boolean isCheck;
                 do {
                     String vID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
-                    isCheck = VehicleList.instance.getValueOfVehicleID(vID);
+                    isCheck = VehicleList.getInstance().getValueOfVehicleID(vID);
                     if (isCheck) {
                         tour.setVehicleID(vID);
                     } else {

@@ -20,7 +20,7 @@ import util.MyUtil;
  * @author User
  */
 public class VehicleList implements IManager<Vehicle> {
-    public static VehicleList instance;
+    private static VehicleList instance;
     private Vehicle[] vehicleList;
     private int existedVehicle;
     private String header = String.format("|%-6s|%-15s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
@@ -32,9 +32,9 @@ public class VehicleList implements IManager<Vehicle> {
         ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
     }
     
-    public VehicleList getInstance(){
+    public static VehicleList getInstance(){
         if(instance == null)
-            return instance = new VehicleList();
+            instance = new VehicleList();
         return instance;
     }
     @Override
