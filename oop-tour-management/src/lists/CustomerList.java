@@ -333,7 +333,7 @@ public class CustomerList implements IManager<Customer>{
 
 //        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
 //        
-//        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
+        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
     }
       
 }

@@ -4,13 +4,11 @@
  */
 package lists;
 
-import IOFile.LoadDataFromFile;
-import IOFile.SaveDataToFile;
+import IOFile. *;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -32,7 +30,7 @@ public class TourList implements IManager<Tour> {
     private TourList() {
         tourList = new Tour[0];
         existedTour = 0;
-        ReadData(new LoadDataFromFile("Files/Tours.dat"));
+        ReadData(new LoadTourFromFileText("FileText/Tours.txt"));
     }
 
     public static TourList getInstance() {
@@ -169,11 +167,8 @@ public class TourList implements IManager<Tour> {
             return;
         }
         String id = MyUtil.getString("Enter ID(VD: TO123): ", "Don't find ID");
-        for (int i = 0; i < existedTour; i++) 
-            if (tourList[i].getTourID().compareToIgnoreCase(id) == 0) {
-                tourList[i].showInfor();
-                return;
-            }
+        Tour tour = searchObjectById(id);
+        tour.showInfor();
     }
 
     @Override
@@ -252,18 +247,138 @@ public class TourList implements IManager<Tour> {
         saveData.save(tourList, header);
     }
 
-
+    public Tour[] checkInternationalTour(){
+        Tour [] tour = new Tour[0];
+        int count = 0;
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof InternationalTour){
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour [count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkDomesticTour(){
+        Tour [] tour = new Tour[0];
+        int count = 0;
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof DomesticTour){
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour [count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkVisa(String visaRequitement){
+        Tour[] tour = new Tour[0];
+        int count = 0;
+        
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof InternationalTour){
+                InternationalTour temp =(InternationalTour) tourList[i];
+                if(temp.getVisaRequired().compareToIgnoreCase(visaRequitement) == 0){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                }
+            }
+        }
+        return tour;
+    }
+    
+    public Tour[] checkDiscount(double discountToCheck, String isBigger){
+        Tour[] tour = new Tour[0];
+        int count = 0;
+        
+        for(int i = 0; i < existedTour; i++){
+            if(tourList[i] instanceof DomesticTour){
+                DomesticTour temp =(DomesticTour) tourList[i];
+                
+                if(temp.getLocalDiscount() >= discountToCheck && isBigger.compareToIgnoreCase("Yes") == 0){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                    
+                }else if(temp.getLocalDiscount() <= discountToCheck && isBigger.compareToIgnoreCase("No") == 0){
+                    tour = Arrays.copyOf(tour, tour.length + 1);
+                    tour[count++] = tourList[i];
+                }
+            }
+        }
+        return tour;
+    }
+    
+    
+    
+    public void printTour(Tour[] tour){
+        if(tour.length == 0){
+            System.out.println("Not found");
+        }
+        for(int i = 0; i < tour.length; i++)
+            tour[i].showInfor();
+    }
+    
+    public void menuForFilter(){
+        Menu menu = new Menu("Filter");
+        menu.addNewOption("1. Filter by discount local.");
+        menu.addNewOption("2. Filter by visa.");
+        menu.addNewOption("3. Filter by international tour.");
+        menu.addNewOption("4. Filter by domestic tour.");
+        menu.addNewOption("5. Filter by departure day.");
+        menu.addNewOption("6. Filter by destination.");
+        menu.addNewOption("7. Filter by country.");
+        menu.addNewOption("8. Exit.");
+        int choice;
+        do{
+            menu.printMenu();
+            choice = menu.getChoice();
+            switch (choice) {
+                case 1:
+                        double discountToCheck = MyUtil.getAnDouble("Enter discount to check: ", "The input is numbers");
+                        String isBigger = MyUtil.getValueOrDefault("Would you like enter greater than ones (Yes or No): ", "Yes or No");
+                        printTour(checkDiscount(discountToCheck, isBigger));
+                        break;
+                case 2:
+                        String visaRequired = MyUtil.getValueOrDefault("Enter Yes or No: ", "Not space or enter(Yes or no)");
+                        printTour(checkVisa(visaRequired));
+                        break;
+                case 3:
+                        printTour(checkInternationalTour());
+                        break;
+                case 4:
+                        printTour(checkDomesticTour());
+                        break;
+                case 5:
+                    
+                case 6:
+                case 7:
+            }
+        }while(choice >= 1 && choice <= menu.getMaxChoice());
+            
+    }
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
- //       l.printListAscendingById();
+        l.printListAscendingById();
 //        l.add();
 //       l.add();
 //        l.add();
-//        l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
+//         l.add();
+//          l.add();
+//           l.add();
+//            l.add();
+//             l.add();
+//              l.add();
+ //             l.add();
 //        l.printListAscendingById();
+       // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
         //l.remove();
         //l.update();
         //l.searchObjectByName();
-        l.printListAscendingById();
+       // l.printListAscendingById();
+       
+       
+
+       
+       
     }
 }

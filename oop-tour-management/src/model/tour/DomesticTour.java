@@ -17,7 +17,7 @@ public class DomesticTour extends Tour implements Serializable {
     private double localDiscount;
 
     public DomesticTour(double localDiscount, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
-        super(tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
+        super(tourID, tourName, destination, departureLocation, vehicleID,price , quantity);
         this.localDiscount = localDiscount;
     }
 
@@ -65,5 +65,9 @@ public class DomesticTour extends Tour implements Serializable {
     public void input() {
         super.input();
         this.localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The LOCAL DISCOUNT input is incorrect");
+    }
+    
+    public double getDiscountPrice(){
+        return localDiscount * price;
     }
 }
