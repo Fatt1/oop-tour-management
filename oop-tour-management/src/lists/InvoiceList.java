@@ -254,9 +254,12 @@ public class InvoiceList implements IManager<Invoice>{
     public static void main(String[] args) {
         InvoiceList i = new InvoiceList();
         i.ReadData(new LoadDataFromFile("Files/Invoices.dat"));
+        
         i.add();
-//        i.add();
-//        
+        i.add();
+        i.add();
+        i.add();
+        
         i.printListAscendingById();
         //i.searchById();
         i.showInvoiceDetails();

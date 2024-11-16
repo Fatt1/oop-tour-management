@@ -97,7 +97,7 @@ public class Tour implements Serializable {
         this.tourName = MyUtil.getString("Enter tour name: ", "The input is of type STRING");
         this.destination = MyUtil.getString("Enter destination: ", "The input is of type STRING");
         this.departureLocation = MyUtil.getString("Enter Departure location: ", "The input is of type STRING");
-        this.vehicleID = MyUtil.getId("Enter vehicle ID(V123): ", "The format is incorrect", "^V\\d{3}$");
+        this.vehicleID = VehicleList.getInstance().getExistedVehicleId();
         this.price = MyUtil.getAnInteger("Enter price(1000 <= price <= 50000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 50000000);
         this.quantity = MyUtil.getAnInteger("Enter Quantity(1 <= quantity <= 50): ", "The input is of type INT", 1, 50);
     }
@@ -139,17 +139,9 @@ public class Tour implements Serializable {
                 tour.setQuantity(slot);
                 break;
             case 7:
-                boolean isCheck;
-                do {
-                    String vID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
-                    isCheck = VehicleList.getInstance().getValueOfVehicleID(vID);
-                    if (isCheck) {
-                        tour.setVehicleID(vID);
-                    } else {
-                        System.out.println("Sr dont find " + vID +" please again!!!");
-                    }
-                } while (isCheck);
-
+                
+                String newVehicleId = VehicleList.getInstance().getExistedVehicleId();
+                tour.setVehicleID(newVehicleId);
                 break;
         }
     }

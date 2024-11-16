@@ -5,9 +5,12 @@
 package lists;
 
 import IOFile.*;
+import interfaces.Filter;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.tour.DomesticTour;
@@ -244,85 +247,34 @@ public class TourList implements IManager<Tour> {
         saveData.save(tourList, header);
     }
 
-    public Tour[] checkInternationalTour() {
-        Tour[] tour = new Tour[0];
+    public void filterTourList(Filter<Tour> filter){
+        Tour []result = new Tour[0];
         int count = 0;
-        for (int i = 0; i < existedTour; i++) {
-            if (tourList[i] instanceof InternationalTour) {
-                tour = Arrays.copyOf(tour, tour.length + 1);
-                tour[count++] = tourList[i];
+        for (Tour t : tourList) {
+            if(filter.check(t)){
+                result = Arrays.copyOf(result, count + 1);
+                result[count++] = t;
             }
         }
-        return tour;
-    }
-
-    public Tour[] checkDomesticTour() {
-        Tour[] tour = new Tour[0];
-        int count = 0;
-        for (int i = 0; i < existedTour; i++) {
-            if (tourList[i] instanceof DomesticTour) {
-                tour = Arrays.copyOf(tour, tour.length + 1);
-                tour[count++] = tourList[i];
-            }
+        if(count == 0){
+            System.out.println("Not found!!");
+            return;
         }
-        return tour;
-    }
-
-    public Tour[] checkVisa(String visaRequitement) {
-        Tour[] tour = new Tour[0];
-        int count = 0;
-
-        for (int i = 0; i < existedTour; i++) {
-            if (tourList[i] instanceof InternationalTour) {
-                InternationalTour temp = (InternationalTour) tourList[i];
-                if (temp.getVisaRequired().compareToIgnoreCase(visaRequitement) == 0) {
-                    tour = Arrays.copyOf(tour, tour.length + 1);
-                    tour[count++] = tourList[i];
-                }
-            }
-        }
-        return tour;
-    }
-
-    public Tour[] checkDiscount(double discountToCheck, String isBigger) {
-        Tour[] tour = new Tour[0];
-        int count = 0;
-
-        for (int i = 0; i < existedTour; i++) {
-            if (tourList[i] instanceof DomesticTour) {
-                DomesticTour temp = (DomesticTour) tourList[i];
-
-                if (temp.getLocalDiscount() >= discountToCheck && isBigger.compareToIgnoreCase("Yes") == 0) {
-                    tour = Arrays.copyOf(tour, tour.length + 1);
-                    tour[count++] = tourList[i];
-
-                } else if (temp.getLocalDiscount() <= discountToCheck && isBigger.compareToIgnoreCase("No") == 0) {
-                    tour = Arrays.copyOf(tour, tour.length + 1);
-                    tour[count++] = tourList[i];
-                }
-            }
-        }
-        return tour;
-    }
-
-    public void printTour(Tour[] tour) {
-        if (tour.length == 0) {
-            System.out.println("Not found");
-        }
-        for (int i = 0; i < tour.length; i++) {
-            tour[i].showInfor();
+        System.out.println(header);
+        for (Tour re : result) {
+            re.showInfor();
         }
     }
 
     public void menuForFilter() {
         Menu menu = new Menu("Filter");
-        menu.addNewOption("1. Filter by discount local.");
+        menu.addNewOption("1. Filter by local discount.");
         menu.addNewOption("2. Filter by visa.");
         menu.addNewOption("3. Filter by international tour.");
         menu.addNewOption("4. Filter by domestic tour.");
-        menu.addNewOption("5. Filter by departure day.");
-        menu.addNewOption("6. Filter by destination.");
-        menu.addNewOption("7. Filter by country.");
+        menu.addNewOption("5. Filter by destination.");
+        menu.addNewOption("6. Filter by country.");
+        menu.addNewOption("7. Filter by price.");
         menu.addNewOption("8. Exit.");
         int choice;
         do {
@@ -330,26 +282,72 @@ public class TourList implements IManager<Tour> {
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                    double discountToCheck = MyUtil.getAnDouble("Enter discount to check: ", "The input is numbers");
-                    String isBigger = MyUtil.getValueOrDefault("Would you like enter greater than ones (Yes or No): ", "Yes or No");
-                    printTour(checkDiscount(discountToCheck, isBigger));
+                    double localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The discount is number");
+                    filterTourList((o) -> { // cái này là fat sử dụng lambda expression, nghĩa lên mạng coi thử lambda epression là gì đi
+                                            // có 3 cách để viết lận cách của fat là labda còn các nữa là fat viết ở filter case 3 cho nó ngắn tí nhé
+                        if(o instanceof DomesticTour){
+                            DomesticTour domesticTour = (DomesticTour)o;
+                            return domesticTour.getLocalDiscount() == localDiscount;
+                        }
+                         return false;                
+                    });
                     break;
+                    
                 case 2:
                     String visaRequired = MyUtil.getValueOrDefault("Enter Yes or No: ", "Not space or enter(Yes or no)");
-                    printTour(checkVisa(visaRequired));
+                    filterTourList((o) -> {
+                        if(o instanceof InternationalTour){
+                            InternationalTour internationalTour = (InternationalTour)o;
+                            return internationalTour.getVisaRequired().equalsIgnoreCase(visaRequired);      
+                        }
+                         return false;                
+                    });
                     break;
                 case 3:
-                    printTour(checkInternationalTour());
+                    filterTourList((o) -> o instanceof InternationalTour );
+                    // c2:
+//                    filterTourList(new Filter<Tour>(){ // sử dụng anonymous class, để bỏ vô cái tham số tại vì tham số cần cái interface,
+                                                        // thì có 3 cách để truyền vô 1 là sử dụng anonymous class, lambda expression,
+                                                        // tạo 1 class riêng implements Filter rồi truyền vô thôi. Thì cách lambda nó ngắn nhất
+                                                        // và người ta thường xuyên vì nó ngắn gọn
+//                @Override
+//                public boolean check(Tour t) {
+//                    return t instanceof InternationalTour;
+//                }
+//                    }
+//                    );
+                    
                     break;
                 case 4:
-                    printTour(checkDomesticTour());
+                    filterTourList((o) -> o instanceof DomesticTour);
                     break;
                 case 5:
-
+                    String destination = MyUtil.getString("Enter the destination: ", "The destination is required");
+                    filterTourList(o -> o.getDestination().contains(destination));  
+                    break;
                 case 6:
+                    String country = MyUtil.getString("Enter the country: ", "The country is required");
+                    filterTourList((o) -> {
+                        if(o instanceof InternationalTour){
+                            InternationalTour internationalTour = (InternationalTour)o;
+                            return internationalTour.getCountry().equalsIgnoreCase(country);      
+                        }
+                         return false;                
+                    });
+                    break;
+                    
                 case 7:
+                    int minPrice = MyUtil.getAnInteger("Enter minimum price: ", "Price must be a number.");
+                    int maxPrice = MyUtil.getAnInteger("Enter maximum price: ", "Price must be a number.");
+                    filterTourList(o -> o.getPrice() >= minPrice && o.getPrice() <= maxPrice);
+                    break;
+   
             }
-        } while (choice >= 1 && choice <= menu.getMaxChoice());
+            if(choice != 8){
+                System.out.print("Press enter to continue...");
+                new Scanner(System.in).nextLine();
+            }
+        } while (choice != 8);
 
     }
 
@@ -371,16 +369,16 @@ public class TourList implements IManager<Tour> {
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
        // l.printListAscendingById();
-
+        l.menuForFilter();
+//        l.update();
+            l.add();
+//        l.printListAscendingById();
+//        l.update();
+//        l.update();
+//        l.update();
 //        l.update();
 
-        l.printListAscendingById();
-        l.update();
-//        l.update();
-//        l.update();
-//        l.update();
-
-                
+             
          l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
         //l.remove();
         //l.searchObjectByName();

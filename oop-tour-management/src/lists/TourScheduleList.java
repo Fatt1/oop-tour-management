@@ -148,25 +148,6 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 return tourScheduleList[i];
         return null;
     }
-
-    @Override
-    public void ReadData(LoadData loadData) {
-        Object[] obj = loadData.read();
-        if (obj == null) {
-            System.out.println("Not data");
-            return;
-        }
-        for (Object o : obj) {
-            tourScheduleList = Arrays.copyOf(tourScheduleList, tourScheduleList.length + 1);
-            tourScheduleList[existedTourSchedule++] = (TourSchedule) o;
-        }
-    }
-
-    @Override
-    public void saveToDate(SaveData saveData) {
-        saveData.save(tourScheduleList, header);
-    }
-
     
     private String enterTourScheduleID() {
         int isCheck;
@@ -323,17 +304,36 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 id =MyUtil.getString("Enter ID(VD: TS123): ", "The id is required");
                 x = searchObjectById(id);
                 if (x == null){
-                     System.out.println("Please!!! input id in the list");
+                     System.out.println("Please!!! Input id in the list");
                 }
             } while (x ==null);
             return id;
-    }   
+    } 
+    
+    @Override
+    public void ReadData(LoadData loadData) {
+        Object[] obj = loadData.read();
+        if (obj == null) {
+            System.out.println("Not data");
+            return;
+        }
+        for (Object o : obj) {
+            tourScheduleList = Arrays.copyOf(tourScheduleList, tourScheduleList.length + 1);
+            tourScheduleList[existedTourSchedule++] = (TourSchedule) o;
+        }
+    }
+
+    @Override
+    public void saveToDate(SaveData saveData) {
+        saveData.save(tourScheduleList, header);
+    }
+    
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
  //       l.ReadData(new LoadDataFromFile("Files/TourShedule.dat"));
 
-        l.update();
+   //     l.update();
         l.printListAscendingById();
         l.remove();
         l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
