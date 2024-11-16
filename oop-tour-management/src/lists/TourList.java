@@ -4,11 +4,12 @@
  */
 package lists;
 
-import IOFile. *;
+import IOFile.*;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.util.Arrays;
+import java.util.Scanner;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -39,8 +40,7 @@ public class TourList implements IManager<Tour> {
         }
         return instance;
     }
-    
-    
+
     @Override
     public void add() {
         Tour tourTemp;
@@ -60,8 +60,7 @@ public class TourList implements IManager<Tour> {
         tourList[existedTour++] = tourTemp;
 
     }
-    
-    
+
     public String enterTourID() {
         int isDuplicate;
         String id;
@@ -83,7 +82,7 @@ public class TourList implements IManager<Tour> {
         return MyUtil.getAnInteger("Enter Your CHOICE: ", "The input is of type integer!!!", 1, 2);
 
     }
-    
+
     @Override
     public void update() {
         System.out.println("-------------------------------------------------------");
@@ -107,11 +106,11 @@ public class TourList implements IManager<Tour> {
             menuTour.printMenu();
             choice = menuTour.getChoice();
             tour.setData(tour, choice);
-            if(choice != 1){
+            if (choice != 1) {
                 System.out.println("Tour after updating");
                 tour.showInfor();
             }
-                
+
         } while (choice != 1);
     }
 
@@ -128,15 +127,15 @@ public class TourList implements IManager<Tour> {
         }
         System.out.println("--------------------------------------------------------");
         String choice = MyUtil.getValueOrDefault("Are you sure YES/NO: ", "Please input YES/NO");
-        if(choice.equalsIgnoreCase("YES")){
-             for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
-            tourList[i] = tourList[i + 1];
+        if (choice.equalsIgnoreCase("YES")) {
+            for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
+                tourList[i] = tourList[i + 1];
+            }
+            tourList = Arrays.copyOf(tourList, tourList.length - 1);
+            existedTour--;
+            System.out.println("The process of removal is successful.");
         }
-        tourList = Arrays.copyOf(tourList, tourList.length - 1);
-        existedTour--;
-        System.out.println("The process of removal is successful.");
-        }
-        
+
     }
 
     @Override
@@ -162,7 +161,7 @@ public class TourList implements IManager<Tour> {
 
     @Override
     public void searchById() {
-        if (existedTour == 0){
+        if (existedTour == 0) {
             System.out.println("No more than a tour in list");
             return;
         }
@@ -224,8 +223,9 @@ public class TourList implements IManager<Tour> {
             System.out.println("Dont't find any tour as same as " + name);
         } else {
             System.out.println(header);
-            for (int i = 0; i < tour.length; i++)
+            for (int i = 0; i < tour.length; i++) {
                 tour[i].showInfor();
+            }
         }
     }
 
@@ -247,38 +247,38 @@ public class TourList implements IManager<Tour> {
         saveData.save(tourList, header);
     }
 
-    public Tour[] checkInternationalTour(){
-        Tour [] tour = new Tour[0];
-        int count = 0;
-        for(int i = 0; i < existedTour; i++){
-            if(tourList[i] instanceof InternationalTour){
-                tour = Arrays.copyOf(tour, tour.length + 1);
-                tour [count++] = tourList[i];
-            }
-        }
-        return tour;
-    }
-    
-    public Tour[] checkDomesticTour(){
-        Tour [] tour = new Tour[0];
-        int count = 0;
-        for(int i = 0; i < existedTour; i++){
-            if(tourList[i] instanceof DomesticTour){
-                tour = Arrays.copyOf(tour, tour.length + 1);
-                tour [count++] = tourList[i];
-            }
-        }
-        return tour;
-    }
-    
-    public Tour[] checkVisa(String visaRequitement){
+    public Tour[] checkInternationalTour() {
         Tour[] tour = new Tour[0];
         int count = 0;
-        
-        for(int i = 0; i < existedTour; i++){
-            if(tourList[i] instanceof InternationalTour){
-                InternationalTour temp =(InternationalTour) tourList[i];
-                if(temp.getVisaRequired().compareToIgnoreCase(visaRequitement) == 0){
+        for (int i = 0; i < existedTour; i++) {
+            if (tourList[i] instanceof InternationalTour) {
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour[count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+
+    public Tour[] checkDomesticTour() {
+        Tour[] tour = new Tour[0];
+        int count = 0;
+        for (int i = 0; i < existedTour; i++) {
+            if (tourList[i] instanceof DomesticTour) {
+                tour = Arrays.copyOf(tour, tour.length + 1);
+                tour[count++] = tourList[i];
+            }
+        }
+        return tour;
+    }
+
+    public Tour[] checkVisa(String visaRequitement) {
+        Tour[] tour = new Tour[0];
+        int count = 0;
+
+        for (int i = 0; i < existedTour; i++) {
+            if (tourList[i] instanceof InternationalTour) {
+                InternationalTour temp = (InternationalTour) tourList[i];
+                if (temp.getVisaRequired().compareToIgnoreCase(visaRequitement) == 0) {
                     tour = Arrays.copyOf(tour, tour.length + 1);
                     tour[count++] = tourList[i];
                 }
@@ -286,20 +286,20 @@ public class TourList implements IManager<Tour> {
         }
         return tour;
     }
-    
-    public Tour[] checkDiscount(double discountToCheck, String isBigger){
+
+    public Tour[] checkDiscount(double discountToCheck, String isBigger) {
         Tour[] tour = new Tour[0];
         int count = 0;
-        
-        for(int i = 0; i < existedTour; i++){
-            if(tourList[i] instanceof DomesticTour){
-                DomesticTour temp =(DomesticTour) tourList[i];
-                
-                if(temp.getLocalDiscount() >= discountToCheck && isBigger.compareToIgnoreCase("Yes") == 0){
+
+        for (int i = 0; i < existedTour; i++) {
+            if (tourList[i] instanceof DomesticTour) {
+                DomesticTour temp = (DomesticTour) tourList[i];
+
+                if (temp.getLocalDiscount() >= discountToCheck && isBigger.compareToIgnoreCase("Yes") == 0) {
                     tour = Arrays.copyOf(tour, tour.length + 1);
                     tour[count++] = tourList[i];
-                    
-                }else if(temp.getLocalDiscount() <= discountToCheck && isBigger.compareToIgnoreCase("No") == 0){
+
+                } else if (temp.getLocalDiscount() <= discountToCheck && isBigger.compareToIgnoreCase("No") == 0) {
                     tour = Arrays.copyOf(tour, tour.length + 1);
                     tour[count++] = tourList[i];
                 }
@@ -307,18 +307,17 @@ public class TourList implements IManager<Tour> {
         }
         return tour;
     }
-    
-    
-    
-    public void printTour(Tour[] tour){
-        if(tour.length == 0){
+
+    public void printTour(Tour[] tour) {
+        if (tour.length == 0) {
             System.out.println("Not found");
         }
-        for(int i = 0; i < tour.length; i++)
+        for (int i = 0; i < tour.length; i++) {
             tour[i].showInfor();
+        }
     }
-    
-    public void menuForFilter(){
+
+    public void menuForFilter() {
         Menu menu = new Menu("Filter");
         menu.addNewOption("1. Filter by discount local.");
         menu.addNewOption("2. Filter by visa.");
@@ -329,33 +328,48 @@ public class TourList implements IManager<Tour> {
         menu.addNewOption("7. Filter by country.");
         menu.addNewOption("8. Exit.");
         int choice;
-        do{
+        do {
             menu.printMenu();
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                        double discountToCheck = MyUtil.getAnDouble("Enter discount to check: ", "The input is numbers");
-                        String isBigger = MyUtil.getValueOrDefault("Would you like enter greater than ones (Yes or No): ", "Yes or No");
-                        printTour(checkDiscount(discountToCheck, isBigger));
-                        break;
+                    double discountToCheck = MyUtil.getAnDouble("Enter discount to check: ", "The input is numbers");
+                    String isBigger = MyUtil.getValueOrDefault("Would you like enter greater than ones (Yes or No): ", "Yes or No");
+                    printTour(checkDiscount(discountToCheck, isBigger));
+                    break;
                 case 2:
-                        String visaRequired = MyUtil.getValueOrDefault("Enter Yes or No: ", "Not space or enter(Yes or no)");
-                        printTour(checkVisa(visaRequired));
-                        break;
+                    String visaRequired = MyUtil.getValueOrDefault("Enter Yes or No: ", "Not space or enter(Yes or no)");
+                    printTour(checkVisa(visaRequired));
+                    break;
                 case 3:
-                        printTour(checkInternationalTour());
-                        break;
+                    printTour(checkInternationalTour());
+                    break;
                 case 4:
-                        printTour(checkDomesticTour());
-                        break;
+                    printTour(checkDomesticTour());
+                    break;
                 case 5:
-                    
+
                 case 6:
                 case 7:
             }
-        }while(choice >= 1 && choice <= menu.getMaxChoice());
-            
+        } while (choice >= 1 && choice <= menu.getMaxChoice());
+
     }
+
+    public String getTourId() {
+        String id;
+        do{
+        System.out.println("--------------------------------------------------------");
+        printListAscendingById();
+        System.out.println("Choose TourID from this list");
+        id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
+        if (searchById(id) >= 0) 
+            return id;
+        System.out.println("Please input again!!");
+        }while(searchById(id) < 0);
+        return null;
+    }
+
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
         l.printListAscendingById();
@@ -368,17 +382,13 @@ public class TourList implements IManager<Tour> {
 //            l.add();
 //             l.add();
 //              l.add();
- //             l.add();
+        //             l.add();
 //        l.printListAscendingById();
-       // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
+        // l.saveToDate(new SaveFileText("FileText/Tours.txt"));
         //l.remove();
         //l.update();
         //l.searchObjectByName();
-       // l.printListAscendingById();
-       
-       
+        // l.printListAscendingById();
 
-       
-       
     }
 }
