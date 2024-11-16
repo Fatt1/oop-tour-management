@@ -190,57 +190,40 @@ public class TourScheduleList implements IManager<TourSchedule> {
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                    TourList tourList = TourList.getInstance();
-                    System.out.println("--------------------------------------------------------");
-                    tourList.printListAscendingById();
-                    System.out.println("Choose TourID from this list");
-                    id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
-                    if (tourList.searchById(id) >= 0){
-                        tourSchedule.setTourID(id);
-                        System.out.print("Sucessful!! Press enter to continue");
-                        new Scanner(System.in).nextLine();
-                    }
-                    else {
-                        System.out.println("Don't find " + id);  
-                        System.out.print("Fail!! Press enter to continue");
-                        new Scanner(System.in).nextLine();
-                    }
+                    tourSchedule.setTourID(TourList.getInstance().getTourId());
                     break;
                 case 2:
-                    // EmployeeList employeeList = EmployeeList.getInstance();
-
                     System.out.println("--------------------------------------------------------");
-                    //employeeList.printListAscendingById();
                     System.out.println("Choose EmployeeID from this list");
                     id = MyUtil.getId("Enter Employee ID:", "Not space or Enter and follow format (E123)", "E\\d{3}$");
                     System.out.println("Tinh nang chua hoan thien" + id);
                     break;
                 case 3:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setReturnDay(MyUtil.getDate("Enter Renturn Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ISO_DATE));
+                    tourSchedule.setReturnDay(MyUtil.getDate("Enter Renturn Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     tourSchedule.showInfor();
                     break;
                 case 4:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setDepartureDay(MyUtil.getDate("Enter Departure Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ISO_DATE));
+                    tourSchedule.setDepartureDay(MyUtil.getDate("Enter Departure Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                     tourSchedule.showInfor();
                     break;
                 case 5:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot(1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
+                    tourSchedule.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot (1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
                     break;
                 case 6:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setCurrentPrice(MyUtil.getAnInteger("Enter Current Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
+                    tourSchedule.setCurrentPrice(MyUtil.getAnInteger("Enter Current Price: ", "The type data is INTEGER "));
                     break;
                 case 7:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setAdultPrice(MyUtil.getAnInteger("Enter Adult Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
+                    tourSchedule.setAdultPrice(MyUtil.getAnInteger("Enter Adult Price: ", "The type data is INTEGER "));
                     tourSchedule.showInfor();
                     break;
                 case 8:
                     System.out.println("---------------------------------------------------------");
-                    tourSchedule.setChildPrice(MyUtil.getAnInteger("Enter Child Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
+                    tourSchedule.setChildPrice(MyUtil.getAnInteger("Enter Child Price: ", "The type data is INTEGER "));
                     break;
                 case 9:
                     System.out.println("OK out update");
@@ -271,23 +254,23 @@ public class TourScheduleList implements IManager<TourSchedule> {
     }
 
     private TourSchedule enterData(TourSchedule tourTemp){
+        TourList l = TourList.getInstance();
+        tourTemp.setTourID(TourList.getInstance().getTourId());
         tourTemp.setID(enterTourScheduleID());
-        //tour Id luc nay chua check ben kia nen ok vay do nhap tay
-        tourTemp.setTourID(MyUtil.getId("Enter TouID(to123): ", "must be follow format", "TO\\d{3}$"));
         tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
-        tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(yyyy-mm-dd): ", "The format is incorrect (yyyy-mm-dd)", DateTimeFormatter.ISO_DATE));
-        tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(yyyy-mm-dd): ", "The format is incorrect (yyyy-mm-dd)", DateTimeFormatter.ISO_DATE));
+        tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot(1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
-        tourTemp.setDuration(ChronoUnit.DAYS.between(tourTemp.getReturnDay(), tourTemp.getDepartureDay()));
-        tourTemp.setCurrentPrice(MyUtil.getAnInteger("Enter Current Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
-        tourTemp.setAdultPrice(MyUtil.getAnInteger("Enter Adult Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
-        tourTemp.setChildPrice(MyUtil.getAnInteger("Enter Child Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
-        tourTemp.setTotalPrice(MyUtil.getAnInteger("Enter Total Price(1000000 <= 1000000000): ", "The type data is INTEGER and limit between 1000000 and 1000000000", 1000000, 1000000000));
+        tourTemp.setDuration(ChronoUnit.DAYS.between( tourTemp.getDepartureDay(),tourTemp.getReturnDay()));
+        tourTemp.setCurrentPrice(MyUtil.getAnInteger("Enter Current Price: ", "The type data is INTEGER "));
+        tourTemp.setAdultPrice(MyUtil.getAnInteger("Enter Adult Price: ", "The type data is INTEGER"));
+        tourTemp.setChildPrice(MyUtil.getAnInteger("Enter Child Price: ", "The type data is INTEGER"));
+        tourTemp.setTotalPrice(MyUtil.getAnInteger("Enter Total Price: ", "The type data is INTEGER"));
         // totalprice tinh tat ca luong tien tu schedule detail, sau nay them
         return tourTemp;
     }
     
-    public TourSchedule[] getTourScheduleHaveTourIDSame(String tourID){
+    public TourSchedule[] getTourScheduleSameTourID(String tourID){
         TourSchedule[] ts = new TourSchedule[0];
         int count = 0;
         if(existedTourSchedule == 0){
@@ -351,19 +334,19 @@ public class TourScheduleList implements IManager<TourSchedule> {
 //       System.out.println(l.header);
  //       l.ReadData(new LoadDataFromFile("Files/TourShedule.dat"));
         l.add();
+
         l.add();
-       l.add();
-               l.add();
         l.add();
-       l.add();
-               l.add();
         l.add();
-       l.add();
-       l.add();
-    l.printListAscendingById();
-        l.update();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+//        l.update();
         l.printListAscendingById();
 
-        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+        l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }

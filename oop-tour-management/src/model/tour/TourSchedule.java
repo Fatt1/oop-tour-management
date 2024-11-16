@@ -29,7 +29,7 @@ public class TourSchedule implements Serializable{
         this.adultPrice = adultPrice;
         this.childPrice = childPrice;
         this.totalPrice = totalPrice;
-        this.duration = ChronoUnit.DAYS.between(returnDay, departureDay);
+        this.duration = ChronoUnit.DAYS.between(departureDay,returnDay);
     }
 
     public TourSchedule() {
