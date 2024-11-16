@@ -52,7 +52,8 @@ public class InvoiceList implements IManager<Invoice>{
             return;
         }
         System.out.println("Input invoice details");
-        do {            
+        
+        invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);do {            
             
             invoiceDetailList.add(invoiceId, tourSchedule); // không cần phải nhập lại idInvoice và tourScheduleId trong invoiceDetailsList
             String choice = getUserConfirmation();
@@ -60,7 +61,6 @@ public class InvoiceList implements IManager<Invoice>{
                 break;
             
         } while (true);
-        invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);
         Invoice invoice = new Invoice(invoiceId,customerId, employeeId, tourScheduleId);
         
         invoice.setTotalAmount(invoiceDetailList.getTotalPrice(invoiceId)); // set total amount sau khi nhập chi tiết hóa đơn
