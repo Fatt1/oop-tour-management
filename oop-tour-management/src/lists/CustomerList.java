@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import model.Customer;
+import model.InvoiceDetails;
 import ui.Menu;
 import util.MyUtil;
 
@@ -310,18 +311,21 @@ public class CustomerList implements IManager<Customer>{
     
     public void countToursPerCustomer() {
         InvoiceDetailsList invDetailList = InvoiceDetailsList.getInstance();
-       Map <Customer, Integer>  customerTourCount = new HashMap();
+       Map <Customer, Long>  customerTourCount = new HashMap();
         for (Customer c : cusList) {
-            
-            Integer count = invDetailList.getInvoiceDetails(o -> o.getCustomerId().equalsIgnoreCase(c.getId())).length;
-            customerTourCount.put(c, count);
+            long total = 0;
+            InvoiceDetails[] invoiceListCustomer = invDetailList.getInvoiceDetails(o -> o.getCustomerId().equalsIgnoreCase(c.getId()));
+            for (InvoiceDetails i : invoiceListCustomer) {
+                total += i.getPrice();
+            }
+            customerTourCount.put(c, total);
         }
-        System.out.printf("|%-6s|%-25s|%-15s|\n", "ID", "FULLNAME", "TOUR COUNT");
-        for (Map.Entry<Customer, Integer> c: customerTourCount.entrySet()) {
+        System.out.printf("|%-6s|%-25s|%-15s|\n", "ID", "FULLNAME", "TOTAL");
+        for (Map.Entry<Customer, Long> c: customerTourCount.entrySet()) {
             String id = c.getKey().getId();
             String fullName = c.getKey().getLastName() + " " + c.getKey().getFirstName();
-            Integer tourCount = c.getValue();
-            System.out.printf("|%-6s|%-25s|%-15d|\n", id, fullName, tourCount);
+            Long total = c.getValue();
+            System.out.printf("|%-6s|%-25s|%-15d|\n", id, fullName, total);
         }
     }
     //test bam shift + f6 de test thu
