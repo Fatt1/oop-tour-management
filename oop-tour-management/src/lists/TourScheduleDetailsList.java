@@ -13,6 +13,7 @@ import interfaces.LoadData;
 import interfaces.SaveData;
 import model.Activity;
 import model.TourScheduleDetails;
+import model.tour.TourSchedule;
 import util.MyUtil;
 
 public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
@@ -42,12 +43,13 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             }
         } while (duplicatedId >= 0);
         String k;
-        long day = TourScheduleList.getInstance().searchObjectById(id).getDuration();
+        TourSchedule tourSchedule = TourScheduleList.getInstance().searchObjectById(id);
+        long day = tourSchedule.getDuration();
         for (int i = 1; i <= day; i++) {
             System.out.println("---------------------------------------------------------------");
             System.out.println("---------------------------DAY " + i + "---------------------------------");
-            //String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
-            String hotelId = HotelList.getHotelList().getHotelId();
+            String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
+//            String hotelId = HotelList.getHotelList().getHotelId();
             
             int hotelCost = MyUtil.getAnInteger("Enter the hotel cost for day " + i + ": ", "You entered incorrectly, please try again");
             String restaurantId = MyUtil.getId("Input the Restaurant ID of day " + i + " (RXXX): ", "The format of ID is (RXXX)" + "X stands for digit(0-9)", "^R[0-9]{3}$");
@@ -62,9 +64,20 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             System.out.println("You have successfully added the tour schedule details.");
             extistedTourDetails++;
         }
-
+        tourSchedule.setTotalPrice(getTotalAmount(id));
+        TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+        
     }
-
+    
+    private int getTotalAmount(String tourScheduleId) {
+        TourScheduleDetails[] result = searchListObjectById(tourScheduleId);
+        int totalAmount = 0;
+        for (TourScheduleDetails tsd : result) {
+            totalAmount += tsd.getTongTien1Ngay();
+        }
+        return totalAmount;
+    }
+    
     @Override
     public void update() {
         String id = MyUtil.getId("Input update TourScheduleDetails id: ", "The TourScheduleDetails id is required ,(TSXXX): ", "^TS[0-9]{3}$");
@@ -307,11 +320,10 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     public static void main(String[] args) {
         TourScheduleDetailsList tsd = new TourScheduleDetailsList();
         tsd.ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
+//       tsd.add();
 //        tsd.add();
-        tsd.add();
         tsd.printListAscendingById();
-        tsd.update();
- //       tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+       tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
     }
 
 }

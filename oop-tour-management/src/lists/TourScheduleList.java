@@ -259,23 +259,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
             }
         return ts;
     }
-//    public void printListAscendingByCost(){
-//        if (existedTourSchedule == 0) {
-//            System.out.println("List is empting");
-//            return;
-//        }
-//        System.out.println(header);
-//        for (int i = 0; i < existedTourSchedule - 1; i++) 
-//            for (int j = i + 1; j < existedTourSchedule; j++) 
-//                if (tourScheduleList[i].getCurrentPrice() > tourScheduleList[j].getCurrentPrice()) {
-//                    TourSchedule temp = tourScheduleList[i];
-//                    tourScheduleList[i] = tourScheduleList[j];
-//                    tourScheduleList[j] = temp;
-//                }           
-//        
-//        for (int i = 0; i < existedTourSchedule; i++) 
-//            tourScheduleList[i].showInfor();           
-//    }
+
     public String getTourScheduleID(){
          if (existedTourSchedule == 0) {
             System.out.println("No more than a tour in list");
@@ -315,12 +299,12 @@ public class TourScheduleList implements IManager<TourSchedule> {
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
-        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
- l.add();
-  l.add();
- l.add();
- l.add();
- l.add();
+//        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
+// l.add();
+//  l.add();
+// l.add();
+// l.add();
+// l.add();
 // l.add();
 // l.add();
 // l.add();
@@ -329,7 +313,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
    //     l.update();
         l.printListAscendingById();
-       // l.remove();
+        l.remove();
         l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }

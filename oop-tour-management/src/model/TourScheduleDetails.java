@@ -35,7 +35,7 @@ public class TourScheduleDetails implements Serializable{
         this.restaurantId = restaurantId;
         this.mealCost = mealCost;
         this.otherCost = otherCost;
-        this.tongTien1Ngay=hotelCost + mealCost + otherCost;
+        this.tongTien1Ngay= hotelCost + mealCost + otherCost;
         this.activity=activity;
         
     }
@@ -110,6 +110,12 @@ public class TourScheduleDetails implements Serializable{
     public void updateTongTien1Ngay() {
     	this.tongTien1Ngay = this.hotelCost + this.mealCost + this.otherCost;
     }
+
+    public int getTongTien1Ngay() {
+        return tongTien1Ngay;
+    }
+    
+    
     
     public Activity getActivity() {
     	return activity;
