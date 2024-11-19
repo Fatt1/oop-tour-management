@@ -23,15 +23,24 @@ import util.MyUtil;
  */
 public class InvoiceList implements IManager<Invoice>{
     private Scanner sc = new Scanner(System.in);
+    private static InvoiceList instance; 
     private Invoice[] invoiceList;
     private int existedInvoice;
     private int surrogateKey = 0;
     private String header = String.format("|%-9s|%-12s|%-14s|%-20s|%-25s|%-20s|",
                                             "ID", "CUSTOMER ID", "EMPLOYEE ID","TOUR SCHEDULE ID", "DATE", "TOTAL");
     private SaveDataToFile saveBinaryFile = new SaveDataToFile("Files/Invoices.dat");
-    public InvoiceList() {
+    private InvoiceList() {
         invoiceList = new Invoice[0];
         existedInvoice = 0;
+        ReadData(new LoadDataFromFile("Files/Invoices.dat"));
+    }
+    
+    public static InvoiceList getInstance() {
+        if(instance == null){
+            instance = new InvoiceList();
+        }
+        return instance;
     }
 
     @Override
@@ -53,7 +62,8 @@ public class InvoiceList implements IManager<Invoice>{
         }
         System.out.println("Input invoice details");
         
-        invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);do {            
+        invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);
+        do {            
             
             invoiceDetailList.add(invoiceId, tourSchedule); // không cần phải nhập lại idInvoice và tourScheduleId trong invoiceDetailsList
             String choice = getUserConfirmation();
@@ -252,9 +262,9 @@ public class InvoiceList implements IManager<Invoice>{
    
     //test, xóa comment, bấm shift + F6 để test
     public static void main(String[] args) {
-        InvoiceList i = new InvoiceList();
+        InvoiceList i = InvoiceList.getInstance();
         i.ReadData(new LoadDataFromFile("Files/Invoices.dat"));
-        
+        i.showInvoiceDetails();
         i.add();
         i.add();
         i.add();
