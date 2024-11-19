@@ -20,8 +20,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     private static TourScheduleDetails[] tourDetailsList;
     private Scanner sc = new Scanner(System.in);
     private int extistedTourDetails;
-    private String header = String.format(  "|%-6s|%-10s|%-10s|%-15s|%-15s|%-10s|%-10s|%-20s|%-30s|%-10s|%-20s|",
-                                              "ID ","Day","HotelId","HotelCost","RestaurantId","MealCost","OtherCost","Tong tien 1 ngay","Description","Location","Star time");
+    private String header = String.format("|%-6s|%-10s|%-10s|%-15s|%-15s|%-10s|%-10s|%-20s|%-30s|%-10s|%-20s|",
+            "ID ", "Day", "HotelId", "HotelCost", "RestaurantId", "MealCost", "OtherCost", "Tong tien 1 ngay", "Description", "Location", "Star time");
 
     public TourScheduleDetailsList() {
         tourDetailsList = new TourScheduleDetails[0];
@@ -35,7 +35,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         String id;
         int duplicatedId;
         do {
-           id = TourScheduleList.getInstance().getTourScheduleID();
+            id = TourScheduleList.getInstance().getTourScheduleID();
             duplicatedId = searchById(id);
             if (duplicatedId >= 0) {
                 System.out.println("ID is duplicated , please try again: ");
@@ -43,8 +43,12 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         } while (duplicatedId >= 0);
         String k;
         long day = TourScheduleList.getInstance().searchObjectById(id).getDuration();
-            for (int i = 1; i <= day; i++) {
-            String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
+        for (int i = 1; i <= day; i++) {
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("---------------------------DAY " + i + "---------------------------------");
+            //String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
+            String hotelId = HotelList.getHotelList().getHotelId();
+            
             int hotelCost = MyUtil.getAnInteger("Enter the hotel cost for day " + i + ": ", "You entered incorrectly, please try again");
             String restaurantId = MyUtil.getId("Input the Restaurant ID of day " + i + " (RXXX): ", "The format of ID is (RXXX)" + "X stands for digit(0-9)", "^R[0-9]{3}$");
             int mealCost = MyUtil.getAnInteger("Enter the meal cost for day " + i + ": ", "You entered incorrectly, please try again");
@@ -57,9 +61,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             tourDetailsList[extistedTourDetails] = new TourScheduleDetails(id, i, hotelId, hotelCost, restaurantId, mealCost, otherCost, activity);
             System.out.println("You have successfully added the tour schedule details.");
             extistedTourDetails++;
-        }   
-            
-           
+        }
+
     }
 
     @Override
@@ -74,7 +77,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         System.out.println(header);
         for (int i = 0; i < tsd.length; i++) {
             tsd[i].display();
-        
+
         }
         int day = MyUtil.getAnInteger("Enter the day you want to update (1->" + tsd.length + "): ", "You entered incorrectly, please try again (1->" + tsd.length + ")", 1, tsd.length) - 1;
         Menu menu = new Menu("Update TourScheduleDetails");
@@ -161,7 +164,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             int index = searchById(id);
             if (index >= 0) {
                 int sl = searchListObjectById(id).length;
-                for (int i = index; i < tourDetailsList.length-sl; i++) {
+                for (int i = index; i < tourDetailsList.length - sl; i++) {
                     tourDetailsList[i] = tourDetailsList[i + sl];
                 }
                 System.out.println("Successfully removed.");
@@ -210,7 +213,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         System.out.println(header);
         for (int i = 0; i < tourDetailsList.length; i++) {
             tourDetailsList[i].display();
-    
+
         }
     }
 
@@ -254,13 +257,12 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         }
         return -1;
     }
-    
+
     @Override
     public TourScheduleDetails searchObjectById(String id) {
-       return null;
+        return null;
     }
-    
-    
+
     public TourScheduleDetails[] searchListObjectById(String id) {
         if (tourDetailsList.length == 0) {
             return null;
@@ -306,10 +308,10 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         TourScheduleDetailsList tsd = new TourScheduleDetailsList();
         tsd.ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
 //        tsd.add();
-//        tsd.add();
+        tsd.add();
         tsd.printListAscendingById();
         tsd.update();
-        tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+ //       tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
     }
 
 }

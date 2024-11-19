@@ -8,7 +8,7 @@ public class Hotel {
     private String hotelName;
     private String phoneNumber;
     private String address;
-
+    
     public Hotel(String hotelID, String hotelName, String phoneNumber, String address) {
         this.hotelID = hotelID;
         this.hotelName = hotelName;

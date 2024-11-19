@@ -1,9 +1,10 @@
 package lists;
 
+import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.Hotel;
@@ -11,17 +12,40 @@ import util.MyUtil;
 
 public class HotelList implements IManager<Hotel> {
 
-    private Hotel[] hotelList;
+    private static HotelList instance;
     private int existedHotel;
+    private Hotel[] hotelList;
+    private final String header = String.format("|%-15s|%-12s|%-12s|%-12s|%-12s|", "HOTEL", "hotelID", "hotelName", "phoneNumber", "address");
     private Scanner sc = new Scanner(System.in);
 
-    public HotelList() {
+    private HotelList() {
         hotelList = new Hotel[0];
         existedHotel = 0;
+        ReadData(new LoadDataFromFile("Files/Hotel.dat"));
+    }
+
+    public static HotelList getHotelList() {
+        if (instance == null) {
+            instance = new HotelList();
+        }
+        return instance;
+    }
+
+    public String getHotelId() {
+        String id;
+        int check;
+        do {
+            printListAscendingById();
+            id = MyUtil.getId("Please input the hotel Id (HXXX)" + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
+            check = searchById(id);
+            if (check < 0) {
+                System.out.println("Again!!!");
+            }
+        } while (check < 0);
+        return id;
     }
 
     @Override
-
     public void add() {
         String id;
         int duplicatedId;
@@ -110,17 +134,18 @@ public class HotelList implements IManager<Hotel> {
             System.out.print("Choose Y/N: ");
             choice = sc.nextLine().toLowerCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
-                for (int i = position; i < existedHotel - 1; i++)
+                for (int i = position; i < existedHotel - 1; i++) {
                     hotelList[i] = hotelList[i + 1];
+                }
 
                 hotelList = Arrays.copyOf(hotelList, hotelList.length - 1); // update the list length again
 
                 existedHotel--;
                 System.out.println("!-THE HOTEL HAS SUCCESSFULLY REMOVED-!");
                 return;
-            } else if (choice.equalsIgnoreCase("N")){
+            } else if (choice.equalsIgnoreCase("N")) {
                 return;
-            }else {
+            } else {
                 System.out.println("Please choose Y/N");
             }
         } while (true);
@@ -168,12 +193,12 @@ public class HotelList implements IManager<Hotel> {
 
     @Override
     public Hotel searchObjectById(String id) {
-        if(hotelList.length == 0){
+        if (hotelList.length == 0) {
             System.out.println("Not Found!");
             return null;
         }
         for (Hotel x : hotelList) {
-            if(x.getHotelID().equalsIgnoreCase(id)){
+            if (x.getHotelID().equalsIgnoreCase(id)) {
                 return x;
             }
         }
@@ -182,11 +207,25 @@ public class HotelList implements IManager<Hotel> {
 
     @Override
     public void ReadData(LoadData loadData) {
+        Object[] obj = loadData.read();
+        if (obj == null) {
+            System.out.println("Not data");
+            return;
+        }
+        for (Object o : obj) {
+            hotelList = Arrays.copyOf(hotelList, hotelList.length + 1);
+            hotelList[existedHotel++] =(Hotel) o;
+        }
     }
 
     @Override
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        saveData.save(hotelList, header);
     }
 
+    public static void main(String[] args) {
+
+        HotelList l = HotelList.getHotelList();
+        l.saveToDate(new SaveDataToFile("Files/Hotel.dat"));
+    }
 }
