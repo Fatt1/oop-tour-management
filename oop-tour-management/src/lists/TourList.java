@@ -9,6 +9,7 @@ import interfaces.Filter;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -23,13 +24,13 @@ import util.MyUtil;
  *
  * @author nghialam
  */
-public class TourList implements IManager<Tour> {
+public class TourList implements IManager<Tour>, Serializable {
 
     private static TourList instance;
     private int existedTour;
     private Tour tourList[];
-    private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-2s|%-15s|%-5s|%-5s|",
-            "Tour", "ID", "NAME", "DESTINATION", "DEPARTURE LOCAL", "VEHICLE ID", "PRICE", "QUANTITY", "COUNTRY", "VISA", "DISCOUNT");
+    private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-10s|%-2s|%-15s|%-5s|%-5s|",
+            "Tour", "ID", "NAME", "DESTINATION", "DEPARTURE LOCAL", "VEHICLE ID", "ADULTPRICE", "CHILDPRICE", "QUANTITY", "COUNTRY", "VISA", "DISCOUNT");
 
     private TourList() {
         tourList = new Tour[0];
@@ -274,8 +275,9 @@ public class TourList implements IManager<Tour> {
         menu.addNewOption("4. Filter by domestic tour.");
         menu.addNewOption("5. Filter by destination.");
         menu.addNewOption("6. Filter by country.");
-        menu.addNewOption("7. Filter by price.");
-        menu.addNewOption("8. Exit.");
+        menu.addNewOption("7. Filter by Adult Price.");
+        menu.addNewOption("8. Filter bygChild Price");
+        menu.addNewOption("9. Exit.");
         int choice;
         do {
             menu.printMenu();
@@ -283,8 +285,7 @@ public class TourList implements IManager<Tour> {
             switch (choice) {
                 case 1:
                     double localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The discount is number");
-                    filterTourList((o) -> { // cái này là fat sử dụng lambda expression, nghĩa lên mạng coi thử lambda epression là gì đi
-                                            // có 3 cách để viết lận cách của fat là labda còn các nữa là fat viết ở filter case 3 cho nó ngắn tí nhé
+                    filterTourList((o) -> { 
                         if(o instanceof DomesticTour){
                             DomesticTour domesticTour = (DomesticTour)o;
                             return domesticTour.getLocalDiscount() == localDiscount;
@@ -304,19 +305,7 @@ public class TourList implements IManager<Tour> {
                     });
                     break;
                 case 3:
-                    filterTourList((o) -> o instanceof InternationalTour );
-                    // c2:
-//                    filterTourList(new Filter<Tour>(){ // sử dụng anonymous class, để bỏ vô cái tham số tại vì tham số cần cái interface,
-                                                        // thì có 3 cách để truyền vô 1 là sử dụng anonymous class, lambda expression,
-                                                        // tạo 1 class riêng implements Filter rồi truyền vô thôi. Thì cách lambda nó ngắn nhất
-                                                        // và người ta thường xuyên vì nó ngắn gọn
-//                @Override
-//                public boolean check(Tour t) {
-//                    return t instanceof InternationalTour;
-//                }
-//                    }
-//                    );
-                    
+                    filterTourList((o) -> o instanceof InternationalTour );                  
                     break;
                 case 4:
                     filterTourList((o) -> o instanceof DomesticTour);
@@ -339,11 +328,14 @@ public class TourList implements IManager<Tour> {
                 case 7:
                     int minPrice = MyUtil.getAnInteger("Enter minimum price: ", "Price must be a number.");
                     int maxPrice = MyUtil.getAnInteger("Enter maximum price: ", "Price must be a number.");
-                    filterTourList(o -> o.getPrice() >= minPrice && o.getPrice() <= maxPrice);
+                    filterTourList(o -> o.getAdultPrice()>= minPrice && o.getAdultPrice() <= maxPrice);
                     break;
-   
+                case 8:
+                    int minPriceChild = MyUtil.getAnInteger("Enter minimum price: ", "Price must be a number.");
+                    int maxPriceChild = MyUtil.getAnInteger("Enter maximum price: ", "Price must be a number.");
+                    filterTourList(a -> a.getChildPrice() >= minPriceChild && a.getChildPrice() <= maxPriceChild);
             }
-            if(choice != 8){
+            if(choice != 9){
                 System.out.print("Press enter to continue...");
                 new Scanner(System.in).nextLine();
             }
@@ -368,11 +360,21 @@ public class TourList implements IManager<Tour> {
 
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
+ //       l.printListAscendingById();
+//        l.menuForFilter();
+       l.update();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+//           l.add();
+
         l.printListAscendingById();
-        l.menuForFilter();
-//        l.update();
- //           l.add();
-//        l.printListAscendingById();
 //        l.update();
 //        l.update();
 //        l.update();

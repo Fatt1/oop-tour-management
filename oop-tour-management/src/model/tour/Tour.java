@@ -5,7 +5,6 @@
 package model.tour;
 
 import java.io.Serializable;
-import lists.TourList;
 import lists.VehicleList;
 import ui.Menu;
 import util.MyUtil;
@@ -17,16 +16,17 @@ import util.MyUtil;
 public class Tour implements Serializable {
 
     protected String tourID, tourName, destination, departureLocation, vehicleID;
-    protected int price;
+    protected int adultPrice, childPrice;
     protected int quantity;
 
-    public Tour(String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
+    public Tour(String tourID, String tourName, String destination, String departureLocation, String vehicleID, int adultPrice, int childPrice, int quantity) {
         this.tourID = tourID;
         this.tourName = tourName;
         this.destination = destination;
         this.departureLocation = departureLocation;
         this.vehicleID = vehicleID;
-        this.price = price;
+        this.adultPrice = adultPrice;
+        this.childPrice = childPrice;
         this.quantity = quantity;
     }
 
@@ -69,12 +69,20 @@ public class Tour implements Serializable {
         this.vehicleID = vehicleID;
     }
 
-    public int getPrice() {
-        return price;
+    public int getAdultPrice() {
+        return adultPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setAdultPrice(int adultPrice) {
+        this.adultPrice = adultPrice;
+    }
+
+    public int getChildPrice() {
+        return childPrice;
+    }
+
+    public void setChildPrice(int childPrice) {
+        this.childPrice = childPrice;
     }
 
     public int getQuantity() {
@@ -87,8 +95,8 @@ public class Tour implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-8s",
-                tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
+        return String.format("%-5s|%-30s|%-20s|%-20s|%-10s|%-10s|%-10d|%-8s",
+                tourID, tourName, destination, departureLocation, vehicleID, adultPrice, childPrice, quantity);
     }
     public void input(String id){
         this.tourID = id;
@@ -98,7 +106,8 @@ public class Tour implements Serializable {
         this.destination = MyUtil.getString("Enter destination: ", "The input is of type STRING");
         this.departureLocation = MyUtil.getString("Enter Departure location: ", "The input is of type STRING");
         this.vehicleID = VehicleList.getInstance().getExistedVehicleId();
-        this.price = MyUtil.getAnInteger("Enter price(1000 <= price <= 50000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 50000000);
+        this.adultPrice = MyUtil.getAnInteger("Enter adult price(1000 <= price <= 500000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 500000000);
+        this.childPrice = MyUtil.getAnInteger("Enter child price(1000 <= price <= 500000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 500000000);
         this.quantity = MyUtil.getAnInteger("Enter Quantity(1 <= quantity <= 50): ", "The input is of type INT", 1, 50);
     }
 
@@ -107,9 +116,10 @@ public class Tour implements Serializable {
         menu.addNewOption("2. Update new tour name");
         menu.addNewOption("3. Update new destination");
         menu.addNewOption("4. Update new departureLocation");
-        menu.addNewOption("5. Update new price");
-        menu.addNewOption("6. Update new quantity");
-        menu.addNewOption("7. Update new VehicleID");
+        menu.addNewOption("5. Update new adult price");
+        menu.addNewOption("6. Update new child price");
+        menu.addNewOption("7. Update new quantity");
+        menu.addNewOption("8. Update new VehicleID");
 
     }
 
@@ -131,14 +141,18 @@ public class Tour implements Serializable {
                 tour.setDepartureLocation(dLocation);
                 break;
             case 5:
-                int cost = MyUtil.getAnInteger("Enter price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
-                tour.setPrice(cost);
+                int adultCost = MyUtil.getAnInteger("Enter adult price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
+                tour.setAdultPrice(adultCost);
                 break;
             case 6:
+                int childCost = MyUtil.getAnInteger("Enter child price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
+                tour.setChildPrice(childCost);
+                break;                
+            case 7:
                 int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
                 tour.setQuantity(slot);
                 break;
-            case 7:
+            case 8:
                 
                 String newVehicleId = VehicleList.getInstance().getExistedVehicleId();
                 tour.setVehicleID(newVehicleId);
@@ -147,7 +161,7 @@ public class Tour implements Serializable {
     }
 
     public void showInfor() {
-        System.out.printf("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-8s",
-                tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
+        System.out.printf("%-5s|%-30s|%-20s|%-20s|%-10s|%-10d|%-10s|%-8s",
+                tourID, tourName, destination, departureLocation, vehicleID, adultPrice, childPrice, quantity);
     }
 }

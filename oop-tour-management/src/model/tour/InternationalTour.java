@@ -17,11 +17,13 @@ public class InternationalTour extends Tour implements Serializable {
     private String country;
     private String visaRequired;
 
-    public InternationalTour(String country, String visaRequired, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int price, int quantity) {
-        super(tourID, tourName, destination, departureLocation, vehicleID, price, quantity);
+    public InternationalTour(String country, String visaRequired, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int adultPrice, int childPrice, int quantity) {
+        super(tourID, tourName, destination, departureLocation, vehicleID, adultPrice, childPrice, quantity);
         this.country = country;
         this.visaRequired = visaRequired;
     }
+
+   
 
     public InternationalTour() {
 
@@ -60,10 +62,10 @@ public class InternationalTour extends Tour implements Serializable {
     @Override
     public void setData(Tour tour, int choice) {
         super.setData(this, choice);
-        if (choice == 8) {
+        if (choice == 9) {
             String country = MyUtil.getString("Enter country: ", "The input is kind of STRING ");
             setCountry(country);
-        } else if (choice == 9) {
+        } else if (choice == 10) {
             String visaRequired = MyUtil.getValueOrDefault("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
             setVisaRequired(visaRequired);
         }
