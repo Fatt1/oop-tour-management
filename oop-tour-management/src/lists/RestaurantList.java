@@ -1,5 +1,6 @@
 package lists;
 
+import IOFile.LoadDataFromFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -9,14 +10,23 @@ import model.Restaurant;
 import util.MyUtil;
 
 public class RestaurantList implements IManager<Restaurant> {
-
-    private Restaurant[] restaurantList;
-    private int existedRestaurant;
     private Scanner sc = new Scanner(System.in);
+    private static RestaurantList instance;
+    private int existedRestaurant;
+    private Restaurant restaurantList[];
+    private final String header = String.format("|%-6s|%-25s|%-14s|%-25s|", "hotelID", "hotelName", "phoneNumber", "address");
 
-    public RestaurantList() {
+    private RestaurantList() {
         restaurantList = new Restaurant[0];
         existedRestaurant = 0;
+        ReadData(new LoadDataFromFile("Files/Hotels.dat"));
+    }
+
+    public static RestaurantList getInstance() {
+        if (instance == null) {
+            instance = new RestaurantList();
+        }
+        return instance;
     }
 
     @Override
@@ -169,12 +179,21 @@ public class RestaurantList implements IManager<Restaurant> {
 
     @Override
     public void ReadData(LoadData loadData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] b = loadData.read();
+        if( b == null){
+            System.out.println("Rong");
+            return;
+        }
+        for(Object o : b){
+            restaurantList = Arrays.copyOf(restaurantList, restaurantList.length + 1);
+            restaurantList[existedRestaurant] = (Restaurant) o;
+            existedRestaurant++;
+        }
     }
 
     @Override
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        saveData.save(restaurantList, header);
     }
 
     public static void main(String[] args) {

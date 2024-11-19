@@ -1,5 +1,6 @@
 package lists;
 
+import IOFile.LoadDataFromFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -8,16 +9,26 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.Hotel;
 import util.MyUtil;
+import lists.HotelList;
 
 public class HotelList implements IManager<Hotel> {
-
-    private Hotel[] hotelList;
-    private int existedHotel;
     private Scanner sc = new Scanner(System.in);
+    private static HotelList instance;
+    private int existedHotel;
+    private Hotel hotelList[];
+    private final String header = String.format("|%-6s|%-25s|%-14s|%-25s|", "hotelID", "hotelName", "phoneNumber", "address");
 
-    public HotelList() {
+    private HotelList() {
         hotelList = new Hotel[0];
         existedHotel = 0;
+        ReadData(new LoadDataFromFile("Files/Hotels.dat"));
+    }
+
+    public static HotelList getInstance() {
+        if (instance == null) {
+            instance = new HotelList();
+        }
+        return instance;
     }
 
     @Override
@@ -182,11 +193,21 @@ public class HotelList implements IManager<Hotel> {
 
     @Override
     public void ReadData(LoadData loadData) {
+        Object[] b = loadData.read();
+        if( b == null){
+            System.out.println("Rong");
+            return;
+        }
+        for(Object o : b){
+            hotelList = Arrays.copyOf(hotelList, hotelList.length + 1);
+            hotelList[existedHotel] = (Hotel) o;
+            existedHotel ++;
+        }
     }
 
     @Override
     public void saveToDate(SaveData saveData) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        saveData.save(hotelList, header);
     }
 
 }
