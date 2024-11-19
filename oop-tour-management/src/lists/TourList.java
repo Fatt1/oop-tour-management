@@ -368,10 +368,10 @@ public class TourList implements IManager<Tour> {
 
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
-       // l.printListAscendingById();
+        l.printListAscendingById();
         l.menuForFilter();
 //        l.update();
-            l.add();
+ //           l.add();
 //        l.printListAscendingById();
 //        l.update();
 //        l.update();
