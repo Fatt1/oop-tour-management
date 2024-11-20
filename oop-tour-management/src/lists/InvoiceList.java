@@ -277,11 +277,21 @@ public class InvoiceList implements IManager<Invoice>{
     public static void main(String[] args) {
         InvoiceList i = InvoiceList.getInstance();
        
-        i.printListAscendingById();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
+        i.add();
        
-        
+        i.printListAscendingById();
 
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
+        i.saveToDate(new SaveFileText("FileText/Invoices.txt"));
         
     }
 }
