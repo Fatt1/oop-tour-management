@@ -44,11 +44,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         String k;
         long day = TourScheduleList.getInstance().searchObjectById(id).getDuration();
         for (int i = 1; i <= day; i++) {
-            System.out.println("---------------------------------------------------------------");
-            System.out.println("---------------------------DAY " + i + "---------------------------------");
-            //String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
-            String hotelId = HotelList.getHotelList().getHotelId();
-            
+            String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
             int hotelCost = MyUtil.getAnInteger("Enter the hotel cost for day " + i + ": ", "You entered incorrectly, please try again");
             String restaurantId = MyUtil.getId("Input the Restaurant ID of day " + i + " (RXXX): ", "The format of ID is (RXXX)" + "X stands for digit(0-9)", "^R[0-9]{3}$");
             int mealCost = MyUtil.getAnInteger("Enter the meal cost for day " + i + ": ", "You entered incorrectly, please try again");
@@ -304,14 +300,5 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         saveData.save(tourDetailsList, header);
     }
 
-    public static void main(String[] args) {
-        TourScheduleDetailsList tsd = new TourScheduleDetailsList();
-        tsd.ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
-//        tsd.add();
-        tsd.add();
-        tsd.printListAscendingById();
-        tsd.update();
- //       tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
-    }
 
 }

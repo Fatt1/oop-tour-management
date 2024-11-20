@@ -181,11 +181,13 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 case 3:
                     System.out.println("---------------------------------------------------------");
                     tourSchedule.setReturnDay(MyUtil.getDate("Enter Renturn Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                    tourSchedule.setDuration(ChronoUnit.DAYS.between(tourSchedule.getDepartureDay(), tourSchedule.getReturnDay()));
                     tourSchedule.showInfor();
                     break;
                 case 4:
                     System.out.println("---------------------------------------------------------");
                     tourSchedule.setDepartureDay(MyUtil.getDate("Enter Departure Day: ", "Follow format is yyyy-mm-dd", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                    tourSchedule.setDuration(ChronoUnit.DAYS.between(tourSchedule.getDepartureDay(), tourSchedule.getReturnDay()));
                     tourSchedule.showInfor();
                     break;
                 case 5:
@@ -198,11 +200,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
                     tourSchedule.showInfor();
                     break;
             }
-            if(choice != 9){
+            if(choice != 6){
                 System.out.println(header);
                 tourSchedule.showInfor();
             }
-        } while (choice >= 1 && choice <= 8);
+        } while (choice >= 1 && choice <= 5);
 
     }
 
@@ -230,7 +232,6 @@ public class TourScheduleList implements IManager<TourSchedule> {
         tourTemp.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot(1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
         tourTemp.setDuration(ChronoUnit.DAYS.between( tourTemp.getDepartureDay(),tourTemp.getReturnDay()));
         tourTemp.setTotalPrice(0);
-        // totalprice tinh tat ca luong tien tu schedule detail, sau nay them
         return tourTemp;
     }
     
@@ -249,16 +250,16 @@ public class TourScheduleList implements IManager<TourSchedule> {
         return ts;
     }
        
-    public TourSchedule[] getTourScheduleCheapPrice(int price){
-        TourSchedule[] ts = new TourSchedule[0];
-        int count = 0;
-        for (int i = 0; i < existedTourSchedule; i++)
-            if(tourScheduleList[i].getTotalPrice()< price){
-                ts = Arrays.copyOf(ts, ts.length + 1);
-                ts[count++] = tourScheduleList[i];                
-            }
-        return ts;
-    }
+//    public TourSchedule[] getTourScheduleCheapPrice(int price){
+//        TourSchedule[] ts = new TourSchedule[0];
+//        int count = 0;
+//        for (int i = 0; i < existedTourSchedule; i++)
+//            if(tourScheduleList[i].getTotalPrice()< price){
+//                ts = Arrays.copyOf(ts, ts.length + 1);
+//                ts[count++] = tourScheduleList[i];                
+//            }
+//        return ts;
+//    }
 //    public void printListAscendingByCost(){
 //        if (existedTourSchedule == 0) {
 //            System.out.println("List is empting");
@@ -315,21 +316,22 @@ public class TourScheduleList implements IManager<TourSchedule> {
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
-        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
- l.add();
-  l.add();
- l.add();
- l.add();
- l.add();
+//        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
+// l.add();
+//  l.add();
 // l.add();
 // l.add();
 // l.add();
 // l.add();
 // l.add();
+// l.add();
+// l.add();
+// l.add();
+//        l.update();
 
-   //     l.update();
+//        l.update();
         l.printListAscendingById();
-       // l.remove();
+    //    l.remove();
         l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }
