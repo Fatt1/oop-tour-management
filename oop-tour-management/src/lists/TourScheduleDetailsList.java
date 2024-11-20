@@ -46,11 +46,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         TourSchedule tourSchedule = TourScheduleList.getInstance().searchObjectById(id);
         long day = tourSchedule.getDuration();
         for (int i = 1; i <= day; i++) {
-            System.out.println("---------------------------------------------------------------");
-            System.out.println("---------------------------DAY " + i + "---------------------------------");
             String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
-//            String hotelId = HotelList.getHotelList().getHotelId();
-            
             int hotelCost = MyUtil.getAnInteger("Enter the hotel cost for day " + i + ": ", "You entered incorrectly, please try again");
             String restaurantId = MyUtil.getId("Input the Restaurant ID of day " + i + " (RXXX): ", "The format of ID is (RXXX)" + "X stands for digit(0-9)", "^R[0-9]{3}$");
             int mealCost = MyUtil.getAnInteger("Enter the meal cost for day " + i + ": ", "You entered incorrectly, please try again");
@@ -316,6 +312,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     public void saveToDate(SaveData saveData) {
         saveData.save(tourDetailsList, header);
     }
+
 
     public static void main(String[] args) {
         TourScheduleDetailsList tsd = new TourScheduleDetailsList();
