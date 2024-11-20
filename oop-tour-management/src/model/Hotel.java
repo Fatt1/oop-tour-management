@@ -1,8 +1,10 @@
 
 package model;
 
+import java.io.Serializable;
 
-public class Hotel {
+
+public class Hotel  implements Serializable{
 
     private String hotelID;
     private String hotelName;

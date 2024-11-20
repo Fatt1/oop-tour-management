@@ -1,6 +1,7 @@
 package lists;
 
 import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -10,6 +11,7 @@ import model.Restaurant;
 import util.MyUtil;
 
 public class RestaurantList implements IManager<Restaurant> {
+
     private Scanner sc = new Scanner(System.in);
     private static RestaurantList instance;
     private int existedRestaurant;
@@ -19,7 +21,7 @@ public class RestaurantList implements IManager<Restaurant> {
     private RestaurantList() {
         restaurantList = new Restaurant[0];
         existedRestaurant = 0;
-        ReadData(new LoadDataFromFile("Files/Hotels.dat"));
+        ReadData(new LoadDataFromFile("Files/Restaurants.dat"));
     }
 
     public static RestaurantList getInstance() {
@@ -99,6 +101,7 @@ public class RestaurantList implements IManager<Restaurant> {
         int point = searchById(id);
         if (point < 0) {
             System.out.println("Not Found!");
+            return;
         }
         String choice;
         do {
@@ -106,12 +109,14 @@ public class RestaurantList implements IManager<Restaurant> {
             choice = sc.nextLine().toUpperCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
                 for (int i = 0; i < existedRestaurant - 1; i++) {
-                    restaurantList[i] = restaurantList[i + 1];
+                    if (restaurantList[i].getRestaurantID().equalsIgnoreCase(id)) {
+                        restaurantList[i] = restaurantList[i + 1];
 
-                    restaurantList = Arrays.copyOf(restaurantList, restaurantList.length - 1);
-                    existedRestaurant--;
-                    System.out.println("!-THE RESTAURANT HAS SUCCESSFULLY REMOVED-!");
-                    return;
+                        restaurantList = Arrays.copyOf(restaurantList, restaurantList.length - 1);
+                        existedRestaurant--;
+                        System.out.println("!-THE RESTAURANT HAS SUCCESSFULLY REMOVED-!");
+                        return;
+                    }
                 }
             } else if (choice.equalsIgnoreCase("N")) {
                 return;
@@ -147,7 +152,7 @@ public class RestaurantList implements IManager<Restaurant> {
             System.out.println("NOT FOUND!");
             return;
         }
-       r2.display();
+        r2.display();
     }
 
     @Override
@@ -157,7 +162,7 @@ public class RestaurantList implements IManager<Restaurant> {
         }
         for (int i = 0; i < existedRestaurant; i++) {
             if (restaurantList[i].getRestaurantID().equalsIgnoreCase(id)) {
-                return 1;
+                return i;
             }
         }
         return -1;
@@ -180,11 +185,11 @@ public class RestaurantList implements IManager<Restaurant> {
     @Override
     public void ReadData(LoadData loadData) {
         Object[] b = loadData.read();
-        if( b == null){
+        if (b == null) {
             System.out.println("Rong");
             return;
         }
-        for(Object o : b){
+        for (Object o : b) {
             restaurantList = Arrays.copyOf(restaurantList, restaurantList.length + 1);
             restaurantList[existedRestaurant] = (Restaurant) o;
             existedRestaurant++;
@@ -200,11 +205,10 @@ public class RestaurantList implements IManager<Restaurant> {
         RestaurantList rl = new RestaurantList();
         rl.add();
         rl.add();
-        rl.printListAscendingById();
-        rl.update();
-        rl.remove();
-        rl.searchById();
-        rl.printListAscendingById();
+        rl.add();
+        rl.add();
+        rl.saveToDate(new SaveDataToFile("Files/Restaurants.dat"));
+        getInstance().printListAscendingById();
     }
 
 }

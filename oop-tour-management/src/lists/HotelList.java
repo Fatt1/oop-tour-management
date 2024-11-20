@@ -1,6 +1,7 @@
 package lists;
 
 import IOFile.LoadDataFromFile;
+import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -12,13 +13,14 @@ import util.MyUtil;
 import lists.HotelList;
 
 public class HotelList implements IManager<Hotel> {
+
     private Scanner sc = new Scanner(System.in);
     private static HotelList instance;
     private int existedHotel;
     private Hotel hotelList[];
     private final String header = String.format("|%-6s|%-25s|%-14s|%-25s|", "hotelID", "hotelName", "phoneNumber", "address");
 
-    private HotelList() {
+    public HotelList() {
         hotelList = new Hotel[0];
         existedHotel = 0;
         ReadData(new LoadDataFromFile("Files/Hotels.dat"));
@@ -44,14 +46,12 @@ public class HotelList implements IManager<Hotel> {
                 System.out.println("ID is duplicated. Please input another id!");
             }
         } while (duplicatedId >= 0);
-
-        String hotelID = MyUtil.getId("Please input the hotel Id: ", "!This information is crucial!", "^[h|H]\\d{3}");
         String hotelName = MyUtil.getString("Please input the hotel name: ", "!This information is crucial!");
         String phoneNumber = MyUtil.getString("Please input hotel's phone numebr: ", "!This information is crucial!");
         String address = MyUtil.getString("Please input hotel's address: ", "!This information is crucial!");
 
         hotelList = Arrays.copyOf(hotelList, hotelList.length + 1);
-        hotelList[existedHotel++] = new Hotel(hotelID, hotelName, phoneNumber, address);
+        hotelList[existedHotel++] = new Hotel(id, hotelName, phoneNumber, address);
         System.out.println("Hotel has been added completely!");
     }
 
@@ -121,17 +121,20 @@ public class HotelList implements IManager<Hotel> {
             System.out.print("Choose Y/N: ");
             choice = sc.nextLine().toLowerCase().trim();
             if (choice.equalsIgnoreCase("Y")) {
-                for (int i = position; i < existedHotel - 1; i++)
+                for (int i = position; i < existedHotel - 1; i++) {
+                    if(hotelList[i].getHotelID().equalsIgnoreCase(id)){
                     hotelList[i] = hotelList[i + 1];
+                    }
+                }
 
                 hotelList = Arrays.copyOf(hotelList, hotelList.length - 1); // update the list length again
 
                 existedHotel--;
                 System.out.println("!-THE HOTEL HAS SUCCESSFULLY REMOVED-!");
                 return;
-            } else if (choice.equalsIgnoreCase("N")){
+            } else if (choice.equalsIgnoreCase("N")) {
                 return;
-            }else {
+            } else {
                 System.out.println("Please choose Y/N");
             }
         } while (true);
@@ -170,7 +173,7 @@ public class HotelList implements IManager<Hotel> {
         } else {
             for (int i = 0; i < existedHotel; i++) {
                 if (hotelList[i].getHotelID().equalsIgnoreCase(id)) {
-                    return 1;
+                    return i;
                 }
             }
             return -1;
@@ -179,12 +182,12 @@ public class HotelList implements IManager<Hotel> {
 
     @Override
     public Hotel searchObjectById(String id) {
-        if(hotelList.length == 0){
+        if (hotelList.length == 0) {
             System.out.println("Not Found!");
             return null;
         }
         for (Hotel x : hotelList) {
-            if(x.getHotelID().equalsIgnoreCase(id)){
+            if (x.getHotelID().equalsIgnoreCase(id)) {
                 return x;
             }
         }
@@ -194,14 +197,14 @@ public class HotelList implements IManager<Hotel> {
     @Override
     public void ReadData(LoadData loadData) {
         Object[] b = loadData.read();
-        if( b == null){
+        if (b == null) {
             System.out.println("Rong");
             return;
         }
-        for(Object o : b){
+        for (Object o : b) {
             hotelList = Arrays.copyOf(hotelList, hotelList.length + 1);
             hotelList[existedHotel] = (Hotel) o;
-            existedHotel ++;
+            existedHotel++;
         }
     }
 
@@ -210,4 +213,9 @@ public class HotelList implements IManager<Hotel> {
         saveData.save(hotelList, header);
     }
 
+    public static void main(String[] args) {
+        HotelList h1 = new HotelList();
+        h1.saveToDate(new SaveDataToFile("Files/Hotels.dat"));
+        getInstance().printListAscendingById();
+    }
 }
