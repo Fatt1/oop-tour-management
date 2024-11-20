@@ -20,7 +20,6 @@ public class TourSchedule implements Serializable {
     private int emptySlots, adultPrice, childPrice;
     private int totalPrice;
     private long duration;
-    private TourList t = TourList.getInstance();
 
     public TourSchedule(String ID, String tourID, String employeeID, LocalDate returnDay, LocalDate departureDay, int emptySlots) {
         this.ID = ID;
@@ -29,8 +28,8 @@ public class TourSchedule implements Serializable {
         this.returnDay = returnDay;
         this.departureDay = departureDay;
         this.emptySlots = emptySlots;
-        this.adultPrice = t.searchObjectById(ID).getAdultPrice();
-        this.childPrice = t.searchObjectById(ID).getChildPrice();
+        this.adultPrice = 0;
+        this.childPrice = 0;
         this.duration = ChronoUnit.DAYS.between(departureDay, returnDay);
     }
 
