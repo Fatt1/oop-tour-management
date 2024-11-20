@@ -375,7 +375,7 @@ public class TourList implements IManager<Tour>, Serializable {
 //           l.add();
 
         l.printListAscendingById();
-//        l.update();
+       l.update();
 //        l.update();
 //        l.update();
 //        l.update();
