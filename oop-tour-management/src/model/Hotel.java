@@ -1,8 +1,10 @@
 
 package model;
 
+import java.io.Serializable;
 
-public class Hotel {
+
+public class Hotel implements Serializable{
 
     private String hotelID;
     private String hotelName;
@@ -59,7 +61,7 @@ public class Hotel {
     }
 
     public void display() {
-        System.out.printf("|%-6s|%-25s|%-14s|%-25s|\n", hotelID, hotelName, phoneNumber, address);
+        System.out.printf("|%-9s|%-25s|%-14s|%-25s|\n", hotelID, hotelName, phoneNumber, address);
     }
     
 }

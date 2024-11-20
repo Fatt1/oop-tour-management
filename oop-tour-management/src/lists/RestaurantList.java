@@ -1,5 +1,6 @@
 package lists;
 
+import IOFile.LoadDataFromFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -9,17 +10,25 @@ import model.Restaurant;
 import util.MyUtil;
 
 public class RestaurantList implements IManager<Restaurant> {
-
+    private static RestaurantList instance;
     private Restaurant[] restaurantList;
     private int existedRestaurant;
     private Scanner sc = new Scanner(System.in);
-    private final String header = String.format("|%-6s|%-25s|%-14s|%-25s|", "hotelID", "hotelName", "phoneNumber", "address");
+    private final String header = String.format("|%-9s|%-25s|%-14s|%-25s|", "resID", "resName", "phoneNumber", "address");
 
-    public RestaurantList() {
+     private RestaurantList() {
         restaurantList = new Restaurant[0];
         existedRestaurant = 0;
+        ReadData(new LoadDataFromFile("Files/Restaurants.dat"));
     }
 
+     public static RestaurantList getInstance() {
+        if (instance == null) {
+            instance = new RestaurantList();
+        }
+        return instance;
+    }
+     
     @Override
     public void add() {
         String id;
@@ -124,7 +133,7 @@ public class RestaurantList implements IManager<Restaurant> {
                 }
             }
         }
-
+        System.out.println(header);
         for (int i = 0; i < existedRestaurant; i++) {
             restaurantList[i].display();
         }
@@ -188,14 +197,8 @@ public class RestaurantList implements IManager<Restaurant> {
     }
 
     public static void main(String[] args) {
-        RestaurantList rl = new RestaurantList();
-        rl.add();
-        rl.add();
-        rl.printListAscendingById();
-        rl.update();
-        rl.remove();
-        rl.searchById();
-        rl.printListAscendingById();
+        RestaurantList re = RestaurantList.getInstance();
+        re.printListAscendingById();
     }
 
 }

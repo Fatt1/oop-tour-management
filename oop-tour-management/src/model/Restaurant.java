@@ -1,8 +1,10 @@
 
 package model;
 
+import java.io.Serializable;
 
-public class Restaurant {
+
+public class Restaurant implements Serializable{
     private String restaurantID;
     private String restaurantName;
     private String phoneNumber;
@@ -57,6 +59,6 @@ public class Restaurant {
     }
     
     public void display() {
-        System.out.printf("|%-6s|%-25s|%-14s|%-25s|\n", restaurantID, restaurantName, phoneNumber, address);
+        System.out.printf("|%-9s|%-25s|%-14s|%-25s|\n", restaurantID, restaurantName, phoneNumber, address);
     }
 }
