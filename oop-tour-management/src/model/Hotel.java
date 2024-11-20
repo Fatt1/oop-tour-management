@@ -1,10 +1,8 @@
 
 package model;
 
-import java.io.Serializable;
 
-
-public class Hotel implements Serializable{
+public class Hotel {
 
     private String hotelID;
     private String hotelName;

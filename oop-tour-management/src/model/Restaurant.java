@@ -1,10 +1,8 @@
 
 package model;
 
-import java.io.Serializable;
 
-
-public class Restaurant implements Serializable{
+public class Restaurant {
     private String restaurantID;
     private String restaurantName;
     private String phoneNumber;

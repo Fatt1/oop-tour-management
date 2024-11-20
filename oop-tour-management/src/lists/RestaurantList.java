@@ -1,7 +1,6 @@
 package lists;
 
 import IOFile.LoadDataFromFile;
-import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -11,7 +10,6 @@ import model.Restaurant;
 import util.MyUtil;
 
 public class RestaurantList implements IManager<Restaurant> {
-
     private Scanner sc = new Scanner(System.in);
     private static RestaurantList instance;
     private int existedRestaurant;
@@ -149,7 +147,7 @@ public class RestaurantList implements IManager<Restaurant> {
             System.out.println("NOT FOUND!");
             return;
         }
-        r2.display();
+       r2.display();
     }
 
     @Override
@@ -182,11 +180,11 @@ public class RestaurantList implements IManager<Restaurant> {
     @Override
     public void ReadData(LoadData loadData) {
         Object[] b = loadData.read();
-        if (b == null) {
+        if( b == null){
             System.out.println("Rong");
             return;
         }
-        for (Object o : b) {
+        for(Object o : b){
             restaurantList = Arrays.copyOf(restaurantList, restaurantList.length + 1);
             restaurantList[existedRestaurant] = (Restaurant) o;
             existedRestaurant++;
@@ -202,6 +200,11 @@ public class RestaurantList implements IManager<Restaurant> {
         RestaurantList rl = new RestaurantList();
         rl.add();
         rl.add();
-        rl.saveToDate(new SaveDataToFile("Files/Restaurants.dat"));
+        rl.printListAscendingById();
+        rl.update();
+        rl.remove();
+        rl.searchById();
+        rl.printListAscendingById();
     }
+
 }
