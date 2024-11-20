@@ -336,7 +336,6 @@ public class TourScheduleList implements IManager<TourSchedule> {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
 //        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
- l.add();
 //  l.add();
 // l.add();
 // l.add();

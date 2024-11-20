@@ -333,7 +333,9 @@ public class CustomerList implements IManager<Customer>{
         CustomerList cl = CustomerList.getInstance();
         cl.countToursPerCustomer();
 //        cl.add();
-//        cl.printListAscendingById();
+//        cl.add();
+//        cl.add();
+        cl.printListAscendingById();
 
 //        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
 //        

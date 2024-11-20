@@ -15,13 +15,13 @@ public class HotelList implements IManager<Hotel> {
     private static HotelList instance;
     private int existedHotel;
     private Hotel[] hotelList;
-    private final String header = String.format("|%-15s|%-12s|%-12s|%-12s|%-12s|", "HOTEL", "hotelID", "hotelName", "phoneNumber", "address");
+    private final String header = String.format("|%-9s|%-25s|%-14s|%-25s|", "hotelID", "hotelName", "phoneNumber", "address");
     private Scanner sc = new Scanner(System.in);
 
     private HotelList() {
         hotelList = new Hotel[0];
         existedHotel = 0;
-        ReadData(new LoadDataFromFile("Files/Hotel.dat"));
+        ReadData(new LoadDataFromFile("Files/Hotels.dat"));
     }
 
     public static HotelList getHotelList() {
@@ -162,6 +162,7 @@ public class HotelList implements IManager<Hotel> {
                 }
             }
         }
+        System.out.println(header);
         for (int i = 0; i < existedHotel; i++) {
             hotelList[i].display();
         }
@@ -226,6 +227,6 @@ public class HotelList implements IManager<Hotel> {
     public static void main(String[] args) {
 
         HotelList l = HotelList.getHotelList();
-        l.saveToDate(new SaveDataToFile("Files/Hotel.dat"));
+        l.printListAscendingById();
     }
 }
