@@ -72,7 +72,7 @@ public class Invoice implements Serializable{
         this.invoiceDate = invoiceDate;
     }
 
-    public double getTotalAmount() {
+    public int getTotalAmount() {
         return totalAmount;
     }
 
@@ -82,7 +82,8 @@ public class Invoice implements Serializable{
 
     @Override
     public String toString() {
-        return "Invoice{" + "id=" + id + ", customerId=" + customerId + ", employeeId=" + employeeId + ", tourScheduleId=" + tourScheduleId + ", invoiceDate=" + invoiceDate + ", totalAmount=" + totalAmount + '}';
+        return String.format("|%-9s|%-12s|%-14s|%-20s|%-25s|%-20d|\n",
+                            id, customerId, employeeId, tourScheduleId, invoiceDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), totalAmount);
     }
     
     public void display(){

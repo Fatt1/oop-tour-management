@@ -13,10 +13,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import model.Invoice;
+import model.InvoiceDetails;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
+import model.tour.TourSchedule;
 import ui.Menu;
 import util.MyUtil;
 
@@ -343,7 +348,7 @@ public class TourList implements IManager<Tour>, Serializable {
 
     }
 
-    public String getTourId() {
+    public String getTourId() { // lúc nhạp ở class khác thì gọi hàm này ra để cho nhập dữ liệu có sẵn trong tourList chứ không đc nhập ở bên ngoài
         String id;
         do {
             System.out.println("--------------------------------------------------------");
@@ -357,7 +362,36 @@ public class TourList implements IManager<Tour>, Serializable {
         } while (searchById(id) < 0);
         return null;
     }
-
+    
+    public void renvenueEachTour() {
+        Map<Tour, Long> renvenue = new HashMap();
+        TourScheduleList tourScheduleList = TourScheduleList.getInstance(); // lấy ra ds sách để chuẩn bị tìm kiếm trong invoice
+        for (Tour t : tourList) { // đầu tiền là sẽ chạy từ đầu hết để lấy tất cả tourId để thống kê
+            long total = 0;
+            TourSchedule[] tourSchedule = tourScheduleList.getTourScheduleSameTourID(t.getTourID());
+            for (TourSchedule ts : tourSchedule) {
+                total += getRevenueEachTourSchdule(ts.getID());
+            }
+         renvenue.put(t, total);
+        }
+        System.out.printf("|%-10s|%-25s|%-13s|\n", "TOUR ID", "TOUR NAME", "REVENUE");
+        for (Map.Entry<Tour, Long> r : renvenue.entrySet()) {
+            String tourName = r.getKey().getTourName();
+            String tourId = r.getKey().getTourID();
+            System.out.printf("|%-10s|%-25s|%-13d|\n",tourId, tourName, r.getValue());
+        }
+    }
+    
+    private long getRevenueEachTourSchdule(String tourScheduleId) {
+        long total = 0;
+        InvoiceList ivl = InvoiceList.getInstance();
+        Invoice[] invoice = ivl.getInvoiceListByTourScheduleId(tourScheduleId);
+        for (Invoice i : invoice) {
+            total += i.getTotalAmount();
+        }
+        return total;
+    }
+    
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
  //       l.printListAscendingById();
@@ -373,9 +407,9 @@ public class TourList implements IManager<Tour>, Serializable {
 //           l.add();
 //           l.add();
 //           l.add();
-
+    l.renvenueEachTour();
         l.printListAscendingById();
-       l.update();
+//       l.update();
 //        l.update();
 //        l.update();
 //        l.update();

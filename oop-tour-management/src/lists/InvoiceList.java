@@ -6,6 +6,7 @@ package lists;
 
 import IOFile.LoadDataFromFile;
 import IOFile.SaveDataToFile;
+import IOFile.SaveFileText;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -235,6 +236,18 @@ public class InvoiceList implements IManager<Invoice>{
     }
     
     
+    public Invoice[] getInvoiceListByTourScheduleId(String tourScheduleId){
+        Invoice[] result = new Invoice[0];
+        int count = 0;
+        for (Invoice invoice : invoiceList) {
+            if(invoice.getTourScheduleId().equalsIgnoreCase(tourScheduleId)){
+                result = Arrays.copyOf(result, count + 1);
+                result[count++] = invoice;
+            }
+        }
+        return result;
+    }
+    
     @Override
     public void ReadData(LoadData loadData) {
       
@@ -263,18 +276,12 @@ public class InvoiceList implements IManager<Invoice>{
     //test, xóa comment, bấm shift + F6 để test
     public static void main(String[] args) {
         InvoiceList i = InvoiceList.getInstance();
-        i.ReadData(new LoadDataFromFile("Files/Invoices.dat"));
-        i.showInvoiceDetails();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
-        
+       
         i.printListAscendingById();
-        //i.searchById();
-        i.showInvoiceDetails();
-//        i.update();
-//        
+       
+        
+
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
+        
     }
 }

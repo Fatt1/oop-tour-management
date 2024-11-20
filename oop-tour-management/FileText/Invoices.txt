@@ -1,0 +1,3 @@
+|ID       |CUSTOMER ID |EMPLOYEE ID   |TOUR SCHEDULE ID    |DATE                     |TOTAL               |
+|INV-008  |C004        |E002          |TS111               |20/11/2024 20:32:48      |1050000             |
+
