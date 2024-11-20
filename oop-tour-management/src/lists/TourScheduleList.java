@@ -233,6 +233,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
     private TourSchedule enterData(TourSchedule tourTemp) {
         TourList l = TourList.getInstance();
         String id = l.getTourId();
+        
         tourTemp.setTourID(id);
         tourTemp.setID(enterTourScheduleID());
         tourTemp.setAdultPrice(l.searchObjectById(id).getAdultPrice());
@@ -338,9 +339,9 @@ public class TourScheduleList implements IManager<TourSchedule> {
  l.add();
  l.add();
  l.add();
-// l.add();
-// l.add();
-// l.add();
+ l.add();
+ l.add();
+ l.add();
 //        l.update();
 
 //        l.update();
