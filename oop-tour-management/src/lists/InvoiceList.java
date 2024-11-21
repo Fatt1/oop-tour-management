@@ -272,59 +272,82 @@ public class InvoiceList implements IManager<Invoice> {
         saveData.save(invoiceList, header);
     }
 
-    public void getQuarterPerYear() {
-        int year;
-        String choice = MyUtil.getString("Choose Y/N:  ", "This information is crucial!!");
-        if (choice.equalsIgnoreCase("N")) {
-            System.out.println("Stop calculating!");
-        } else if (choice.equalsIgnoreCase("Y")) {
-            do {
-                year = MyUtil.getAnInteger("Opt the year you want to manage:  ", "The year is required");
-                long quarterOne = 0, quarterTwo = 0, quarterThree = 0,quarterFour = 0;
-                    for (int i = 0; i < invoiceList.length; i++) {
-                        if(invoiceList[i].getInvoiceDate().getYear() == year){
-                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 1 && invoiceList[i].getInvoiceDate().getMonthValue() < 4){   
-                               quarterOne += invoiceList[i].getTotalAmount();
-                           }
-                        }
-                    
-                }
-                System.out.println("QuartterOne in" + " " + year + ":" + quarterOne);
-                for (int i = 0; i < invoiceList.length; i++) {
-                        if(invoiceList[i].getInvoiceDate().getYear() == year){
-                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 4 && invoiceList[i].getInvoiceDate().getMonthValue() < 7){   
-                               quarterTwo += invoiceList[i].getTotalAmount();
-                           }
-                        }
-                    
-                }
-                System.out.println("QuartterTwo in" + " " + year + ":" + quarterTwo);
-                
-                for (int i = 0; i < invoiceList.length; i++) {
-                        if(invoiceList[i].getInvoiceDate().getYear() == year){
-                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 7 && invoiceList[i].getInvoiceDate().getMonthValue() < 10){   
-                               quarterThree += invoiceList[i].getTotalAmount();
-                           }
-                        }
-                    
-                }
-                System.out.println("QuartterThree in" + " " + year + ":" + quarterThree);
-                
-                for (int i = 0; i < invoiceList.length; i++) {
-                        if(invoiceList[i].getInvoiceDate().getYear() == year){
-                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 10 && invoiceList[i].getInvoiceDate().getMonthValue() <= 12){   
-                               quarterFour += invoiceList[i].getTotalAmount();
-                           }
-                        }
-                    
-                }
-                System.out.println("QuartterFour in" + " " + year + ":" + quarterFour);
-            } while (true);
-        } else {
-            System.out.println("Please choose Y or N!");
-        }
+//    public void getQuarterPerYear() {
+//        int year;
+//        String choice = MyUtil.getString("Choose Y/N:  ", "This information is crucial!!");
+//        if (choice.equalsIgnoreCase("N")) {
+//            System.out.println("Stop calculating!");
+//        } else if (choice.equalsIgnoreCase("Y")) {
+//            do {
+//                year = MyUtil.getAnInteger("Opt the year you want to manage:  ", "The year is required");
+//                long quarterOne = 0, quarterTwo = 0, quarterThree = 0,quarterFour = 0;
+//                    for (int i = 0; i < invoiceList.length; i++) {
+//                        if(invoiceList[i].getInvoiceDate().getYear() == year){
+//                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 1 && invoiceList[i].getInvoiceDate().getMonthValue() < 4){   
+//                               quarterOne += invoiceList[i].getTotalAmount();
+//                           }
+//                        }
+//                    
+//                }
+//                System.out.println("QuartterOne in" + " " + year + ":" + quarterOne);
+//                for (int i = 0; i < invoiceList.length; i++) {
+//                        if(invoiceList[i].getInvoiceDate().getYear() == year){
+//                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 4 && invoiceList[i].getInvoiceDate().getMonthValue() < 7){   
+//                               quarterTwo += invoiceList[i].getTotalAmount();
+//                           }
+//                        }
+//                    
+//                }
+//                System.out.println("QuartterTwo in" + " " + year + ":" + quarterTwo);
+//                
+//                for (int i = 0; i < invoiceList.length; i++) {
+//                        if(invoiceList[i].getInvoiceDate().getYear() == year){
+//                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 7 && invoiceList[i].getInvoiceDate().getMonthValue() < 10){   
+//                               quarterThree += invoiceList[i].getTotalAmount();
+//                           }
+//                        }
+//                    
+//                }
+//                System.out.println("QuartterThree in" + " " + year + ":" + quarterThree);
+//                
+//                for (int i = 0; i < invoiceList.length; i++) {
+//                        if(invoiceList[i].getInvoiceDate().getYear() == year){
+//                           if(invoiceList[i].getInvoiceDate().getMonthValue() >= 10 && invoiceList[i].getInvoiceDate().getMonthValue() <= 12){   
+//                               quarterFour += invoiceList[i].getTotalAmount();
+//                           }
+//                        }
+//                    
+//                }
+//                System.out.println("QuartterFour in" + " " + year + ":" + quarterFour);
+//            } while (true);
+//        } else {
+//            System.out.println("Please choose Y or N!");
+//        }
+//    }
+    
+     public void getQuarterPerYear() { // ver2
+        long quarterOne = 0, quarterTwo = 0, quarterThree = 0, quarterFour = 0;
+        int year = MyUtil.getAnInteger("Opt the year you want to manage:  ", "The year is required");
+         for (Invoice inv : invoiceList) {
+             LocalDateTime dateTime = inv.getInvoiceDate();
+             if(dateTime.getYear() == year){
+                 if(dateTime.getMonthValue() >= 1 && dateTime.getMonthValue() < 4)
+                 quarterOne += inv.getTotalAmount();
+                 else if(dateTime.getMonthValue() >= 4 && dateTime.getMonthValue() < 7)
+                     quarterTwo += inv.getTotalAmount();
+                 else if(dateTime.getMonthValue() >= 7 && dateTime.getMonthValue() < 10)
+                     quarterThree += inv.getTotalAmount();
+                 else
+                     quarterFour += inv.getTotalAmount();
+             }
+         }
+         
+         System.out.printf("|%-10s|%-15s|%-15s|%-15s|%-15s|\n", "Quartter", "Quartter 1", "Quartter 2", "Quartter 3", "Quartter 4");
+         System.out.printf("|%-10s|%-15d|%-15d|%-15d|%-15d|", "Revenue", quarterOne, quarterTwo, quarterThree, quarterFour);
+        
     }
 
+   
     //test, xóa comment, bấm shift + F6 để test
     public static void main(String[] args) {
         InvoiceList i = InvoiceList.getInstance();
