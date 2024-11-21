@@ -182,7 +182,10 @@ public class TourScheduleList implements IManager<TourSchedule> {
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                    tourSchedule.setTourID(TourList.getInstance().getTourId());
+                    id = TourList.getInstance().getTourId();
+                    tourSchedule.setTourID(id);
+                    tourSchedule.setChildPrice(TourList.getInstance().searchObjectById(id).getChildPrice());
+                    tourSchedule.setAdultPrice(TourList.getInstance().searchObjectById(id).getAdultPrice());
                     break;
                 case 2:
                     System.out.println("--------------------------------------------------------");
@@ -233,16 +236,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
     private TourSchedule enterData(TourSchedule tourTemp) {
         TourList l = TourList.getInstance();
-        double discountForDomesticTour = 0;
-        
         String id = l.getTourId();
+        
         tourTemp.setTourID(id);
         tourTemp.setID(enterTourScheduleID());
         
-        if(l.searchObjectById(id) instanceof DomesticTour){
-            DomesticTour tour =(DomesticTour) l.searchObjectById(id);
-            discountForDomesticTour = tour.getLocalDiscount();
-        }
         tourTemp.setAdultPrice(l.searchObjectById(id).getAdultPrice());
         tourTemp.setChildPrice(l.searchObjectById(id).getChildPrice());
         tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
@@ -269,33 +267,6 @@ public class TourScheduleList implements IManager<TourSchedule> {
         return ts;
     }
 
-//    public TourSchedule[] getTourScheduleCheapPrice(int price){
-//        TourSchedule[] ts = new TourSchedule[0];
-//        int count = 0;
-//        for (int i = 0; i < existedTourSchedule; i++)
-//            if(tourScheduleList[i].getTotalPrice()< price){
-//                ts = Arrays.copyOf(ts, ts.length + 1);
-//                ts[count++] = tourScheduleList[i];                
-//            }
-//        return ts;
-//    }
-//    public void printListAscendingByCost(){
-//        if (existedTourSchedule == 0) {
-//            System.out.println("List is empting");
-//            return;
-//        }
-//        System.out.println(header);
-//        for (int i = 0; i < existedTourSchedule - 1; i++) 
-//            for (int j = i + 1; j < existedTourSchedule; j++) 
-//                if (tourScheduleList[i].getCurrentPrice() > tourScheduleList[j].getCurrentPrice()) {
-//                    TourSchedule temp = tourScheduleList[i];
-//                    tourScheduleList[i] = tourScheduleList[j];
-//                    tourScheduleList[j] = temp;
-//                }           
-//        
-//        for (int i = 0; i < existedTourSchedule; i++) 
-//            tourScheduleList[i].showInfor();           
-//    }
     public String getTourScheduleID() {
         if (existedTourSchedule == 0) {
             System.out.println("No more than a tour in list");
@@ -336,8 +307,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
 //        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-  l.add();
- l.add();
+//  l.add();
+// l.add();
 // l.add();
 // l.add();
 // l.add();
