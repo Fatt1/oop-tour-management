@@ -239,7 +239,7 @@ public class InvoiceDetailsList implements Serializable{
         CustomerList cusList = CustomerList.getInstance();
         System.out.println("Invoice Details List");
         InvoiceDetails result[] = getInvoiceDetails(o -> o.getInvoiceId().equalsIgnoreCase(invoiceId)); // trả về mảng invoiceId mà mình muốn tìm
-        System.out.printf("|%-20s|%-12s|%-14s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE(INCLUDE VAT&DC)");
+        System.out.printf("|%-20s|%-12s|%-20s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE(INCLUDE VAT&DC)");
         for (InvoiceDetails x : result) {   
             Customer cus = cusList.searchObjectById(x.getCustomerId());
             System.out.printf("|%-20s",cus.getLastName() + " " + cus.getFirstName());

@@ -47,10 +47,10 @@ public class InvoiceDetails implements Serializable{
 
     @Override
     public String toString() {
-        return String.format("|%-12s|%-12s|%-14d|\n",invoiceId, customerId, price);
+        return String.format("|%-12s|%-12s|%-20d|\n",invoiceId, customerId, price);
     }
     
     public void display(){
-        System.out.printf("|%-12s|%-14d|\n", customerId, price);
+        System.out.printf("|%-12s|%-20d|\n", customerId, price);
     }
 }
