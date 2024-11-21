@@ -279,17 +279,10 @@ public class InvoiceList implements IManager<Invoice>{
        
         i.add();
         i.add();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
-        i.add();
+     
        
         i.printListAscendingById();
-
+        
         i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
         i.saveToDate(new SaveFileText("FileText/Invoices.txt"));
         

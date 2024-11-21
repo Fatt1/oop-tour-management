@@ -243,8 +243,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
             DomesticTour tour =(DomesticTour) l.searchObjectById(id);
             discountForDomesticTour = tour.getLocalDiscount();
         }
-        tourTemp.setAdultPrice((int) (l.searchObjectById(id).getAdultPrice() * (100 - discountForDomesticTour)/100));
-        tourTemp.setChildPrice((int) (l.searchObjectById(id).getChildPrice() * (100 - discountForDomesticTour)/100));
+        tourTemp.setAdultPrice(l.searchObjectById(id).getAdultPrice());
+        tourTemp.setChildPrice(l.searchObjectById(id).getChildPrice());
         tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
         tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
@@ -336,8 +336,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
 //        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-//  l.add();
-// l.add();
+  l.add();
+ l.add();
 // l.add();
 // l.add();
 // l.add();

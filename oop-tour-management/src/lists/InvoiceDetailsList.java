@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.Customer;
 import model.Invoice;
+import model.tour.Tour;
 import model.tour.TourSchedule;
 import ui.Menu;
 import util.MyUtil;
@@ -47,7 +48,6 @@ public class InvoiceDetailsList implements Serializable{
     
     
     public void add(String invoiceId, TourSchedule ts){
-        // còn phải code việc bắt không cho trùng id khách hàng nếu 1 chi tiết hóa đơn mà có 2 người
         int newEmptySlots = ts.getEmptySlots() - 1;
         if(newEmptySlots < 0) {
             System.out.println("Full slot can't add more!!");
@@ -71,14 +71,15 @@ public class InvoiceDetailsList implements Serializable{
         int customerPrice = 0;
         CustomerList cusList = CustomerList.getInstance();
         Customer x = cusList.searchObjectById(customerId);
+        Tour t = TourList.getInstance().searchObjectById(ts.getTourID()); 
         if(x == null){
             return customerPrice;
         }
         else if(x.getAge() > 9) { // lớn hơn 9 tuổi sẽ là vé người lớn
-            customerPrice = ts.getAdultPrice();
+            customerPrice = t.calculateAdultPrice(); // lấy giá bao gồm thuế và VAT và localDiscount nếu họ đi DomesticTour
         }
         else if(x.getAge() <= 9) { // bè hơn 9 tuổi là vé trẻ em
-            customerPrice = ts.getChildPrice();
+            customerPrice =t.calculateChildPrice();
         }
         return customerPrice;
     }
@@ -91,7 +92,6 @@ public class InvoiceDetailsList implements Serializable{
         }
         return totalPrice;
     }
-    
     
     
     public void update(String invoiceId, TourSchedule ts) {
@@ -239,8 +239,8 @@ public class InvoiceDetailsList implements Serializable{
         CustomerList cusList = CustomerList.getInstance();
         System.out.println("Invoice Details List");
         InvoiceDetails result[] = getInvoiceDetails(o -> o.getInvoiceId().equalsIgnoreCase(invoiceId)); // trả về mảng invoiceId mà mình muốn tìm
-        System.out.printf("|%-20s|%-12s|%-14s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE");
-        for (InvoiceDetails x : result) {
+        System.out.printf("|%-20s|%-12s|%-14s|\n", "CUSTOMER NAME", "CUSTOMER ID", "PRICE(INCLUDE VAT&DC)");
+        for (InvoiceDetails x : result) {   
             Customer cus = cusList.searchObjectById(x.getCustomerId());
             System.out.printf("|%-20s",cus.getLastName() + " " + cus.getFirstName());
             x.display();

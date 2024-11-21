@@ -68,8 +68,6 @@ public class DomesticTour extends Tour implements Serializable {
         super.input();
         
         this.localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The LOCAL DISCOUNT input is incorrect");
-        this.setAdultPrice(calculateAdultPrice());
-        this.setChildPrice(calculateChildPrice());
     }
     
 //    public double getDiscountPrice(){

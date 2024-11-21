@@ -395,8 +395,8 @@ public class TourList implements IManager<Tour>, Serializable {
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
         l.printListAscendingById();
-//        l.add();
-//                l.add();
+        l.add();
+                l.add();
 //        l.add();
 //        l.add();
 //        l.add();
