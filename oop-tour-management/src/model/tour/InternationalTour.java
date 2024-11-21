@@ -80,9 +80,20 @@ public class InternationalTour extends Tour implements Serializable {
     @Override
     public void input() {
         super.input();
-
+        this.setAdultPrice(calculateAdultPrice());
+        this.setChildPrice(calculateChildPrice());
         this.country = MyUtil.getString("Enter country: ", "The COUNTRY input is incorrect");
         this.visaRequired = MyUtil.getValueOrDefault("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
 
+    }
+
+    @Override
+    public int calculateChildPrice() {
+       return (int)Math.round(this.childPrice * (1 + MyUtil.VAT));
+    }
+
+    @Override
+    public int calculateAdultPrice() {
+       return (int)Math.round(this.adultPrice * (1 + MyUtil.VAT));
     }
 }

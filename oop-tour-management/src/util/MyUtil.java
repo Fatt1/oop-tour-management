@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class MyUtil {
 
     private static Scanner sc = new Scanner(System.in);
-
+    public static final double VAT = 0.1;
     public static int getAnInteger(String inputMsg, String errorMsg) {
         int n;
         while (true) {

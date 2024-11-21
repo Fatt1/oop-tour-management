@@ -13,7 +13,7 @@ import util.MyUtil;
  *
  * @author nghialam
  */
-public class Tour implements Serializable {
+public abstract class Tour implements Serializable {
 
     protected String tourID, tourName, destination, departureLocation, vehicleID;
     protected int adultPrice, childPrice;
@@ -35,6 +35,7 @@ public class Tour implements Serializable {
 
     public String getTourID() {
         return tourID;
+        
     }
 
     public String getTourName() {
@@ -84,7 +85,9 @@ public class Tour implements Serializable {
     public void setChildPrice(int childPrice) {
         this.childPrice = childPrice;
     }
-
+    
+    public abstract int calculateChildPrice();
+    public abstract int calculateAdultPrice();
     public int getQuantity() {
         return quantity;
     }
