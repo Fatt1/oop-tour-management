@@ -369,7 +369,7 @@ public class TourList implements IManager<Tour> {
     public static void main(String[] args) {
         TourList l = TourList.getInstance();
         l.printListAscendingById();
-        l.menuForFilter();
+//        l.menuForFilter();
 //        l.update();
  //           l.add();
 //        l.printListAscendingById();
@@ -382,6 +382,6 @@ public class TourList implements IManager<Tour> {
          l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
         //l.remove();
         //l.searchObjectByName();
-        // l.printListAscendingById();
+        //l.printListAscendingById();
     }
 }
