@@ -28,10 +28,11 @@ public class TourMenu implements ManagementMenu {
         tourMenu.addNewOption("2. ➤ Print tour list");
         tourMenu.addNewOption("3. ➤ Update tour");
         tourMenu.addNewOption("4. ➤ Remove tour");
-        tourMenu.addNewOption("5. ➤ Search tour");
-        tourMenu.addNewOption("6. ➤ Show filter by tour");
-        tourMenu.addNewOption("7. ➤ Save to file text");
-        tourMenu.addNewOption("8. ➤ Exit");
+        tourMenu.addNewOption("5. ➤ Search tour by id");
+        tourMenu.addNewOption("6. ➤ Search tour by name");
+        tourMenu.addNewOption("7. ➤ Show filter by tour");
+        tourMenu.addNewOption("8. ➤ Save to file");
+        tourMenu.addNewOption("9. ➤ Exit");
 
         int choice;
         ControllerTSandT control = new ControllerTSandT();
@@ -64,22 +65,25 @@ public class TourMenu implements ManagementMenu {
                 case 5:
                     System.out.println("★ Searching for an tour ★");
                     control.getTourList().searchById();
-                    break;
                 case 6:
+                    System.out.println("★ Searching for an tour ★");
+                    control.getTourList().searchObjectByName();
+                    break;
+                case 7:
                     System.out.println("★ Showing filter by tour★");
                     control.getTourList().menuForFilter();
                     break;
-                case 7:
+                case 8:
                     System.out.println("★ Saving to file ★");
-                    control.getTourList().saveToDate(new SaveFileText("FileText/Tour.txt"));
+                    control.getTourList().saveToDate(new SaveFileText("Files/Tour.dat"));
                     System.out.println("✔ Saved successfully!");
                     break;
             }
-            if (choice != 8) {
+            if (choice != 9) {
                 System.out.println("\nPress Enter to return to the menu...");
                 new Scanner(System.in).nextLine();
             }
-        } while (choice != 8);
+        } while (choice != 9);
 
         System.out.println("=============================================");
         System.out.println("         Exiting Tour Management          ");

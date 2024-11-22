@@ -4,6 +4,7 @@
  */
 package ui;
 
+import IOFile.SaveDataToFile;
 import IOFile.SaveFileText;
 import java.util.Scanner;
 import model.tour.controller.ControllerTSandT;
@@ -28,7 +29,7 @@ public class TourScheduleMenu implements ManagementMenu {
         tourMenu.addNewOption("4. ➤ Remove tour Schedule");
         tourMenu.addNewOption("5. ➤ Search tour Schedule");
         tourMenu.addNewOption("6. ➤ Show filter by tour Schedule");
-        tourMenu.addNewOption("7. ➤ Save to file text");
+        tourMenu.addNewOption("7. ➤ Save to file");
         tourMenu.addNewOption("8. ➤ Exit");
 
         int choice;
@@ -69,7 +70,7 @@ public class TourScheduleMenu implements ManagementMenu {
                     break;
                 case 7:
                     System.out.println("★ Saving to file ★");
-                    control.getTourScheduleList().saveToDate(new SaveFileText("FileText/TourSchedule.txt"));
+                    control.getTourScheduleList().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
                     System.out.println("✔ Saved successfully!");
                     break;
             }
@@ -80,7 +81,7 @@ public class TourScheduleMenu implements ManagementMenu {
         } while (choice != 8);
 
         System.out.println("=============================================");
-        System.out.println("         Exiting Tour Management          ");
+        System.out.println("      Exiting TourSchedule Management          ");
         System.out.println("=============================================");
     }
         public static void main(String[] args) {

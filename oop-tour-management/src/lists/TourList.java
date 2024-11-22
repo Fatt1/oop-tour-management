@@ -411,38 +411,4 @@ public class TourList implements IManager<Tour>, Serializable {
         return total;
     }
     
-    public static void main(String[] args) {
-        TourList l = TourList.getInstance();
-        l.printListAscendingById();
-//        l.add();
-//                l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//
-//        l.renvenueEachTour();
-             
-         l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-//        l.remove();        l.remove();
-//        l.remove();
-//        l.remove();
-//        l.remove();
-//        l.remove();
-//    l.update();
-//        l.update();
-//    l.update();
-//    l.update();
-//    l.update();
-//    l.update();
-
-        l.searchObjectByName();
-        // l.printListAscendingById();
-                 l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-    }
 }
