@@ -234,7 +234,7 @@ public class VehicleList implements IManager<Vehicle> {
     public static void main(String[] args) {
         VehicleList v = new VehicleList();
         v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
-        v.add();
+//        v.add();
         v.printListAscendingById();
         v.update();
 

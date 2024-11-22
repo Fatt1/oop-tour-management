@@ -129,7 +129,6 @@ public abstract class Tour implements Serializable {
     }
 
     public void setData(Tour tour, int choice) {
-        TourSchedule[] tourSchedule;
         switch (choice) {
             case 1:
                 System.out.println("Bye bye!!");
@@ -149,28 +148,16 @@ public abstract class Tour implements Serializable {
             case 5:
                 int adultCost = MyUtil.getAnInteger("Enter adult price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
                 tour.setAdultPrice(adultCost);
-                tourSchedule = TourScheduleList.getInstance().getTourScheduleSameTourID(tourID);
-                for(TourSchedule ts : tourSchedule){
-                    ts.setAdultPrice(adultCost);
-                }
-                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
                 break;
             case 6:
                 int childCost = MyUtil.getAnInteger("Enter child price (1000<= price <= 50000000): ", "The input is kind of INTEGER");
                 tour.setChildPrice(childCost);
-                tourSchedule = TourScheduleList.getInstance().getTourScheduleSameTourID(tourID);
-                for(TourSchedule ts : tourSchedule){
-                    ts.setChildPrice(childCost);
-                }
-                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-
                 break;                
             case 7:
                 int slot = MyUtil.getAnInteger("Enter quantity(1 <= quantity <= 50): ", "The input is kind of integer (1->50)", 1, 50);
                 tour.setQuantity(slot);
                 break;
             case 8:
-                
                 String newVehicleId = VehicleList.getInstance().getExistedVehicleId();
                 tour.setVehicleID(newVehicleId);
                 break;

@@ -17,7 +17,7 @@ public class TourSchedule implements Serializable {
 
     private String ID, tourID, employeeID;
     private LocalDate returnDay, departureDay;
-    private int emptySlots, adultPrice, childPrice;
+    private int emptySlots;
     private int totalPrice;
     private long duration;
 
@@ -28,8 +28,6 @@ public class TourSchedule implements Serializable {
         this.returnDay = returnDay;
         this.departureDay = departureDay;
         this.emptySlots = emptySlots;
-        this.adultPrice = 0;
-        this.childPrice = 0;
         this.duration = ChronoUnit.DAYS.between(departureDay, returnDay);
     }
 
@@ -55,15 +53,6 @@ public class TourSchedule implements Serializable {
     public String getEmployeeID() {
         return employeeID;
     }
-
-    public void setAdultPrice(int adultPrice) {
-        this.adultPrice = adultPrice;
-    }
-
-    public void setChildPrice(int childPrice) {
-        this.childPrice = childPrice;
-    }
-
     public void setEmployeeID(String EmployeeID) {
         this.employeeID = EmployeeID;
     }
@@ -92,14 +81,6 @@ public class TourSchedule implements Serializable {
         this.emptySlots = emptySlots;
     }
 
-    public int getAdultPrice() {
-        return adultPrice;
-    }
-
-    public int getChildPrice() {
-        return childPrice;
-    }
-
     public int getTotalPrice() {
         return totalPrice;
     }
@@ -118,13 +99,13 @@ public class TourSchedule implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|\n",
-                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.adultPrice, this.childPrice, this.totalPrice);
+        return String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s||%-15s|\n",
+                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.totalPrice);
     }
 
     public void showInfor() {
-        System.out.printf("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|%-15s|%-15s|\n",
-                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.adultPrice, this.childPrice, this.totalPrice);
+        System.out.printf("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|\n",
+                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.totalPrice);
     }
 
 }

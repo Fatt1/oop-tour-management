@@ -10,14 +10,11 @@ import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import model.Invoice;
-import model.InvoiceDetails;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -144,6 +141,23 @@ public class TourList implements IManager<Tour>, Serializable {
 
     }
 
+    public void remove(String id){
+         Tour tour = searchObjectById(id);
+        if (tour == null) {
+            System.out.println("Sr can't find tour");
+            return;
+        }
+        System.out.println("--------------------------------------------------------");
+        String choice = MyUtil.getValueOrDefault("Are you sure YES/NO: ", "Please input YES/NO");
+        if (choice.equalsIgnoreCase("YES")) {
+            for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
+                tourList[i] = tourList[i + 1];
+            }
+            tourList = Arrays.copyOf(tourList, tourList.length - 1);
+            existedTour--;
+            System.out.println("The process of removal is successful.");
+        }
+    }
     @Override
     public void printListAscendingById() {
         if (existedTour == 0) {
@@ -173,6 +187,11 @@ public class TourList implements IManager<Tour>, Serializable {
         }
         String id = MyUtil.getString("Enter ID(VD: TO123): ", "Don't find ID");
         Tour tour = searchObjectById(id);
+        if(tour == null){
+            System.out.println("Dont find!!!");
+            return;
+        }
+        System.out.println(header);
         tour.showInfor();
     }
 
