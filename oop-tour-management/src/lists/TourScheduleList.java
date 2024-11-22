@@ -329,6 +329,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
         String id;
         LocalDate time;
         do {
+            menu.printMenu();
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
