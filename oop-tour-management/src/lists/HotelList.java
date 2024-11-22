@@ -24,7 +24,7 @@ public class HotelList implements IManager<Hotel> {
         ReadData(new LoadDataFromFile("Files/Hotels.dat"));
     }
 
-    public static HotelList getInstance() {
+    public static HotelList getHotelList() {
         if (instance == null) {
             instance = new HotelList();
         }
@@ -226,7 +226,7 @@ public class HotelList implements IManager<Hotel> {
 
     public static void main(String[] args) {
 
-        HotelList l = HotelList.getInstance();
+        HotelList l = HotelList.getHotelList();
         l.printListAscendingById();
     }
 }
