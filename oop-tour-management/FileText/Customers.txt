@@ -13,3 +13,9 @@
 
 |C007  |NGUYEN VAN A             |CANADA         |021X          |NEW YORK                 |20-11-2000     |
 
+|C009  |DANG TRAN THANH          |KORAN          |022X          |THAI BINH                |21-12-2007     |
+
+|C010  |PHAN VIET HUY            |VIETNAM        |098X          |RISE OF KINGDOM          |20-12-2020     |
+
+|C012  |NGUYEN VAN TAM           |WIBU           |012X          |HA NOI                   |12-12-2018     |
+

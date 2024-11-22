@@ -202,6 +202,7 @@ public class CustomerList implements IManager<Customer>{
         Arrays.sort(cusList, (o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName())); // sap xep tang dan theo ten, su dung lambda expression
         System.out.println(header);
         for (Customer c : cusList) {
+            
             c.display();
         }
         

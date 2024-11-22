@@ -23,7 +23,7 @@ public class VehicleList implements IManager<Vehicle> {
     private static VehicleList instance;
     private Vehicle[] vehicleList;
     private int existedVehicle;
-    private String header = String.format("|%-6s|%-15s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
+    private String header = String.format("|%-6s|%-30s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
     private Scanner sc = new Scanner(System.in);
 
     private VehicleList() {
@@ -226,7 +226,7 @@ public class VehicleList implements IManager<Vehicle> {
     }
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(vehicleList,"");
+        saveData.save(vehicleList,header);
     }
 
     // test
