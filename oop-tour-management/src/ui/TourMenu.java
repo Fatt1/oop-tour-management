@@ -65,6 +65,7 @@ public class TourMenu implements ManagementMenu {
                 case 5:
                     System.out.println("★ Searching for an tour ★");
                     control.getTourList().searchById();
+                    break;
                 case 6:
                     System.out.println("★ Searching for an tour ★");
                     control.getTourList().searchObjectByName();

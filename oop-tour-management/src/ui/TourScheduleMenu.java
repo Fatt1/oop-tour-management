@@ -23,12 +23,12 @@ public class TourScheduleMenu implements ManagementMenu {
 
         // Lựa chọn menu
         Menu tourMenu = new Menu("Options:");
-        tourMenu.addNewOption("1. ➤ Add new Schedule tour");
-        tourMenu.addNewOption("2. ➤ Print tour Schedule list");
-        tourMenu.addNewOption("3. ➤ Update tour Schedule");
-        tourMenu.addNewOption("4. ➤ Remove tour Schedule");
-        tourMenu.addNewOption("5. ➤ Search tour Schedule");
-        tourMenu.addNewOption("6. ➤ Show filter by tour Schedule");
+        tourMenu.addNewOption("1. ➤ Add new tour schedule");
+        tourMenu.addNewOption("2. ➤ Print tour schedule list");
+        tourMenu.addNewOption("3. ➤ Update tour schedule");
+        tourMenu.addNewOption("4. ➤ Remove tour schedule");
+        tourMenu.addNewOption("5. ➤ Search tour schedule");
+        tourMenu.addNewOption("6. ➤ Show filter by tour schedule");
         tourMenu.addNewOption("7. ➤ Save to file");
         tourMenu.addNewOption("8. ➤ Exit");
 
@@ -44,28 +44,28 @@ public class TourScheduleMenu implements ManagementMenu {
             System.out.println("\nProcessing...\n");
             switch (choice) {
                 case 1:
-                    System.out.println("★ Adding a new tour Schedule★");
+                    System.out.println("★ Adding a new tour schedule★");
                     control.getTourScheduleList().add();
                     break;
                 case 2:
-                    System.out.println("★ Printing tour Schedule list ★");
+                    System.out.println("★ Printing tour schedule list ★");
                     control.getTourScheduleList().printListAscendingById();
                     break;
                 case 3:
-                    System.out.println("★ Updating an tour Schedule★");
+                    System.out.println("★ Updating an tour schedule★");
                     control.getTourScheduleList().update();
                     break;
                 case 4:
-                    System.out.println("★ Removing an tour Schedule★");
-                    control.removeTour();
+                    System.out.println("★ Removing an tour schedule★");
+                    control.getTourScheduleList().remove();
                     control.getTourScheduleList().printListAscendingById();
                     break;
                 case 5:
-                    System.out.println("★ Searching for an tour Schedule★");
+                    System.out.println("★ Searching for an tour schedule★");
                     control.getTourScheduleList().searchById();
                     break;
                 case 6:
-                    System.out.println("★ Showing filter by tour Schedule★");
+                    System.out.println("★ Showing filter by tour schedule★");
                     control.getTourScheduleList().menuForFilter();
                     break;
                 case 7:
@@ -84,7 +84,7 @@ public class TourScheduleMenu implements ManagementMenu {
         System.out.println("      Exiting TourSchedule Management          ");
         System.out.println("=============================================");
     }
-        public static void main(String[] args) {
+        public static void main(String[] args) { // có vấn đề với update và remove fix ngay!!!!!
         TourScheduleMenu in = new TourScheduleMenu();
         in.openMenu();
     }
