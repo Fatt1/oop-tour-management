@@ -1,19 +1,15 @@
 
 package oop.tour.management;
 
-import IOFile.LoadDataFromFile;
-import lists.HotelList;
-import lists.VehicleList;
-import model.Hotel;
-
-
-
+import ui.ManagementMenu;
+import ui.MainMenu;
 
 public class OopTourManagement {
 
 
     public static void main(String[] args) {
-
+        ManagementMenu mainMenu = new MainMenu();
+        mainMenu.openMenu();
     }
     
 }
