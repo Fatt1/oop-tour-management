@@ -10,14 +10,11 @@ import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import model.Invoice;
-import model.InvoiceDetails;
 import model.tour.DomesticTour;
 import model.tour.InternationalTour;
 import model.tour.Tour;
@@ -144,6 +141,23 @@ public class TourList implements IManager<Tour>, Serializable {
 
     }
 
+    public void remove(String id){
+         Tour tour = searchObjectById(id);
+        if (tour == null) {
+            System.out.println("Sr can't find tour");
+            return;
+        }
+        System.out.println("--------------------------------------------------------");
+        String choice = MyUtil.getValueOrDefault("Are you sure YES/NO: ", "Please input YES/NO");
+        if (choice.equalsIgnoreCase("YES")) {
+            for (int i = searchById(tour.getTourID()); i < existedTour - 1; i++) {
+                tourList[i] = tourList[i + 1];
+            }
+            tourList = Arrays.copyOf(tourList, tourList.length - 1);
+            existedTour--;
+            System.out.println("The process of removal is successful.");
+        }
+    }
     @Override
     public void printListAscendingById() {
         if (existedTour == 0) {
@@ -173,6 +187,11 @@ public class TourList implements IManager<Tour>, Serializable {
         }
         String id = MyUtil.getString("Enter ID(VD: TO123): ", "Don't find ID");
         Tour tour = searchObjectById(id);
+        if(tour == null){
+            System.out.println("Dont find!!!");
+            return;
+        }
+        System.out.println(header);
         tour.showInfor();
     }
 
@@ -354,7 +373,7 @@ public class TourList implements IManager<Tour>, Serializable {
             System.out.println("--------------------------------------------------------");
             printListAscendingById();
             System.out.println("Choose TourID from this list");
-            id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
+            id = MyUtil.getId("Enter Tour ID(TOXXX):", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
             if (searchById(id) >= 0) {
                 return id;
             }
@@ -392,38 +411,4 @@ public class TourList implements IManager<Tour>, Serializable {
         return total;
     }
     
-    public static void main(String[] args) {
-        TourList l = TourList.getInstance();
-        l.printListAscendingById();
-//        l.add();
-//                l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//        l.add();
-//
-//        l.renvenueEachTour();
-             
-         l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-//        l.remove();        l.remove();
-//        l.remove();
-//        l.remove();
-//        l.remove();
-//        l.remove();
-//    l.update();
-//        l.update();
-//    l.update();
-//    l.update();
-//    l.update();
-//    l.update();
-
-        l.searchObjectByName();
-        // l.printListAscendingById();
-                 l.saveToDate(new SaveDataToFile("Files/Tours.dat"));
-    }
 }

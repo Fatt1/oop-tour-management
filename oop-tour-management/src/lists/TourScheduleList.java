@@ -9,6 +9,7 @@ import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -27,8 +28,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
     private static TourScheduleList instance;
     private TourSchedule[] tourScheduleList;
     private int existedTourSchedule;
-    private final String header = String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|",
-            "TourScheduleID", "TourID", "EmployeeID", "returnDay", "departureDay", "emptySlots", "duration", "adultPrice", "childPrice", "totalPrice");
+    private final String header = String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|",
+            "TourScheduleID", "TourID", "EmployeeID", "returnDay", "departureDay", "emptySlots", "duration", "totalPrice");
 
     private TourScheduleList() {
         tourScheduleList = new TourSchedule[0];
@@ -83,10 +84,27 @@ public class TourScheduleList implements IManager<TourSchedule> {
             System.out.println("List is empty");
             return;
         }
+        printListAscendingById();
         String id = MyUtil.getString("Enter id: ", "");
         int isCheck = searchById(id);
         if (isCheck == -1) {
             System.out.println("Don't find id!! please again");
+            return;
+        }
+        String choice = MyUtil.getValueOrDefault("Are you sure YES/NO: ", "Please input YES/NO");
+        if (choice.equalsIgnoreCase("YES")) {
+            for (int i = isCheck; i < existedTourSchedule - 1; i++) {
+                tourScheduleList[i] = tourScheduleList[i + 1];
+            }
+            tourScheduleList = Arrays.copyOf(tourScheduleList, tourScheduleList.length - 1);
+            existedTourSchedule--;
+            System.out.println("The process of removal is successful.");
+        }
+    }
+
+    public void remove(String id) {
+        int isCheck = searchById(id);
+        if (isCheck == -1) {
             return;
         }
 
@@ -184,14 +202,14 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 case 1:
                     id = TourList.getInstance().getTourId();
                     tourSchedule.setTourID(id);
-                    tourSchedule.setChildPrice(TourList.getInstance().searchObjectById(id).getChildPrice());
-                    tourSchedule.setAdultPrice(TourList.getInstance().searchObjectById(id).getAdultPrice());
                     break;
                 case 2:
                     System.out.println("--------------------------------------------------------");
                     System.out.println("Choose EmployeeID from this list");
-                    id = MyUtil.getId("Enter Employee ID:", "Not space or Enter and follow format (E123)", "E\\d{3}$");
-                    System.out.println("Tinh nang chua hoan thien" + id);
+//                    EmployeeList.getInstance().printListAscendingById();
+//                    System.out.println("Choose EmployeeID from this list");
+//                    id = EmployeeList.getInstance().getEmployeeID();
+//                    tourSchedule.setEmployeeID(id);
                     break;
                 case 3:
                     System.out.println("---------------------------------------------------------");
@@ -236,13 +254,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
     private TourSchedule enterData(TourSchedule tourTemp) {
         TourList l = TourList.getInstance();
-        String id = l.getTourId();
         
-        tourTemp.setTourID(id);
         tourTemp.setID(enterTourScheduleID());
-        
-        tourTemp.setAdultPrice(l.searchObjectById(id).getAdultPrice());
-        tourTemp.setChildPrice(l.searchObjectById(id).getChildPrice());
+        String id = l.getTourId();
+
+        tourTemp.setTourID(id);
         tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
         tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
@@ -303,22 +319,86 @@ public class TourScheduleList implements IManager<TourSchedule> {
         saveData.save(tourScheduleList, header);
     }
 
+    public void menuForFilter() {
+        Menu menu = new Menu("Filter");
+        menu.addNewOption("1. Filter by TourID.");
+        menu.addNewOption("2. Filter by Departure Day.");
+        menu.addNewOption("3. Filter by Return Day.");
+        menu.addNewOption("4. Filter by emty slot.");
+        menu.addNewOption("5. Filter by duration.");
+        menu.addNewOption("6. Filter by total price.");
+        menu.addNewOption("7. Exit.");
+
+        int choice;
+        String id;
+        LocalDate time;
+        do {
+            menu.printMenu();
+            choice = menu.getChoice();
+            switch (choice) {
+                case 1:
+                    id = MyUtil.getString("Enter ID(ts123): ", "follow format TS123 and not space, enter");
+                    for (TourSchedule tourSchedule : getTourScheduleSameTourID(id)) {
+                        tourSchedule.showInfor();
+                    }
+                    break;
+                case 2:
+                    time = MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    for (int i = 0; i < existedTourSchedule; i++) {
+                        if (ChronoUnit.DAYS.between(tourScheduleList[i].getDepartureDay(), time) == 0) {
+                            tourScheduleList[i].showInfor();
+                        }
+                    }
+                    break;
+                case 3:
+                    time = MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    for (int i = 0; i < existedTourSchedule; i++) {
+                        if (ChronoUnit.DAYS.between(tourScheduleList[i].getReturnDay(), time) == 0) {
+                            tourScheduleList[i].showInfor();
+                        }
+                    }
+                    break;
+                case 4:
+                    int slot = MyUtil.getAnInteger("Enter slot you need!!!", "Error, not space or enter");
+                    for (int i = 0; i < existedTourSchedule; i++) {
+                        if (tourScheduleList[i].getEmptySlots() == slot) {
+                            tourScheduleList[i].showInfor();
+                        }
+                    }
+                case 5:
+                    int duration = MyUtil.getAnInteger("Enter duration you need!", "Input is interger not enter or space");
+                    for (int i = 0; i < existedTourSchedule; i++) {
+                        if (tourScheduleList[i].getDuration() == duration) {
+                            tourScheduleList[i].showInfor();
+                        }
+                    }
+                case 6:
+                    break;
+            }
+                if (choice != 7) {
+                        System.out.println("\nPress Enter to return to the menu...");
+                        new Scanner(System.in).nextLine();
+                    }
+            }
+            while (choice != 7);
+        }
+
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
 //        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-//  l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
-// l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
+        l.add();
 //        l.update();
 
 //        l.update();
