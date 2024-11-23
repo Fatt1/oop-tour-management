@@ -6,13 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-<<<<<<< HEAD
 /**
  *
  * @author User
  */
-=======
->>>>>>> 7aa7c4167d58c49d18bdc8fbfe0d5cc579a863fd
 public class MyUtil {
 
     private static Scanner sc = new Scanner(System.in);
@@ -94,8 +91,6 @@ public class MyUtil {
 
     }
 
-<<<<<<< HEAD
-=======
     public static String getValueOrDefault(String inputMsg, String errorMsg) {
         String s;
         while (true) {
@@ -111,7 +106,6 @@ public class MyUtil {
         }
     }
 
->>>>>>> 7aa7c4167d58c49d18bdc8fbfe0d5cc579a863fd
     public static LocalDate getDate(String inputMsg, String errorMsg, DateTimeFormatter format) {
         LocalDate date;
         String stringDate;
