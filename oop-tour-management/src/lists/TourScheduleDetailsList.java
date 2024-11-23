@@ -335,5 +335,5 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     public void saveToDate(SaveData saveData) {
         saveData.save(tourDetailsList, header);
     }
-
+    
 }

@@ -5,6 +5,7 @@
 package lists;
 
 import IOFile.LoadDataFromFile;
+import interfaces.Filter;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -316,6 +317,25 @@ public class TourScheduleList implements IManager<TourSchedule> {
         saveData.save(tourScheduleList, header);
     }
 
+    public void filterTourSchedule(Filter<TourSchedule> filter){
+        TourSchedule result[] = new TourSchedule[0];
+        int count = 0;
+        for (int i = 0; i < existedTourSchedule; i++){
+            if(filter.check(tourScheduleList[i])){
+                result = Arrays.copyOf(result, count + 1);
+                result[count++] = tourScheduleList[i];
+            }
+        }
+        if(count == 0){
+            System.out.println("Not Find");
+            return;
+        }
+        System.out.println(header);
+        for (int i = 0; i < count; i++){
+            result[i].showInfor();
+        }
+    }
+    
     public void menuForFilter() {
         Menu menu = new Menu("Filter");
         menu.addNewOption("1. Filter by TourID.");
@@ -327,90 +347,44 @@ public class TourScheduleList implements IManager<TourSchedule> {
         menu.addNewOption("7. Exit.");
 
         int choice;
-        String id;
-        LocalDate time;
         do {
             menu.printMenu();
             choice = menu.getChoice();
             Boolean isHeader;
             switch (choice) {
                 case 1:
-                    isHeader = false;
-                    id = MyUtil.getString("Enter ID(to123): ", "follow format TS123 and not space, enter");
-                    for (TourSchedule tourSchedule : getTourScheduleSameTourID(id)) {
-                        if (!isHeader) {
-                            System.out.println(header);
-                            isHeader = true;
-                        }
-                        tourSchedule.showInfor();
-                    }
-                    if(!isHeader){
-                        System.out.println("The list is not Tour Schedule contain " + id);
-                    }
+                    String  id = MyUtil.getString("Enter ID(to123): ", "follow format (TS123 and not space, enter");
+                    filterTourSchedule((tourSchedule) -> {
+                       return tourSchedule.getTourID().equalsIgnoreCase(id);
+                    });
                     break;
                 case 2:
-                    isHeader = false;
-                    time = MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (ChronoUnit.DAYS.between(tourScheduleList[i].getDepartureDay(), time) == 0) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list is not Tour Schedule contain" + time);
-                    }
+                    LocalDate timeDeparture = MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    filterTourSchedule((tourSchedule) -> {
+                        if(ChronoUnit.DAYS.between(tourSchedule.getDepartureDay(), timeDeparture) == 0)
+                            return true;
+                        return false;
+                    });
                     break;
                 case 3:
-                    isHeader = false;
-                    time = MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (ChronoUnit.DAYS.between(tourScheduleList[i].getReturnDay(), time) == 0) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list is not Tour Schedule contain" + time);
-                    }
+                    LocalDate timeReturn = MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    filterTourSchedule((tourSchedule) -> {
+                        if(ChronoUnit.DAYS.between(tourSchedule.getReturnDay(), timeReturn) == 0)
+                            return true;
+                        return false;
+                    });
                     break;
                 case 4:
-                    isHeader = false;
                     int slot = MyUtil.getAnInteger("Enter slot you need: ", "Error, not space or enter");
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (tourScheduleList[i].getEmptySlots() == slot) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list is not Tour Schedule contain" + slot);
-                    }
+                    filterTourSchedule((tourSchedule) -> {
+                        return tourSchedule.getEmptySlots() == slot;
+                    });
                     break;
                 case 5:
-                    isHeader = false;
                     int duration = MyUtil.getAnInteger("Enter duration you need!", "Input is interger not enter or space");
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (tourScheduleList[i].getDuration() == duration) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list is not Tour Schedule contain" + duration);
-                    }
+                    filterTourSchedule(( tourSchedule) -> {
+                        return  tourSchedule.getDuration() == duration;
+                    });
                     break;
                 case 6:
                     isHeader = false;
@@ -431,7 +405,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
                         }
                     }
                     if (!isHeader) {
-                        System.out.println("The list is not Tour Schedule contain: " + min + " <= cost <= " + max);
+                        System.out.println("The list dont have Tour Schedule contain: " + min + " <= cost <= " + max);
                     }
                     break;
             }
