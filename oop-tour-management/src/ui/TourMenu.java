@@ -4,6 +4,7 @@
  */
 package ui;
 
+import IOFile.SaveDataToFile;
 import IOFile.SaveFileText;
 import java.util.Scanner;
 import lists.InvoiceList;
@@ -75,7 +76,7 @@ public class TourMenu implements ManagementMenu {
                     break;
                 case 8:
                     System.out.println("★ Saving to file ★");
-                    control.getTourList().saveToDate(new SaveFileText("Files/Tour.dat"));
+                    control.getTourList().saveToDate(new SaveDataToFile("Files/Tours.dat"));
                     System.out.println("✔ Saved successfully!");
                     break;
             }
