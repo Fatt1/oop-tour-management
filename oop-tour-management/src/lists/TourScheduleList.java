@@ -84,6 +84,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
             System.out.println("List is empty");
             return;
         }
+        printListAscendingById();
         String id = MyUtil.getString("Enter id: ", "");
         int isCheck = searchById(id);
         if (isCheck == -1) {
@@ -205,8 +206,10 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 case 2:
                     System.out.println("--------------------------------------------------------");
                     System.out.println("Choose EmployeeID from this list");
-                    id = MyUtil.getId("Enter Employee ID:", "Not space or Enter and follow format (E123)", "E\\d{3}$");
-                    System.out.println("Tinh nang chua hoan thien" + id);
+//                    EmployeeList.getInstance().printListAscendingById();
+//                    System.out.println("Choose EmployeeID from this list");
+//                    id = EmployeeList.getInstance().getEmployeeID();
+//                    tourSchedule.setEmployeeID(id);
                     break;
                 case 3:
                     System.out.println("---------------------------------------------------------");
@@ -251,10 +254,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
     private TourSchedule enterData(TourSchedule tourTemp) {
         TourList l = TourList.getInstance();
+        
+        tourTemp.setID(enterTourScheduleID());
         String id = l.getTourId();
 
         tourTemp.setTourID(id);
-        tourTemp.setID(enterTourScheduleID());
         tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
         tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));

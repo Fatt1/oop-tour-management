@@ -55,8 +55,8 @@ public class InternationalTour extends Tour implements Serializable {
     @Override
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
-        menu.addNewOption("8. Update new country");
-        menu.addNewOption("9. Update new visa");
+        menu.addNewOption("9. Update new country");
+        menu.addNewOption("10. Update new visa");
     }
 
     @Override
