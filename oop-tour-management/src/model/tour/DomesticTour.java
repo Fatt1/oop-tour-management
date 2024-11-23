@@ -44,7 +44,7 @@ public class DomesticTour extends Tour implements Serializable {
     @Override
     public void updateMenu(Menu menu) {
         super.updateMenu(menu);
-        menu.addNewOption("8. Update new local discount");
+        menu.addNewOption("9. Update new local discount");
     }
 
     @Override

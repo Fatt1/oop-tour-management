@@ -373,7 +373,7 @@ public class TourList implements IManager<Tour>, Serializable {
             System.out.println("--------------------------------------------------------");
             printListAscendingById();
             System.out.println("Choose TourID from this list");
-            id = MyUtil.getId("Enter Tour ID:", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
+            id = MyUtil.getId("Enter Tour ID(TOXXX):", "Not space or Enter and follow format (To123)", "TO\\d{3}$");
             if (searchById(id) >= 0) {
                 return id;
             }

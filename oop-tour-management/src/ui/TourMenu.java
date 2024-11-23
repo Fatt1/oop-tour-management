@@ -60,7 +60,6 @@ public class TourMenu implements ManagementMenu {
                 case 4:
                     System.out.println("★ Removing an tour ★");
                     control.removeTour();
-                    control.getTourScheduleList().printListAscendingById();
                     break;
                 case 5:
                     System.out.println("★ Searching for an tour ★");
