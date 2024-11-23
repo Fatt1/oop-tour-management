@@ -18,15 +18,25 @@ import util.MyUtil;
 
 public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
 
-    private static TourScheduleDetails[] tourDetailsList;
+    private static TourScheduleDetailsList instance;
+    private TourScheduleDetails[] tourDetailsList;
     private Scanner sc = new Scanner(System.in);
     private int extistedTourDetails;
     private String header = String.format("|%-6s|%-10s|%-10s|%-15s|%-15s|%-10s|%-10s|%-20s|%-30s|%-10s|%-20s|",
             "ID ", "Day", "HotelId", "HotelCost", "RestaurantId", "MealCost", "OtherCost", "Tong tien 1 ngay", "Description", "Location", "Star time");
 
-    public TourScheduleDetailsList() {
+    private TourScheduleDetailsList() {
         tourDetailsList = new TourScheduleDetails[0];
         extistedTourDetails = 0;
+        ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
+
+    }
+
+    public static TourScheduleDetailsList getInstance() {
+        if (instance == null) {
+            return instance = new TourScheduleDetailsList();
+        }
+        return instance;
 
     }
 
@@ -44,7 +54,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         } while (duplicatedId >= 0);
         String k;
         TourSchedule tourSchedule = TourScheduleList.getInstance().searchObjectById(id);
-        long day = tourSchedule.getDuration();
+        long day = tourSchedule.getDuration();// khi chạy bên TourDetailsMenu thì bị lỗi chỗ này
         for (int i = 1; i <= day; i++) {
             String hotelId = MyUtil.getId("Please input the hotel Id (HXXX) of day " + i + ": ", "The hotel Id id is required ,(HXXX)", "^H[0-9]{3}");
             int hotelCost = MyUtil.getAnInteger("Enter the hotel cost for day " + i + ": ", "You entered incorrectly, please try again");
@@ -62,9 +72,10 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         }
         tourSchedule.setTotalPrice(getTotalAmount(id));
         TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-        
+        saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+
     }
-    
+
     private int getTotalAmount(String tourScheduleId) {
         TourScheduleDetails[] result = searchListObjectById(tourScheduleId);
         int totalAmount = 0;
@@ -73,7 +84,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
         }
         return totalAmount;
     }
-    
+
     @Override
     public void update() {
         String id = MyUtil.getId("Input update TourScheduleDetails id: ", "The TourScheduleDetails id is required ,(TSXXX): ", "^TS[0-9]{3}$");
@@ -82,6 +93,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             System.out.println("Not found!!");
             return;
         }
+        TourSchedule ts = TourScheduleList.getInstance().searchObjectById(id);
         System.out.println("Here is the Tour Schedule details that you want to update");
         System.out.println(header);
         for (int i = 0; i < tsd.length; i++) {
@@ -150,6 +162,13 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
                 }
 
             }
+            if (choice == 2 || choice == 4 || choice == 5) {
+                ts.setTotalPrice(getTotalAmount(id));
+                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+                saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+
+            }
+
             if (choice < 9) {
                 System.out.println("Update successfully");
                 System.out.println("The TourScheduleDetails after updating");
@@ -179,6 +198,9 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
                 System.out.println("Successfully removed.");
                 tourDetailsList = Arrays.copyOf(tourDetailsList, tourDetailsList.length - sl);
                 extistedTourDetails = extistedTourDetails - sl;
+                TourScheduleList.getInstance().searchObjectById(id).setTotalPrice(0); // set lại total tourSchedule sau khi xóa chi tiết tour
+                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+                saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
             } else {
                 System.out.println("Tour schedule details not found.");
             }
@@ -192,7 +214,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     @Override
     public void printListAscendingById() {
         if (tourDetailsList.length == 0) {
-            System.out.println("Not found");
+            System.out.println("Empty List");
+            return;
         }
         for (int i = 0; i < tourDetailsList.length; i++) {
             int indexMin = i;
@@ -311,16 +334,6 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     @Override
     public void saveToDate(SaveData saveData) {
         saveData.save(tourDetailsList, header);
-    }
-
-
-    public static void main(String[] args) {
-        TourScheduleDetailsList tsd = new TourScheduleDetailsList();
-        tsd.ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
-//       tsd.add();
-//        tsd.add();
-        tsd.printListAscendingById();
-       tsd.saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
     }
 
 }

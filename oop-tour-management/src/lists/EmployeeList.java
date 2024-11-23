@@ -18,13 +18,24 @@ import interfaces.SaveData;
 public class EmployeeList implements IManager<Employee> {
 
     private int existedEmployee;
-    private Employee[] employeeList = new Employee[0];
+    private static EmployeeList instance;
+    public Employee[] employeeList;
     private Scanner sc = new Scanner(System.in);
     private String header = String.format("|%-6s|%-25s|%-15s|%-14s|%-25s|%-15s|",
             "Id", "Full name", "Gender", "Phone number", "Address", "Title");
 
-    public EmployeeList() {
+    private EmployeeList() {
+        employeeList = new Employee[0];
+        existedEmployee = 0;
+        ReadData(new LoadDataFromFile("Files/Employees.dat"));
 
+    }
+
+    public static EmployeeList getInstance() {
+        if (instance == null) {
+            return instance = new EmployeeList();
+        }
+        return instance;
     }
 
     @Override
@@ -213,7 +224,7 @@ public class EmployeeList implements IManager<Employee> {
         }
         String k;
         do {
-            String id = MyUtil.getId("Input sreach Employee id (EXXX): ", "The format of Id is (EXXX) " + "X stands for digit(0-9)", "^E[0-9]{3}$");
+            String id = MyUtil.getId("Input search Employee id (EXXX): ", "The format of Id is (EXXX) " + "X stands for digit(0-9)", "^E[0-9]{3}$");
             int index = searchById(id);
             System.out.println(header);
             if (index >= 0) {
@@ -255,6 +266,22 @@ public class EmployeeList implements IManager<Employee> {
         }
         return null;
     }
+    
+    public String getEmployeeId(){
+        Employee x;
+        String employeeId;
+        
+        do {     
+        printListAscendingById();
+        employeeId = MyUtil.getString("Input id employee (EXXX): ", "The employee id is required");
+        x = searchObjectById(employeeId);
+        if(x == null)
+            System.out.println("Please input the employee has in the list");
+        
+        } while (x == null);
+        
+        return employeeId;
+    }
 
     @Override
     public void ReadData(LoadData loadData) {
@@ -270,17 +297,19 @@ public class EmployeeList implements IManager<Employee> {
         }
 
     }
-
+    
+    
     @Override
     public void saveToDate(SaveData saveData) {
         saveData.save(employeeList, header);
 
     }
+
     public static void main(String[] args) {
         EmployeeList em = new EmployeeList();
         em.ReadData(new LoadDataFromFile("Files/Employees.dat"));
         em.printListAscendingById();
-        
+
         em.add();
         em.add();
         em.saveToDate(new SaveDataToFile("Files/Employees.dat"));
