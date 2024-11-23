@@ -1,0 +1,21 @@
+|ID    |FULL NAME                |NATIONALITY    |PHONE         |ADDRESS                  |Birthday       |
+|C001  |NGUYEN VIET HUY          |VIETNAM        |0982X         |TPHCM                    |12-12-2005     |
+
+|C002  |NGUYEN HOANG ANH         |VIETNAM        |098X          |TPHCM                    |20-02-2020     |
+
+|C003  |HA TAN PHAT              |VIETNAM        |098X          |TPHCM                    |23-02-2005     |
+
+|C004  |NGUYEN VAN TEO           |VIETNAM        |092X          |TPHC                     |20-02-2005     |
+
+|C005  |NGUYEN HIEU NGHIA        |CHINA          |012X          |BLG                      |02-02-2004     |
+
+|C006  |DANG THANH DANH          |VIETNAM        |091X          |TPHCM                    |12-02-2010     |
+
+|C007  |NGUYEN VAN A             |CANADA         |021X          |NEW YORK                 |20-11-2000     |
+
+|C009  |DANG TRAN THANH          |KORAN          |022X          |THAI BINH                |21-12-2007     |
+
+|C010  |PHAN VIET HUY            |VIETNAM        |098X          |RISE OF KINGDOM          |20-12-2020     |
+
+|C012  |NGUYEN VAN TAM           |WIBU           |012X          |HA NOI                   |12-12-2018     |
+

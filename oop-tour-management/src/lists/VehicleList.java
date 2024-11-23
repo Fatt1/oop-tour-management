@@ -20,17 +20,23 @@ import util.MyUtil;
  * @author User
  */
 public class VehicleList implements IManager<Vehicle> {
-
+    private static VehicleList instance;
     private Vehicle[] vehicleList;
     private int existedVehicle;
-    private String header = String.format("|%-6s|%-15s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
+    private String header = String.format("|%-6s|%-30s|%-15s|%-14s|%-6s|", "ID", "NAME", "COMPANY", "PHONE", "SEATS");
     private Scanner sc = new Scanner(System.in);
 
-    public VehicleList() {
+    private VehicleList() {
         vehicleList = new Vehicle[0];
         existedVehicle = 0;
+        ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
     }
-
+    
+    public static VehicleList getInstance(){
+        if(instance == null)
+            instance = new VehicleList();
+        return instance;
+    }
     @Override
     public void add() {
         String id;
@@ -138,7 +144,7 @@ public class VehicleList implements IManager<Vehicle> {
         } while (true);
 
     }
-
+    
     @Override
     public void printListAscendingById() {
         if (vehicleList.length == 0) {
@@ -205,22 +211,35 @@ public class VehicleList implements IManager<Vehicle> {
         }
 
     }
-
+    public String getExistedVehicleId(){
+       String vehicleID;
+       int pos;
+        do {            
+            vehicleID = MyUtil.getId("Enter (V123): ", "Please input follow format Vxxx(V456)", "V\\d{3}");
+            pos = searchById(vehicleID);
+            if(pos < 0){
+                System.out.println("Input vehicle id have in the list!!");
+            }
+        } while (pos < 0);
+        return vehicleID;
+       
+    }
     @Override
     public void saveToDate(SaveData saveData) {
-        saveData.save(vehicleList);
+        saveData.save(vehicleList,header);
     }
 
     // test
     // để chạy hàm test này thì bấm Shift + F6
-//    public static void main(String[] args) {
-//        VehicleList v = new VehicleList();
-//        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
-//        v.printListAscendingById();
-//        v.update();
-//
-//       v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
-//
-//    }
+    public static void main(String[] args) {
+        VehicleList v = new VehicleList();
+        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
+//        v.add();
+        v.printListAscendingById();
+        v.update();
+
+       v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
+
+    }
 
 }

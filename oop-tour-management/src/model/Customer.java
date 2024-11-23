@@ -90,18 +90,20 @@ public class Customer implements Serializable{
         this.dateOfBirth = dateOfBirth;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", nationality=" + nationality + ", phoneNumber=" + phoneNumber + ", address=" + address + ", dateOfBirth=" + dateOfBirth + '}';
-    }
     
     public int getAge(){
         return LocalDate.now().getYear() - dateOfBirth.getYear(); // localDate.now() là hàm để lấy ngày tháng năm hiện tại, nhưng mình chỉ cần lấy năm thôi
                                                                     // nên sử dụng hàm getYear() để lấy năm
     }
+
+    @Override
+    public String toString() {
+        return String.format("|%-6s|%-25s|%-15s|%-14s|%-25s|%-15s|\n",
+                            id, (lastName + " " + firstName),  nationality, phoneNumber, address, dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+    }
     
     public void display() { 
-        System.out.printf("|%-6s|%-20s|%-15s|%-14s|%-25s|%-15s|\n",
+        System.out.printf("|%-6s|%-25s|%-15s|%-14s|%-25s|%-15s|\n",
                             id, (lastName + " " + firstName),  nationality, phoneNumber, address, dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
 }

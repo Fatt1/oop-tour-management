@@ -67,11 +67,12 @@ public class Vehicle implements Serializable{
 
     @Override
     public String toString() {
-        return "Vehicle{" + "id=" + id + ", name=" + name + ", company=" + company + ", phonenumber=" + phonenumber + ", numberOfSeats=" + numberOfSeats + '}';
+        return String.format("|%-6s|%-30s|%-15s|%-14s|%-6d|\n",
+                            id, name, company, phonenumber, numberOfSeats);
     }
     
     public void display() {
-        System.out.printf("|%-6s|%-15s|%-15s|%-14s|%-6d|\n",
+        System.out.printf("|%-6s|%-30s|%-15s|%-14s|%-6d|\n",
                             id, name, company, phonenumber, numberOfSeats);
     }
     

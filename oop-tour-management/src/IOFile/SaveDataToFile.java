@@ -20,7 +20,7 @@ public class SaveDataToFile implements SaveData{
     }
         
     @Override
-    public void save(Object[] o) {
+    public void save(Object[] o, String header) {
         if(o.length == 0){
             System.out.println("Empty List!!");
             return;
@@ -34,7 +34,7 @@ public class SaveDataToFile implements SaveData{
             }
             fos.close();
             out.close();
-            System.out.println("Save successully");
+            
         } catch (Exception e) {
             System.out.println(e);
         }

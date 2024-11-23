@@ -1,0 +1,9 @@
+|ID    |NAME                          |COMPANY        |PHONE         |SEATS |
+|V002  |XE BUS HOA TOC                |PHUONG TRANG   |0987X         |20    |
+
+|V003  |XE BUS PT                     |PHUONG TRANG   |0981X         |50    |
+
+|V004  |MAY BAY AIRLINE               |VN AIRLINE     |099X          |60    |
+
+|V123  |MAY BAY VIETTEL               |VIETTEL        |098X          |70    |
+

@@ -8,6 +8,6 @@ package interfaces;
  *
  * @author User
  */
-public interface SaveData {
-    public void save(Object[] o, String header);
+public interface Filter <T>{
+    boolean check(T t);
 }

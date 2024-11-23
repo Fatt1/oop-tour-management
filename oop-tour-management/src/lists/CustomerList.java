@@ -6,14 +6,21 @@ package lists;
 
 import IOFile.LoadDataFromFile;
 import IOFile.SaveDataToFile;
+import IOFile.SaveFileText;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import model.Customer;
+import model.InvoiceDetails;
 import ui.Menu;
 import util.MyUtil;
 
@@ -22,16 +29,32 @@ import util.MyUtil;
  * @author User
  */
 public class CustomerList implements IManager<Customer>{
-    private Customer[] cusList;
+    private static CustomerList instance; // b1; khai báo static CustomerList, sử dụng static để nó có thể lưu riêng trong bộ nhớ
+                                            // vì biến static sẽ không biến mất khi kết thúc cái hết sử dụng class này
+                                          // mà nó sẽ kết thúc khi kết thúc chương trình
+                                          // nên sử dụng static để có thể sử dụng ở những class khác mà không cần phải khai báo New lại lần nữa
+    private  Customer[] cusList;
     private int existedCustomer;
-    private String header = String.format("|%-6s|%-20s|%-15s|%-14s|%-25s|%-15s|",
+    private String header = String.format("|%-6s|%-25s|%-15s|%-14s|%-25s|%-15s|",
                                             "ID", "FULL NAME", "NATIONALITY", "PHONE", "ADDRESS", "Birthday");
     private Scanner sc = new Scanner(System.in);
-    public CustomerList(){
+    private CustomerList(){ // Singleton Pattern, có 6 7 cách để implement cái Singleton này, nhưng t sẽ sử dụng cách,
+                            // Lazy Initialization , b2:
+                            // vì sao t muốn sử dụng cách design pattern này. Vì t muốn nó chỉ cần tao ra duy nhất 1 lần instance,
+                            // sau đó những class đó có thể sử dụng cái CustomerList này qua hàm getInstace mà không cần phải
+                            // khai báo new lại, rồi xong đọc file các kiểu nữa
         cusList = new Customer[0];
         existedCustomer = 0;
+        ReadData(new LoadDataFromFile("Files/Customers.dat"));
     }
-
+    
+    public static CustomerList getInstance(){ b3:
+        if(instance == null){ // lần gọi đầu tiên  instance sẽ bằng null, những lần gọi tiếp có sẵn trong bộ nhớ luôn
+            instance = new CustomerList();
+        }
+        return instance;
+    }
+    
     @Override
     public void add() {
         String id;
@@ -57,6 +80,7 @@ public class CustomerList implements IManager<Customer>{
         System.out.println("New customer has been added successfully");
     }
 
+    
     @Override
     public void update() {
         String id = MyUtil.getString("Input customer id: ", "The customer id is required");
@@ -104,7 +128,7 @@ public class CustomerList implements IManager<Customer>{
                     break;
                 
                 case 6:
-                    LocalDate newBirthday = MyUtil.getDate("Input new bithrday (dd-mm-yyyy)",
+                    LocalDate newBirthday = MyUtil.getDate("Input new bithrday (dd-mm-yyyy): ",
                             "Please input folowing format(dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                     x.setDateOfBirth(newBirthday);
                     break;   
@@ -123,6 +147,7 @@ public class CustomerList implements IManager<Customer>{
         
     }
 
+    
     @Override
     public void remove() {
         String id = MyUtil.getString("Input customer id: ", "The customer id is required");
@@ -154,6 +179,7 @@ public class CustomerList implements IManager<Customer>{
         } while (true);
     }
 
+    
     @Override
     public void printListAscendingById() {
         if(existedCustomer == 0){
@@ -176,11 +202,13 @@ public class CustomerList implements IManager<Customer>{
         Arrays.sort(cusList, (o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName())); // sap xep tang dan theo ten, su dung lambda expression
         System.out.println(header);
         for (Customer c : cusList) {
+            
             c.display();
         }
         
     }
 
+    
     @Override
     public void searchById() {
         String id = MyUtil.getString("Input customer id: ", "The customer id is required");
@@ -194,7 +222,7 @@ public class CustomerList implements IManager<Customer>{
         x.display();
     }
 
-    @Override
+    
     public int searchById(String id) {
         if(existedCustomer == 0) return -1;
         for (int i = 0; i < existedCustomer; i++) {
@@ -204,9 +232,10 @@ public class CustomerList implements IManager<Customer>{
         return -1;
     }
 
+    
     @Override
     public Customer searchObjectById(String id) {
-        if(existedCustomer == 0) return null;
+        if(cusList.length == 0) return null;
         for (Customer c : cusList) {
             if(c.getId().equalsIgnoreCase(id))
                 return c;
@@ -246,6 +275,7 @@ public class CustomerList implements IManager<Customer>{
         }
     }
     
+    
     @Override
     public void ReadData(LoadData loadData) {
         Object[] obj = loadData.read();
@@ -256,20 +286,61 @@ public class CustomerList implements IManager<Customer>{
         }
     }
 
-    @Override
-    public void saveToDate(SaveData saveData) {
-        saveData.save(cusList);
+    public String getIdCustomer() {
+        System.out.printf("|%-10s|%-25s|\n", "ID", "FULLNAME");
+        for (Customer customer : cusList) {
+            System.out.printf("|%-10s|%-25s|\n", customer.getId(), customer.getLastName() + " " + customer.getFirstName());
+        }
+        Customer x;
+        String idCustomer;
+        do {            
+        idCustomer = MyUtil.getString("Input id customer (CXXX): ", "The customer id is required");
+        x = searchObjectById(idCustomer);
+        if(x == null)
+            System.out.println("Please input the customer has in the list");
+        
+        } while (x == null);
+        
+        return idCustomer;
     }
     
+    @Override
+    public void saveToDate(SaveData saveData) {
+        saveData.save(cusList, header);
+    }
+    
+    
+    public void countToursPerCustomer() {
+        InvoiceDetailsList invDetailList = InvoiceDetailsList.getInstance();
+       Map <Customer, Long>  customerTourCount = new HashMap();
+        for (Customer c : cusList) {
+            long total = 0;
+            InvoiceDetails[] invoiceListCustomer = invDetailList.getInvoiceDetails(o -> o.getCustomerId().equalsIgnoreCase(c.getId()));
+            for (InvoiceDetails i : invoiceListCustomer) {
+                total += i.getPrice();
+            }
+            customerTourCount.put(c, total);
+        }
+        System.out.printf("|%-6s|%-25s|%-15s|\n", "ID", "FULLNAME", "TOTAL");
+        for (Map.Entry<Customer, Long> c: customerTourCount.entrySet()) {
+            String id = c.getKey().getId();
+            String fullName = c.getKey().getLastName() + " " + c.getKey().getFirstName();
+            Long total = c.getValue();
+            System.out.printf("|%-6s|%-25s|%-15d|\n", id, fullName, total);
+        }
+    }
     //test bam shift + f6 de test thu
-//    public static void main(String[] args) {
-//        CustomerList cl = new CustomerList();
-//        cl.ReadData(new LoadDataFromFile("Files/Customers.dat"));
+    public static void main(String[] args) {
+        CustomerList cl = CustomerList.getInstance();
+        cl.countToursPerCustomer();
+//        cl.add();
+//        cl.add();
+//        cl.add();
+        cl.printListAscendingById();
+
+//        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
 //        
-//        cl.printListAscendingById();
-//        cl.printListAscendingByName();
-//        
-//        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
-//    }
-//      
+        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
+    }
+      
 }

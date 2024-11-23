@@ -1,16 +1,15 @@
 
 package oop.tour.management;
 
-import lists.VehicleList;
-
-
-
+import ui.ManagementMenu;
+import ui.MainMenu;
 
 public class OopTourManagement {
 
 
     public static void main(String[] args) {
-       
+        ManagementMenu mainMenu = new MainMenu();
+        mainMenu.openMenu();
     }
     
 }
