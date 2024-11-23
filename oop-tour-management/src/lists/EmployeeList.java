@@ -273,7 +273,7 @@ public class EmployeeList implements IManager<Employee> {
         
         do {     
         printListAscendingById();
-        employeeId = MyUtil.getString("Input id employee (EXXX): ", "The employee id is required");
+        employeeId = MyUtil.getString("Input id employee from the list  (EXXX): ", "The employee id is required");
         x = searchObjectById(employeeId);
         if(x == null)
             System.out.println("Please input the employee has in the list");

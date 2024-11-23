@@ -4,6 +4,7 @@
  */
 package ui;
 
+import interfaces.ManagementMenu;
 import java.util.Scanner;
 
 /**

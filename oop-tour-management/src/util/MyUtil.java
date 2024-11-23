@@ -6,6 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/**
+ *
+ * @author User
+ */
 public class MyUtil {
 
     private static Scanner sc = new Scanner(System.in);

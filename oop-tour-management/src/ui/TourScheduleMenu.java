@@ -4,8 +4,8 @@
  */
 package ui;
 
+import interfaces.ManagementMenu;
 import IOFile.SaveDataToFile;
-import IOFile.SaveFileText;
 import java.util.Scanner;
 import model.tour.controller.ControllerTSandT;
 
@@ -14,7 +14,7 @@ import model.tour.controller.ControllerTSandT;
  * @author nghialam
  */
 public class TourScheduleMenu implements ManagementMenu {
-    
+
     @Override
     public void openMenu() {
         System.out.println("=============================================");
@@ -57,7 +57,7 @@ public class TourScheduleMenu implements ManagementMenu {
                     break;
                 case 4:
                     System.out.println("★ Removing an tour schedule★");
-                    control.getTourScheduleList().remove();   
+                    control.getTourScheduleList().remove();
                     control.getTourScheduleList().printListAscendingById();
                     break;
                 case 5:
@@ -84,9 +84,10 @@ public class TourScheduleMenu implements ManagementMenu {
         System.out.println("      Exiting TourSchedule Management          ");
         System.out.println("=============================================");
     }
-        public static void main(String[] args) { // có vấn đề với update và remove fix ngay!!!!!
+
+    public static void main(String[] args) {
         TourScheduleMenu in = new TourScheduleMenu();
         in.openMenu();
     }
-    
+
 }
