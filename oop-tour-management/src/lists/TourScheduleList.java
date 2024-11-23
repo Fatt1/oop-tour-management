@@ -5,7 +5,6 @@
 package lists;
 
 import IOFile.LoadDataFromFile;
-import IOFile.SaveDataToFile;
 import interfaces.IManager;
 import interfaces.LoadData;
 import interfaces.SaveData;
@@ -14,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Scanner;
-import model.tour.DomesticTour;
 import model.tour.TourSchedule;
 import ui.Menu;
 import util.MyUtil;
@@ -205,11 +203,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
                     break;
                 case 2:
                     System.out.println("--------------------------------------------------------");
-                    System.out.println("Choose EmployeeID from this list");
-//                    EmployeeList.getInstance().printListAscendingById();
-//                    System.out.println("Choose EmployeeID from this list");
-//                    id = EmployeeList.getInstance().getEmployeeID();
-//                    tourSchedule.setEmployeeID(id);
+                    id = EmployeeList.getInstance().getEmployeeId();
+                    tourSchedule.setEmployeeID(id);
                     break;
                 case 3:
                     System.out.println("---------------------------------------------------------");
@@ -259,7 +254,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
         String id = l.getTourId();
 
         tourTemp.setTourID(id);
-        tourTemp.setEmployeeID(MyUtil.getId("Enter EmployeeID(E123): ", "The format is incorrect", "E\\d{3}$"));
+        tourTemp.setEmployeeID(EmployeeList.getInstance().getEmployeeId());
         tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot(1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
@@ -373,6 +368,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
                         }
                     }
                 case 6:
+                    int min = MyUtil.getAnInteger("Enter min cost: ", "not enter or space");
+                    int max = MyUtil.getAnInteger("Enter max cost: ", "not enter or space");
+                    for (int i = 0; i < existedTourSchedule; i++)
+                        if(tourScheduleList[i].getTotalPrice() >= min && tourScheduleList[i].getTotalPrice() <= max)
+                            tourScheduleList[i].showInfor();
                     break;
             }
                 if (choice != 7) {
@@ -387,23 +387,11 @@ public class TourScheduleList implements IManager<TourSchedule> {
         TourScheduleList l = TourScheduleList.getInstance();
 //       System.out.println(l.header);
 //        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-        l.add();
-//        l.update();
+        l.update();
 
 //        l.update();
         l.printListAscendingById();
         //    l.remove();
-        l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }
