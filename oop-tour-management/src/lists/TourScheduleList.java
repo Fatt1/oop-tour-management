@@ -144,6 +144,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
         String id = MyUtil.getString("Enter ID(VD: TS123): ", "Don't find ID");
         if (searchById(id) >= 0) {
+            System.out.println(header);
             searchObjectById(id).showInfor();
             return;
         }
@@ -249,11 +250,12 @@ public class TourScheduleList implements IManager<TourSchedule> {
 
     private TourSchedule enterData(TourSchedule tourTemp) {
         TourList l = TourList.getInstance();
-        
+//        printListAscendingById();
         tourTemp.setID(enterTourScheduleID());
         String id = l.getTourId();
 
         tourTemp.setTourID(id);
+        System.out.println("-------------------------------------------------------");
         tourTemp.setEmployeeID(EmployeeList.getInstance().getEmployeeId());
         tourTemp.setDepartureDay(MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
@@ -330,58 +332,115 @@ public class TourScheduleList implements IManager<TourSchedule> {
         do {
             menu.printMenu();
             choice = menu.getChoice();
+            Boolean isHeader;
             switch (choice) {
                 case 1:
-                    id = MyUtil.getString("Enter ID(ts123): ", "follow format TS123 and not space, enter");
+                    isHeader = false;
+                    id = MyUtil.getString("Enter ID(to123): ", "follow format TS123 and not space, enter");
                     for (TourSchedule tourSchedule : getTourScheduleSameTourID(id)) {
+                        if (!isHeader) {
+                            System.out.println(header);
+                            isHeader = true;
+                        }
                         tourSchedule.showInfor();
+                    }
+                    if(!isHeader){
+                        System.out.println("The list is not Tour Schedule contain " + id);
                     }
                     break;
                 case 2:
+                    isHeader = false;
                     time = MyUtil.getDate("Enter Departure Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                     for (int i = 0; i < existedTourSchedule; i++) {
                         if (ChronoUnit.DAYS.between(tourScheduleList[i].getDepartureDay(), time) == 0) {
+                            if (!isHeader) {
+                                System.out.println(header);
+                                isHeader = true;
+                            }
                             tourScheduleList[i].showInfor();
                         }
+                    }
+                    if (!isHeader) {
+                        System.out.println("The list is not Tour Schedule contain" + time);
                     }
                     break;
                 case 3:
+                    isHeader = false;
                     time = MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                     for (int i = 0; i < existedTourSchedule; i++) {
                         if (ChronoUnit.DAYS.between(tourScheduleList[i].getReturnDay(), time) == 0) {
+                            if (!isHeader) {
+                                System.out.println(header);
+                                isHeader = true;
+                            }
                             tourScheduleList[i].showInfor();
                         }
+                    }
+                    if (!isHeader) {
+                        System.out.println("The list is not Tour Schedule contain" + time);
                     }
                     break;
                 case 4:
-                    int slot = MyUtil.getAnInteger("Enter slot you need!!!", "Error, not space or enter");
+                    isHeader = false;
+                    int slot = MyUtil.getAnInteger("Enter slot you need: ", "Error, not space or enter");
                     for (int i = 0; i < existedTourSchedule; i++) {
                         if (tourScheduleList[i].getEmptySlots() == slot) {
+                            if (!isHeader) {
+                                System.out.println(header);
+                                isHeader = true;
+                            }
                             tourScheduleList[i].showInfor();
                         }
                     }
+                    if (!isHeader) {
+                        System.out.println("The list is not Tour Schedule contain" + slot);
+                    }
+                    break;
                 case 5:
+                    isHeader = false;
                     int duration = MyUtil.getAnInteger("Enter duration you need!", "Input is interger not enter or space");
                     for (int i = 0; i < existedTourSchedule; i++) {
                         if (tourScheduleList[i].getDuration() == duration) {
+                            if (!isHeader) {
+                                System.out.println(header);
+                                isHeader = true;
+                            }
                             tourScheduleList[i].showInfor();
                         }
                     }
+                    if (!isHeader) {
+                        System.out.println("The list is not Tour Schedule contain" + duration);
+                    }
+                    break;
                 case 6:
+                    isHeader = false;
                     int min = MyUtil.getAnInteger("Enter min cost: ", "not enter or space");
                     int max = MyUtil.getAnInteger("Enter max cost: ", "not enter or space");
-                    for (int i = 0; i < existedTourSchedule; i++)
-                        if(tourScheduleList[i].getTotalPrice() >= min && tourScheduleList[i].getTotalPrice() <= max)
+                    if(min > max){
+                        int temp = max;
+                        max = min;
+                        min = temp;
+                    }
+                    for (int i = 0; i < existedTourSchedule; i++) {
+                        if (tourScheduleList[i].getTotalPrice() >= min && tourScheduleList[i].getTotalPrice() <= max) {
+                            if (!isHeader) {
+                                System.out.println(header);
+                                isHeader = true;
+                            }
                             tourScheduleList[i].showInfor();
+                        }
+                    }
+                    if (!isHeader) {
+                        System.out.println("The list is not Tour Schedule contain: " + min + " <= cost <= " + max);
+                    }
                     break;
             }
-                if (choice != 7) {
-                        System.out.println("\nPress Enter to return to the menu...");
-                        new Scanner(System.in).nextLine();
-                    }
+            if (choice != 7) {
+                System.out.println("\nPress Enter to return to the menu...");
+                new Scanner(System.in).nextLine();
             }
-            while (choice != 7);
-        }
+        } while (choice != 7);
+    }
 
     public static void main(String[] args) {
         TourScheduleList l = TourScheduleList.getInstance();

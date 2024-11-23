@@ -1,6 +1,7 @@
 
 package ui;
 
+import interfaces.ManagementMenu;
 import IOFile.SaveFileText;
 import java.util.Scanner;
 import lists.RestaurantList;

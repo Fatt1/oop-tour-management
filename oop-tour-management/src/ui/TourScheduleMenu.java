@@ -4,6 +4,7 @@
  */
 package ui;
 
+import interfaces.ManagementMenu;
 import IOFile.SaveDataToFile;
 import java.util.Scanner;
 import model.tour.controller.ControllerTSandT;
@@ -84,7 +85,7 @@ public class TourScheduleMenu implements ManagementMenu {
         System.out.println("=============================================");
     }
 
-    public static void main(String[] args) { // có vấn đề với update và remove fix ngay!!!!!
+    public static void main(String[] args) {
         TourScheduleMenu in = new TourScheduleMenu();
         in.openMenu();
     }

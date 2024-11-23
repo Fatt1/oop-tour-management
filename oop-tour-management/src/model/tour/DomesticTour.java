@@ -38,7 +38,7 @@ public class DomesticTour extends Tour implements Serializable {
     public void showInfor() {
         System.out.print("|Domestic Tour     |");
         super.showInfor();
-        System.out.printf("|               |     |%-8.1f|\n", this.localDiscount);
+        System.out.printf("|               |     |%-8.2f|\n", this.localDiscount);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DomesticTour extends Tour implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("|Domestic Tour     |" + super.toString() + "|               |     |%-8.1f|\n", this.localDiscount);
+        return String.format("|Domestic Tour     |" + super.toString() + "|               |     |%-8.2f|\n", this.localDiscount);
     }
 
     
