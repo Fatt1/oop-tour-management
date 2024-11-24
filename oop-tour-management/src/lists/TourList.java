@@ -358,12 +358,13 @@ public class TourList implements IManager<Tour>, Serializable {
                     int minPriceChild = MyUtil.getAnInteger("Enter minimum price: ", "Price must be a number.");
                     int maxPriceChild = MyUtil.getAnInteger("Enter maximum price: ", "Price must be a number.");
                     filterTourList(a -> a.getChildPrice() >= minPriceChild && a.getChildPrice() <= maxPriceChild);
+                    break;
             }
             if(choice != 9){
                 System.out.print("Press enter to continue...");
                 new Scanner(System.in).nextLine();
             }
-        } while (choice != 8);
+        } while (choice != 9);
 
     }
 
