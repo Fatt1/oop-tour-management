@@ -13,7 +13,7 @@ import util.MyUtil;
  * @author nghialam
  */
 public class DomesticTour extends Tour implements Serializable {
-
+    
     private double localDiscount;
 
     public DomesticTour(double localDiscount, String tourID, String tourName, String destination, String departureLocation, String vehicleID, int adultPrice, int childPrice, int quantity) {
