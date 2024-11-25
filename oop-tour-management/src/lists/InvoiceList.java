@@ -117,7 +117,8 @@ public class InvoiceList implements IManager<Invoice> {
         menuUpdate.addNewOption("1. Update customer id");
         menuUpdate.addNewOption("2. Update employee id");
         menuUpdate.addNewOption("3. Update tour schedule id");
-        menuUpdate.addNewOption("4. Exit");
+        menuUpdate.addNewOption("4. Update date");
+        menuUpdate.addNewOption("5. Exit");
 
         int choice;
         do {
@@ -138,9 +139,16 @@ public class InvoiceList implements IManager<Invoice> {
                     String newScheduleId = MyUtil.getString("Input new tour schedule id: ", "The tour schedule id is required");
                     x.setTourScheduleId(newScheduleId);
                     break;
+                    
+                case 4:
+                    LocalDateTime newDateTime = MyUtil.getDateTime("Input new date time (dd/mm/yyyy hh:mm:ss): ", 
+                                                            "Please input folowing format (dd/mm/yyyy hh:mm:ss)",
+                                                            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                    x.setInvoiceDate(newDateTime);
+                    break;
 
             }
-            if (choice != 4) {
+            if (choice != 5) {
                 System.out.println("Update successully");
                 System.out.println("The invoice after updating");
                 x.display();
@@ -148,7 +156,7 @@ public class InvoiceList implements IManager<Invoice> {
                 System.out.print("Press enter to continue...");
                 sc.nextLine();
             }
-        } while (choice != 4);
+        } while (choice != 5);
 
     }
 
@@ -291,23 +299,23 @@ public class InvoiceList implements IManager<Invoice> {
     }
     
     public void statisticMonthRevenue() {
-        String stringDate = MyUtil.getId("Input (mm-yyyy): ", "Input folowing format(mm-yyyy)", "^\\d{2}-\\d{4}$");
-        YearMonth yearMonth = YearMonth.parse(stringDate, DateTimeFormatter.ofPattern("MM-yyyy"));
+        String stringDate = MyUtil.getId("Input (mm/yyyy): ", "Input folowing format(mm/yyyy)", "^\\d{2}/\\d{4}$");
+        YearMonth yearMonth = YearMonth.parse(stringDate, DateTimeFormatter.ofPattern("MM/yyyy"));
         long revenue = 0;
         for (Invoice inv : invoiceList) {
             if(inv.getInvoiceDate().getMonthValue() == yearMonth.getMonthValue() && inv.getInvoiceDate().getYear() == yearMonth.getYear())
                 revenue += inv.getTotalAmount();
         }
-        System.out.printf("Revenue %10s: %15d\n", yearMonth.format(DateTimeFormatter.ofPattern("MM-yyyy")), revenue);
+        System.out.printf("Revenue %10s: %15d\n", yearMonth.format(DateTimeFormatter.ofPattern("MM/yyyy")), revenue);
     }
     
     public void statisticFromDateToDate(){
         LocalDate startDay;
         LocalDate endDay ;
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         do {            
-             startDay = MyUtil.getDate("Input the start day(dd-mm-yyyy): ", "Input folowing format(dd-mm-yyyy)", format);
-             endDay = MyUtil.getDate("Input the end day(dd-mm-yyyy): ", "Input folowing format(dd-mm-yyyy)", format);
+             startDay = MyUtil.getDate("Input the start day(dd/mm/yyyy): ", "Input folowing format(dd/mm/yyyy)", format);
+             endDay = MyUtil.getDate("Input the end day(dd/mm/yyyy): ", "Input folowing format(dd/mm/yyyy)", format);
             if(startDay.isAfter(endDay)){
                 System.out.println("Please input the end day greater than start day");
             }
@@ -337,6 +345,18 @@ public class InvoiceList implements IManager<Invoice> {
        
     }
     
+    public void statisticYearRevenue() {
+        long total = 0;
+        int year = MyUtil.getAnInteger("Input year: ", "Please input the number");
+        for (Invoice inv : invoiceList) {
+            if(inv.getInvoiceDate().getYear() == year){
+                total += inv.getTotalAmount();
+            }
+        }
+        
+        System.out.println("Renenue " + year + ": " +  total);
+        
+    }
     
     @Override
     public void ReadData(LoadData loadData) {
@@ -365,19 +385,4 @@ public class InvoiceList implements IManager<Invoice> {
         saveData.save(invoiceList, header);
     }
 
-    //test, xóa comment, bấm shift + F6 để test
-    public static void main(String[] args) {
-        InvoiceList i = InvoiceList.getInstance();
-     
-        i.printListAscendingById();
-        i.statisticFromDateToDate();
-        i.add();
-        i.add();
-
-        i.printListAscendingById();
-
-        i.saveToDate(new SaveDataToFile("Files/Invoices.dat"));
-        i.saveToDate(new SaveFileText("FileText/Invoices.txt"));
-
-    }
 }

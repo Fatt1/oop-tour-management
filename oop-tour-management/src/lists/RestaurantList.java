@@ -196,9 +196,4 @@ public class RestaurantList implements IManager<Restaurant> {
          saveData.save(restaurantList, header);
     }
 
-    public static void main(String[] args) {
-        RestaurantList re = RestaurantList.getInstance();
-        re.printListAscendingById();
-    }
-
 }

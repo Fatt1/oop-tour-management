@@ -329,18 +329,5 @@ public class CustomerList implements IManager<Customer>{
             System.out.printf("|%-6s|%-25s|%-15d|\n", id, fullName, total);
         }
     }
-    //test bam shift + f6 de test thu
-    public static void main(String[] args) {
-        CustomerList cl = CustomerList.getInstance();
-        cl.countToursPerCustomer();
-//        cl.add();
-//        cl.add();
-//        cl.add();
-        cl.printListAscendingById();
-
-//        cl.saveToDate(new SaveFileText("FileText/Customers.txt"));
-//        
-        cl.saveToDate(new SaveDataToFile("Files/Customers.dat"));
-    }
       
 }

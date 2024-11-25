@@ -395,18 +395,9 @@ public class TourScheduleList implements IManager<TourSchedule> {
                         max = min;
                         min = temp;
                     }
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (tourScheduleList[i].getTotalPrice() >= min && tourScheduleList[i].getTotalPrice() <= max) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list dont have Tour Schedule contain: " + min + " <= cost <= " + max);
-                    }
+                    int finalMin = min;
+                    int finalMax = max;
+                    filterTourSchedule(tourSchedule -> (tourSchedule.getTotalPrice() >= finalMin && tourSchedule.getTotalPrice() <= finalMax));
                     break;
             }
             if (choice != 7) {
@@ -414,17 +405,5 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 new Scanner(System.in).nextLine();
             }
         } while (choice != 7);
-    }
-
-    public static void main(String[] args) {
-        TourScheduleList l = TourScheduleList.getInstance();
-//       System.out.println(l.header);
-//        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-        l.update();
-
-//        l.update();
-        l.printListAscendingById();
-        //    l.remove();
-        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 }

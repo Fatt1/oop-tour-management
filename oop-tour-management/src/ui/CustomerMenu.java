@@ -66,7 +66,7 @@ public class CustomerMenu implements ManagementMenu{
                 break;
             case 5:
                 System.out.println("★ Removing for a customer ★");
-                cusList.searchById();
+                cusList.remove();
                 break;
             case 6:
                 System.out.println("★ Searching for an customer by id ★");
