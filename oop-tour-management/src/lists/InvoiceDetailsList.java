@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.Customer;
 import model.Invoice;
+import model.tour.DomesticTour;
 import model.tour.Tour;
 import model.tour.TourSchedule;
 import ui.Menu;
@@ -71,15 +72,18 @@ public class InvoiceDetailsList implements Serializable{
         int customerPrice = 0;
         CustomerList cusList = CustomerList.getInstance();
         Customer x = cusList.searchObjectById(customerId);
+        double discount = 0;
         Tour t = TourList.getInstance().searchObjectById(ts.getTourID()); 
+        if(t instanceof DomesticTour)
+            discount = ((DomesticTour)((DomesticTour) t)).getLocalDiscount();
         if(x == null){
             return customerPrice;
         }
         else if(x.getAge() > 9) { // lớn hơn 9 tuổi sẽ là vé người lớn
-            customerPrice = t.getAdultPrice(); // lấy giá bao gồm thuế và VAT và localDiscount nếu họ đi DomesticTour
+            customerPrice = (int)Math.round((t.getAdultPrice()*(1 + MyUtil.VAT - discount))) ; // lấy giá bao gồm thuế và VAT và localDiscount nếu họ đi DomesticTour
         }
         else if(x.getAge() <= 9) { // bè hơn 9 tuổi là vé trẻ em
-            customerPrice = t.getChildPrice();
+            customerPrice = (int)Math.round((t.getChildPrice()*(1 + MyUtil.VAT - discount)));
         }
         return customerPrice;
     }
