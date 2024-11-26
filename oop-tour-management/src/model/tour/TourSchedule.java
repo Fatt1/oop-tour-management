@@ -118,12 +118,12 @@ public class TourSchedule implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s||%-15s|\n",
-                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.totalPrice);
+        return String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s||%-15s|\n",
+                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay,this.adultPrice, this.childPrice, this.emptySlots, this.duration, this.totalPrice);
     }
 
     public void showInfor() {
         System.out.printf("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|\n",
-                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.totalPrice);
+                this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay,this.adultPrice, this.childPrice, this.emptySlots, this.duration, this.totalPrice);
     }
 }

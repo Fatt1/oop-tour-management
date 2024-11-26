@@ -27,8 +27,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
     private static TourScheduleList instance;
     private TourSchedule[] tourScheduleList;
     private int existedTourSchedule;
-    private final String header = String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s|%-15s|",
-            "TourScheduleID", "TourID", "EmployeeID", "returnDay", "departureDay", "emptySlots", "duration", "totalPrice");
+    private final String header = String.format("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15s%-15s|%-15s|%-15s|",
+            "TourScheduleID", "TourID", "EmployeeID", "returnDay", "departureDay", "AdultPrice", "ChildPrice", "emptySlots", "duration", "totalPrice");
 
     private TourScheduleList() {
         tourScheduleList = new TourSchedule[0];
