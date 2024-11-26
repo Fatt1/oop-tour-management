@@ -31,8 +31,8 @@ public class TourList implements IManager<Tour>, Serializable {
     private static TourList instance;
     private int existedTour;
     private Tour tourList[];
-    private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-10s|%-2s|%-15s|%-5s|%-5s|",
-            "Tour", "ID", "NAME", "DESTINATION", "DEPARTURE LOCAL", "VEHICLE ID", "ADULTPRICE", "CHILDPRICE", "QUANTITY", "COUNTRY", "VISA", "DISCOUNT");
+    private final String header = String.format("|%-18s|%-5s|%-30s|%-20s|%-20s|%-5s|%-10s|%-10s|%-2s|%-15s|%-5s|%-5s|%-100s|",
+            "Tour", "ID", "NAME", "DESTINATION", "DEPARTURE LOCAL", "VEHICLE ID", "ADULTPRICE", "CHILDPRICE", "QUANTITY", "COUNTRY", "VISA", "DISCOUNT","SHORT DESCRIPTION" );
 
     private TourList() {
         tourList = new Tour[0];

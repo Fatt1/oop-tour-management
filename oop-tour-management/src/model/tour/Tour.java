@@ -88,8 +88,7 @@ public abstract class Tour implements Serializable {
         this.childPrice = childPrice;
     }
     
-    public abstract int calculateChildPrice();
-    public abstract int calculateAdultPrice();
+    public abstract String getShortDesription();
     public int getQuantity() {
         return quantity;
     }

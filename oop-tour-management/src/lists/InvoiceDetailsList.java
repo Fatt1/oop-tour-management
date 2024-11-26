@@ -76,10 +76,10 @@ public class InvoiceDetailsList implements Serializable{
             return customerPrice;
         }
         else if(x.getAge() > 9) { // lớn hơn 9 tuổi sẽ là vé người lớn
-            customerPrice = t.calculateAdultPrice(); // lấy giá bao gồm thuế và VAT và localDiscount nếu họ đi DomesticTour
+            customerPrice = t.getAdultPrice(); // lấy giá bao gồm thuế và VAT và localDiscount nếu họ đi DomesticTour
         }
         else if(x.getAge() <= 9) { // bè hơn 9 tuổi là vé trẻ em
-            customerPrice = t.calculateChildPrice();
+            customerPrice = t.getChildPrice();
         }
         return customerPrice;
     }

@@ -49,7 +49,7 @@ public class InternationalTour extends Tour implements Serializable {
     public void showInfor() {
         System.out.print("|International Tour|");
         super.showInfor();
-        System.out.printf("|%-15s|%-5s|        |\n", this.country, this.visaRequired);
+        System.out.printf("|%-15s|%-5s|        |%-100s|\n", this.country, this.visaRequired, getShortDesription());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class InternationalTour extends Tour implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("|International Tour|" + super.toString() +"|%-15s|%-5s|        |\n", this.country, this.visaRequired);
+        return String.format("|International Tour|" + super.toString() +"|%-15s|%-5s|        |%-100s|\n", this.country, this.visaRequired, getShortDesription());
     }
     
     
@@ -86,12 +86,8 @@ public class InternationalTour extends Tour implements Serializable {
     }
 
     @Override
-    public int calculateChildPrice() {
-       return (int)Math.round(this.childPrice * (1 + MyUtil.VAT));
-    }
-
-    @Override
-    public int calculateAdultPrice() {
-       return (int)Math.round(this.adultPrice * (1 + MyUtil.VAT));
+    public String getShortDesription() {
+        return String.format("International Tour: %s to %s (a visa %s )",
+                this.tourName, this.destination, visaRequired.equalsIgnoreCase("yes")? "required": "no");
     }
 }
