@@ -126,5 +126,4 @@ public class TourSchedule implements Serializable {
         System.out.printf("|%-20s|%-8s|%-12s|%-15s|%-15s|%-15s|%-15d|%-15s|\n",
                 this.ID, this.tourID, this.employeeID, this.returnDay, this.departureDay, this.emptySlots, this.duration, this.totalPrice);
     }
-
 }

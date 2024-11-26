@@ -10,7 +10,6 @@ import IOFile.SaveFileText;
 import java.util.Scanner;
 import lists.InvoiceList;
 import lists.TourList;
-import model.tour.controller.ControllerTSandT;
 
 /**
  *
@@ -37,7 +36,7 @@ public class TourMenu implements ManagementMenu {
         tourMenu.addNewOption("9. ➤ Exit");
 
         int choice;
-        ControllerTSandT control = new ControllerTSandT();
+        TourList control = TourList.getInstance();
         do {
             System.out.println("---------------------------------------------");
             tourMenu.printMenu();
@@ -49,35 +48,35 @@ public class TourMenu implements ManagementMenu {
             switch (choice) {
                 case 1:
                     System.out.println("★ Adding a new tour ★");
-                    control.getTourList().add();
+                    control.add();
                     break;
                 case 2:
                     System.out.println("★ Printing tour list ★");
-                    control.getTourList().printListAscendingById();
+                    control.printListAscendingById();
                     break;
                 case 3:
                     System.out.println("★ Updating an tour ★");
-                    control.getTourList().update();
+                    control.update();
                     break;
                 case 4:
                     System.out.println("★ Removing an tour ★");
-                    control.removeTour();
+                    control.remove();
                     break;
                 case 5:
                     System.out.println("★ Searching for an tour ★");
-                    control.getTourList().searchById();
+                    control.searchById();
                     break;
                 case 6:
                     System.out.println("★ Searching for an tour ★");
-                    control.getTourList().searchObjectByName();
+                    control.searchObjectByName();
                     break;
                 case 7:
                     System.out.println("★ Showing filter by tour★");
-                    control.getTourList().menuForFilter();
+                    control.menuForFilter();
                     break;
                 case 8:
                     System.out.println("★ Saving to file ★");
-                    control.getTourList().saveToDate(new SaveDataToFile("Files/Tours.dat"));
+                    control.saveToDate(new SaveDataToFile("Files/Tours.dat"));
                     System.out.println("✔ Saved successfully!");
                     break;
             }

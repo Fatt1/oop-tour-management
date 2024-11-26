@@ -132,6 +132,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
         }
 
         for (int i = 0; i < existedTourSchedule; i++) {
+            if(TourList.getInstance().searchObjectById(tourScheduleList[i].getTourID())!= null)
             tourScheduleList[i].showInfor();
         }
     }
@@ -407,6 +408,10 @@ public class TourScheduleList implements IManager<TourSchedule> {
                 new Scanner(System.in).nextLine();
             }
         } while (choice != 7);
+    }
+    public static void main(String[] args) {
+    TourScheduleList t = TourScheduleList.getInstance();
+    t.printListAscendingById();
     }
 }
 

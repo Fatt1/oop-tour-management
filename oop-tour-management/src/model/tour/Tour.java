@@ -4,9 +4,7 @@
  */
 package model.tour;
 
-import IOFile.SaveDataToFile;
 import java.io.Serializable;
-import lists.TourScheduleList;
 import lists.VehicleList;
 import ui.Menu;
 import util.MyUtil;
@@ -110,7 +108,7 @@ public abstract class Tour implements Serializable {
         this.tourName = MyUtil.getString("Enter tour name: ", "The input is of type STRING");
         this.destination = MyUtil.getString("Enter destination: ", "The input is of type STRING");
         this.departureLocation = MyUtil.getString("Enter Departure location: ", "The input is of type STRING");
-        this.vehicleID = VehicleList.getInstance().getExistedVehicleId();
+        this.vehicleID = MyUtil.getId("Enter VehicleID(V123) :", "Follow format VXXX", "^V\\d{3}");
         this.adultPrice = MyUtil.getAnInteger("Enter adult price(1000 <= price <= 500000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 500000000);
         this.childPrice = MyUtil.getAnInteger("Enter child price(1000 <= price <= 500000000): ", "The input is of type INT(1000 <= price <= 50000000)", 1000, 500000000);
         this.quantity = MyUtil.getAnInteger("Enter Quantity(1 <= quantity <= 50): ", "The input is of type INT", 1, 50);
