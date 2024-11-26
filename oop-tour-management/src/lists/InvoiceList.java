@@ -39,7 +39,7 @@ public class InvoiceList implements IManager<Invoice> {
     private InvoiceList() {
         invoiceList = new Invoice[0];
         existedInvoice = 0;
-        ReadData(new LoadDataFromFile("Files/Invoices.dat"));
+        readData(new LoadDataFromFile("Files/Invoices.dat"));
     }
 
     public static InvoiceList getInstance() {
@@ -83,9 +83,9 @@ public class InvoiceList implements IManager<Invoice> {
         invoice.setTotalAmount(invoiceDetailList.getTotalPrice(invoiceId)); // set total amount sau khi nhập chi tiết hóa đơn
         invoiceList[existedInvoice++] = invoice;
         System.out.println("New invoice has been added successfully");
-        saveToDate(saveBinaryFile);
+        saveToData(saveBinaryFile);
         // lưu lại những emptySlots đã thay đỏi sau khi nhập invoiceDetails
-        tourScheduleList.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
+        tourScheduleList.saveToData(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 
     private String getUserConfirmation() {
@@ -152,7 +152,7 @@ public class InvoiceList implements IManager<Invoice> {
                 System.out.println("Update successully");
                 System.out.println("The invoice after updating");
                 x.display();
-                saveToDate(saveBinaryFile);
+                saveToData(saveBinaryFile);
                 System.out.print("Press enter to continue...");
                 sc.nextLine();
             }
@@ -180,7 +180,7 @@ public class InvoiceList implements IManager<Invoice> {
                 invoiceList = Arrays.copyOf(invoiceList, existedInvoice - 1);
                 existedInvoice--;
                 System.out.println("The invoice is removed successully");
-                saveToDate(saveBinaryFile);
+                saveToData(saveBinaryFile);
                 return;
             } else if (choice.equalsIgnoreCase("N")) {
                 return;
@@ -359,7 +359,7 @@ public class InvoiceList implements IManager<Invoice> {
     }
     
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
 
         Object[] obj = loadData.read();
         if (obj == null) {
@@ -381,7 +381,7 @@ public class InvoiceList implements IManager<Invoice> {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(invoiceList, header);
     }
 

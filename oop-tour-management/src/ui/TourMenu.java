@@ -76,7 +76,7 @@ public class TourMenu implements ManagementMenu {
                     break;
                 case 8:
                     System.out.println("★ Saving to file ★");
-                    control.saveToDate(new SaveDataToFile("Files/Tours.dat"));
+                    control.saveToData(new SaveDataToFile("Files/Tours.dat"));
                     System.out.println("✔ Saved successfully!");
                     break;
             }

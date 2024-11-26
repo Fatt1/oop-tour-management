@@ -37,7 +37,7 @@ public class TourList implements IManager<Tour>, Serializable {
     private TourList() {
         tourList = new Tour[0];
         existedTour = 0;
-        ReadData(new LoadDataFromFile("Files/Tours.dat"));
+        readData(new LoadDataFromFile("Files/Tours.dat"));
     }
 
     public static TourList getInstance() {
@@ -255,7 +255,7 @@ public class TourList implements IManager<Tour>, Serializable {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] obj = loadData.read();
         if (obj == null) {
             System.out.println("Not data");
@@ -268,7 +268,7 @@ public class TourList implements IManager<Tour>, Serializable {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(tourList, header);
     }
 

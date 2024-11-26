@@ -19,7 +19,7 @@ public class RestaurantList implements IManager<Restaurant> {
      private RestaurantList() {
         restaurantList = new Restaurant[0];
         existedRestaurant = 0;
-        ReadData(new LoadDataFromFile("Files/Restaurants.dat"));
+        readData(new LoadDataFromFile("Files/Restaurants.dat"));
     }
 
      public static RestaurantList getInstance() {
@@ -178,7 +178,7 @@ public class RestaurantList implements IManager<Restaurant> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] b = loadData.read();
         if( b == null){
             System.out.println("Rong");
@@ -192,7 +192,7 @@ public class RestaurantList implements IManager<Restaurant> {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
          saveData.save(restaurantList, header);
     }
 

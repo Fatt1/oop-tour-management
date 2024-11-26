@@ -21,7 +21,7 @@ public class HotelList implements IManager<Hotel> {
     private HotelList() {
         hotelList = new Hotel[0];
         existedHotel = 0;
-        ReadData(new LoadDataFromFile("Files/Hotels.dat"));
+        readData(new LoadDataFromFile("Files/Hotels.dat"));
     }
 
     public static HotelList getInstance() {
@@ -207,7 +207,7 @@ public class HotelList implements IManager<Hotel> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] obj = loadData.read();
         if (obj == null) {
             System.out.println("Not data");
@@ -220,7 +220,7 @@ public class HotelList implements IManager<Hotel> {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(hotelList, header);
     }
 }

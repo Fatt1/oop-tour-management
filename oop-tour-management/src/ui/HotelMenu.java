@@ -60,7 +60,7 @@ public void openMenu() {
                 htlList.searchById();
             case 6:
                 System.out.println("★ Saving to file ★");
-                htlList.saveToDate(new SaveFileText("FileText/Hotels.txt"));
+                htlList.saveToData(new SaveFileText("FileText/Hotels.txt"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }

@@ -60,7 +60,7 @@ public void openMenu() {
                 break;
             case 6:
                 System.out.println("★ Saving to file ★");
-                employee.saveToDate(new SaveFileText("Files/Employees.dat"));
+                employee.saveToData(new SaveFileText("Files/Employees.dat"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }

@@ -78,12 +78,12 @@ public class CustomerMenu implements ManagementMenu{
                 break;
             case 8:
                 System.out.println("★ Saving to file ★");
-                cusList.saveToDate(new SaveDataToFile("Files/Customers.dat"));
+                cusList.saveToData(new SaveDataToFile("Files/Customers.dat"));
                 System.out.println("✔ Saved successfully!");     
                 break;
             case 9:
                 System.out.println("★ Saving to file text ★");
-                cusList.saveToDate(new SaveFileText("FileText/Customers.txt"));
+                cusList.saveToData(new SaveFileText("FileText/Customers.txt"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }

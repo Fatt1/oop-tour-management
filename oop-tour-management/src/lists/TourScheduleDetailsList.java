@@ -28,7 +28,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     private TourScheduleDetailsList() {
         tourDetailsList = new TourScheduleDetails[0];
         extistedTourDetails = 0;
-        ReadData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
+        readData(new LoadDataFromFile("Files/TourScheduleDetails.dat"));
 
     }
 
@@ -71,8 +71,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             extistedTourDetails++;
         }
         tourSchedule.setTotalPrice(getTotalAmount(id));
-        TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-        saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+        TourScheduleList.getInstance().saveToData(new SaveDataToFile("Files/TourSchedule.dat"));
+        saveToData(new SaveDataToFile("Files/TourScheduleDetails.dat"));
 
     }
 
@@ -164,8 +164,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
             }
             if (choice == 2 || choice == 4 || choice == 5) {
                 ts.setTotalPrice(getTotalAmount(id));
-                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-                saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+                TourScheduleList.getInstance().saveToData(new SaveDataToFile("Files/TourSchedule.dat"));
+                saveToData(new SaveDataToFile("Files/TourScheduleDetails.dat"));
 
             }
 
@@ -199,8 +199,8 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
                 tourDetailsList = Arrays.copyOf(tourDetailsList, tourDetailsList.length - sl);
                 extistedTourDetails = extistedTourDetails - sl;
                 TourScheduleList.getInstance().searchObjectById(id).setTotalPrice(0); // set lại total tourSchedule sau khi xóa chi tiết tour
-                TourScheduleList.getInstance().saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-                saveToDate(new SaveDataToFile("Files/TourScheduleDetails.dat"));
+                TourScheduleList.getInstance().saveToData(new SaveDataToFile("Files/TourSchedule.dat"));
+                saveToData(new SaveDataToFile("Files/TourScheduleDetails.dat"));
             } else {
                 System.out.println("Tour schedule details not found.");
             }
@@ -212,42 +212,29 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     }
 
     @Override
-    public void printListAscendingById() {
+public void printListAscendingById() {
         if (tourDetailsList.length == 0) {
             System.out.println("Empty List");
             return;
         }
-        for (int i = 0; i < tourDetailsList.length; i++) {
-            int indexMin = i;
-            String idMin = tourDetailsList[i].getId();
-            int dayMin = tourDetailsList[i].getDayNumber();
-//			int sl = searchObjectById(tourDetailsList[i].getId()).length;
-            for (int j = i + 1; j < tourDetailsList.length; j++) {
-                if (idMin.equalsIgnoreCase(tourDetailsList[j].getId())) {
-                    if (dayMin > tourDetailsList[j].getDayNumber()) {
-                        indexMin = j;
-                        idMin = tourDetailsList[j].getId();
-                        dayMin = tourDetailsList[j].getDayNumber();
-                    }
-                }
-                if (idMin.compareTo(tourDetailsList[j].getId()) > 0) {
-                    indexMin = j;
-                    idMin = tourDetailsList[j].getId();
-                    dayMin = tourDetailsList[j].getDayNumber();
+        for (int i = 0; i < extistedTourDetails -1; i++) {
+            
+            for (int j = i + 1; j < extistedTourDetails; j++) {
+                if(tourDetailsList[i].getId().compareToIgnoreCase(tourDetailsList[j].getId()) > 0 ||
+                      (tourDetailsList[i].getId().compareToIgnoreCase(tourDetailsList[j].getId()) == 0 &&
+                        tourDetailsList[i].getDayNumber() > (tourDetailsList[j].getDayNumber()))){
+                    TourScheduleDetails temp = tourDetailsList[i];
+                    tourDetailsList[i] = tourDetailsList[j];
+                    tourDetailsList[j] = temp;
                 }
             }
-            TourScheduleDetails temp;
-            temp = tourDetailsList[i];
-            tourDetailsList[i] = tourDetailsList[indexMin];
-            tourDetailsList[indexMin] = temp;
         }
-        System.out.println("Tour Schedule Details list sorted by ID:");
         System.out.println(header);
-        for (int i = 0; i < tourDetailsList.length; i++) {
-            tourDetailsList[i].display();
-
+        for (TourScheduleDetails tourScheduleDetails : tourDetailsList) {
+            tourScheduleDetails.display();
         }
     }
+
 
     @Override
     public void searchById() {
@@ -317,7 +304,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] a = loadData.read();
         if (a == null) {
             System.out.println("Rong");
@@ -332,7 +319,7 @@ public class TourScheduleDetailsList implements IManager<TourScheduleDetails> {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(tourDetailsList, header);
     }
     
