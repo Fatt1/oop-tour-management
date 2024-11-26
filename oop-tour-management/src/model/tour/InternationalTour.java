@@ -66,7 +66,7 @@ public class InternationalTour extends Tour implements Serializable {
             String country = MyUtil.getString("Enter country: ", "The input is kind of STRING ");
             setCountry(country);
         } else if (choice == 10) {
-            String visaRequired = MyUtil.getValueOrDefault("Enter (YES or NO): ", "Struture of data is String 'YES' or 'NO");
+            String visaRequired = MyUtil.getValueOrDefault("Enter Visa: (YES or NO): ", "Struture of data is String 'YES' or 'NO");
             setVisaRequired(visaRequired);
         }
     }
