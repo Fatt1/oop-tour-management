@@ -262,6 +262,8 @@ public class TourScheduleList implements IManager<TourSchedule> {
         tourTemp.setReturnDay(MyUtil.getDate("Enter Return Day(dd-mm-yyyy): ", "The format is incorrect (dd-mm-yyyy)", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         tourTemp.setEmptySlots(MyUtil.getAnInteger("Enter Empty Slot(1 <= slot <= 50): ", "The input is INTEGER and limit between 1 and 50", 1, 50));
         tourTemp.setDuration(ChronoUnit.DAYS.between(tourTemp.getDepartureDay(), tourTemp.getReturnDay()));
+        tourTemp.setAdultPrice(TourList.getInstance().searchObjectById(id).getAdultPrice());
+        tourTemp.setChildPrice(TourList.getInstance().searchObjectById(id).getChildPrice());
         tourTemp.setTotalPrice(0);
         return tourTemp;
     }
@@ -395,18 +397,9 @@ public class TourScheduleList implements IManager<TourSchedule> {
                         max = min;
                         min = temp;
                     }
-                    for (int i = 0; i < existedTourSchedule; i++) {
-                        if (tourScheduleList[i].getTotalPrice() >= min && tourScheduleList[i].getTotalPrice() <= max) {
-                            if (!isHeader) {
-                                System.out.println(header);
-                                isHeader = true;
-                            }
-                            tourScheduleList[i].showInfor();
-                        }
-                    }
-                    if (!isHeader) {
-                        System.out.println("The list dont have Tour Schedule contain: " + min + " <= cost <= " + max);
-                    }
+                    int finalMin = min;
+                    int finalMax = max;
+                    filterTourSchedule(tourSchedule -> (tourSchedule.getTotalPrice() >= finalMin && tourSchedule.getTotalPrice() <= finalMax));
                     break;
             }
             if (choice != 7) {
@@ -415,14 +408,5 @@ public class TourScheduleList implements IManager<TourSchedule> {
             }
         } while (choice != 7);
     }
-
-    public static void main(String[] args) {
-        TourScheduleList l = TourScheduleList.getInstance();
-//       System.out.println(l.header);
-//        l.ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
-//        l.update();
-        l.printListAscendingById();
-        //    l.remove();
-        //l.saveToDate(new SaveDataToFile("Files/TourSchedule.dat"));
-    }
 }
+

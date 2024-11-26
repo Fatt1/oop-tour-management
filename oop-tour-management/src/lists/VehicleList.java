@@ -228,18 +228,4 @@ public class VehicleList implements IManager<Vehicle> {
     public void saveToDate(SaveData saveData) {
         saveData.save(vehicleList,header);
     }
-
-    // test
-    // để chạy hàm test này thì bấm Shift + F6
-    public static void main(String[] args) {
-        VehicleList v = new VehicleList();
-        v.ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
-//        v.add();
-        v.printListAscendingById();
-        v.update();
-
-       v.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
-
-    }
-
 }

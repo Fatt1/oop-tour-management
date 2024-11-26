@@ -305,13 +305,4 @@ public class EmployeeList implements IManager<Employee> {
 
     }
 
-    public static void main(String[] args) {
-        EmployeeList em = new EmployeeList();
-        em.ReadData(new LoadDataFromFile("Files/Employees.dat"));
-        em.printListAscendingById();
-
-        em.add();
-        em.add();
-        em.saveToDate(new SaveDataToFile("Files/Employees.dat"));
-    }
 }

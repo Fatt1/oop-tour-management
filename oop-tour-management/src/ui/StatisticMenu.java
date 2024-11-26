@@ -58,7 +58,7 @@ public class StatisticMenu implements ManagementMenu {
                     break;
                 case 4:
                     System.out.println("★ Showing Revenue Statistics by Year ★");
-                    // Call method to handle yearly revenue statistics // chưa làm
+                    InvoiceList.getInstance().statisticYearRevenue();
                     break;
                 case 5:
                     System.out.println("★ Showing Revenue Statistics by Tour ★");

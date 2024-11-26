@@ -223,10 +223,4 @@ public class HotelList implements IManager<Hotel> {
     public void saveToDate(SaveData saveData) {
         saveData.save(hotelList, header);
     }
-
-    public static void main(String[] args) {
-
-        HotelList l = HotelList.getInstance();
-        l.printListAscendingById();
-    }
 }

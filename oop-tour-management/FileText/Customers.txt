@@ -1,7 +1,7 @@
 |ID    |FULL NAME                |NATIONALITY    |PHONE         |ADDRESS                  |Birthday       |
-|C001  |NGUYEN VIET HUY          |VIETNAM        |0982X         |TPHCM                    |12-12-2005     |
+|C001  |NGUYEN HOANG ANH         |JAPAN          |012X          |TOKYO                    |02-02-2022     |
 
-|C002  |NGUYEN HOANG ANH         |VIETNAM        |098X          |TPHCM                    |20-02-2020     |
+|C002  |NGUYEN VIET HUY          |VIETNAM        |098X          |TPHCM                    |12-12-2005     |
 
 |C003  |HA TAN PHAT              |VIETNAM        |098X          |TPHCM                    |23-02-2005     |
 

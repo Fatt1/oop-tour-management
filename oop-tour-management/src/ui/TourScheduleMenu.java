@@ -84,10 +84,4 @@ public class TourScheduleMenu implements ManagementMenu {
         System.out.println("      Exiting TourSchedule Management          ");
         System.out.println("=============================================");
     }
-
-    public static void main(String[] args) {
-        TourScheduleMenu in = new TourScheduleMenu();
-        in.openMenu();
-    }
-
 }
