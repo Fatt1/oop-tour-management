@@ -63,7 +63,7 @@ public void openMenu() {
                 break;
             case 7:
                 System.out.println("★ Saving to file ★");
-                invList.saveToDate(new SaveFileText("FileText/Invoices.txt"));
+                invList.saveToData(new SaveFileText("FileText/Invoices.txt"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }

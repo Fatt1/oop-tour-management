@@ -69,12 +69,12 @@ public class VehicleMenu implements ManagementMenu{
                 break;
             case 6:
                 System.out.println("★ Saving to file★");
-                vehicleList.saveToDate(new SaveDataToFile("Files/Vehicles.dat"));
+                vehicleList.saveToData(new SaveDataToFile("Files/Vehicles.dat"));
                 System.out.println("✔ Saved successfully!");     
                 break;
             case 7:
                 System.out.println("★ Saving to file text ★");
-                vehicleList.saveToDate(new SaveFileText("FileText/Vehicles.txt"));
+                vehicleList.saveToData(new SaveFileText("FileText/Vehicles.txt"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }

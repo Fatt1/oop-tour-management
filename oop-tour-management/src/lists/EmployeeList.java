@@ -27,7 +27,7 @@ public class EmployeeList implements IManager<Employee> {
     private EmployeeList() {
         employeeList = new Employee[0];
         existedEmployee = 0;
-        ReadData(new LoadDataFromFile("Files/Employees.dat"));
+        readData(new LoadDataFromFile("Files/Employees.dat"));
 
     }
 
@@ -284,7 +284,7 @@ public class EmployeeList implements IManager<Employee> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] a = loadData.read();
         if (a == null) {
             System.out.println("Rong");
@@ -300,7 +300,7 @@ public class EmployeeList implements IManager<Employee> {
     
     
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(employeeList, header);
 
     }

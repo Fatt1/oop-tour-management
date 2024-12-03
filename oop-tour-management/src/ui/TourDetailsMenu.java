@@ -1,5 +1,6 @@
 package ui;
 
+import IOFile.SaveDataToFile;
 import interfaces.ManagementMenu;
 import IOFile.SaveFileText;
 import lists.TourScheduleDetailsList;
@@ -60,7 +61,7 @@ public void openMenu() {
                 break;
             case 6:
                 System.out.println("★ Saving to file ★");
-                tourDetails.saveToDate(new SaveFileText("Files/TourScheduleDetails.dat"));// cái này tui ko biết ghi sao, tui truyền vô file (có sai thì sủa  lại giúp tui)
+                tourDetails.saveToData(new SaveDataToFile("Files/TourScheduleDetails.dat"));// cái này tui ko biết ghi sao, tui truyền vô file (có sai thì sủa  lại giúp tui)
                 System.out.println("✔ Saved successfully!");
                 break;
         }

@@ -185,7 +185,7 @@ public class InvoiceDetailsList implements Serializable{
                 // thì giá sẽ khác nên tổng giá sẽ khác.
                 x.setTotalAmount(getTotalPrice(x.getId()));
                 saveToDate(saveBinaryFile);
-                tourScheduleList.saveToDate(new SaveDataToFile("Files/TourSchedule.dat")); // cần phải lưu lại file
+                tourScheduleList.saveToData(new SaveDataToFile("Files/TourSchedule.dat")); // cần phải lưu lại file
                 //tourSchedule nếu thêm hoặc xóa chi tiết hóa đơn vì emptySlots sẽ thay đổi nên cần phải lưu lại
                 
             }

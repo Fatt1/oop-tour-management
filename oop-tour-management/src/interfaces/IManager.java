@@ -16,6 +16,6 @@ public interface IManager<T> {
     public void searchById();
     public int searchById(String id);
     public T searchObjectById(String id);
-    public void ReadData(LoadData loadData);
-    public void saveToDate(SaveData saveData);
+    public void readData(LoadData loadData);
+    public void saveToData(SaveData saveData);
 }

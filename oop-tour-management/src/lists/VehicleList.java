@@ -29,7 +29,7 @@ public class VehicleList implements IManager<Vehicle> {
     private VehicleList() {
         vehicleList = new Vehicle[0];
         existedVehicle = 0;
-        ReadData(new LoadDataFromFile("Files/Vehicles.dat"));
+        readData(new LoadDataFromFile("Files/Vehicles.dat"));
     }
     
     public static VehicleList getInstance(){
@@ -200,7 +200,7 @@ public class VehicleList implements IManager<Vehicle> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] obj = loadData.read(); // vì hàm loadData.read trả về mảng Object[] nên phải khái báo 1 mảng object
         // không thể ép kiểu về như vehicleList = (Vehicle[])loadData.read()
         // vì java không cho phép ép 1 mảng tổng quát về 1 mảng cụ thể
@@ -225,7 +225,7 @@ public class VehicleList implements IManager<Vehicle> {
        
     }
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(vehicleList,header);
     }
 }

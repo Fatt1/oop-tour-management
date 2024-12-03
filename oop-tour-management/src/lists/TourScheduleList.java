@@ -33,7 +33,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
     private TourScheduleList() {
         tourScheduleList = new TourSchedule[0];
         existedTourSchedule = 0;
-        ReadData(new LoadDataFromFile("Files/TourSchedule.dat"));
+        readData(new LoadDataFromFile("Files/TourSchedule.dat"));
     }
 
     public static TourScheduleList getInstance() {
@@ -303,7 +303,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
     }
 
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] obj = loadData.read();
         if (obj == null) {
             System.out.println("Not data");
@@ -316,7 +316,7 @@ public class TourScheduleList implements IManager<TourSchedule> {
     }
 
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(tourScheduleList, header);
     }
 

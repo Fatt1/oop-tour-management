@@ -45,7 +45,7 @@ public class CustomerList implements IManager<Customer>{
                             // khai báo new lại, rồi xong đọc file các kiểu nữa
         cusList = new Customer[0];
         existedCustomer = 0;
-        ReadData(new LoadDataFromFile("Files/Customers.dat"));
+        readData(new LoadDataFromFile("Files/Customers.dat"));
     }
     
     public static CustomerList getInstance(){ b3:
@@ -277,7 +277,7 @@ public class CustomerList implements IManager<Customer>{
     
     
     @Override
-    public void ReadData(LoadData loadData) {
+    public void readData(LoadData loadData) {
         Object[] obj = loadData.read();
         
         for (Object o : obj) {
@@ -305,7 +305,7 @@ public class CustomerList implements IManager<Customer>{
     }
     
     @Override
-    public void saveToDate(SaveData saveData) {
+    public void saveToData(SaveData saveData) {
         saveData.save(cusList, header);
     }
     
