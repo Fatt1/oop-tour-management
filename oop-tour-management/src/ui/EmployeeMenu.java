@@ -1,5 +1,6 @@
 package ui;
 
+import IOFile.SaveDataToFile;
 import interfaces.ManagementMenu;
 import IOFile.SaveFileText;
 import java.util.Scanner;
@@ -60,7 +61,7 @@ public void openMenu() {
                 break;
             case 6:
                 System.out.println("★ Saving to file ★");
-                employee.saveToData(new SaveFileText("Files/Employees.dat"));
+                employee.saveToData(new SaveDataToFile("Files/Employees.dat"));
                 System.out.println("✔ Saved successfully!");
                 break;
         }
