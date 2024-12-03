@@ -308,11 +308,15 @@ public class TourList implements IManager<Tour>, Serializable {
             choice = menu.getChoice();
             switch (choice) {
                 case 1:
-                    double localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The discount is number");
+                    double minLocalDiscount = MyUtil.getAnDouble("Enter min local discount: ", "The discount is number");
+                    double maxLocalDiscount = MyUtil.getAnDouble("Enter max local discount: ", "The discount is number");
                     filterTourList((o) -> { 
                         if(o instanceof DomesticTour){
                             DomesticTour domesticTour = (DomesticTour)o;
-                            return domesticTour.getLocalDiscount() == localDiscount;
+                            if((domesticTour.getLocalDiscount() >= minLocalDiscount && domesticTour.getLocalDiscount() <= maxLocalDiscount)
+                                    ||(domesticTour.getLocalDiscount() <= minLocalDiscount && domesticTour.getLocalDiscount() >= maxLocalDiscount) )
+                                return true;
+                            return false;
                         }
                          return false;                
                     });

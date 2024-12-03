@@ -51,8 +51,15 @@ public class DomesticTour extends Tour implements Serializable {
     public void setData(Tour tour, int choice) {
         super.setData(this, choice);
         if (choice == 9) {
-            double discount = MyUtil.getAnDouble("Enter local discount: ", "The input is kind of DOUBLE");
-            setLocalDiscount(discount);
+            double discount;
+            do{
+                discount = MyUtil.getAnDouble("Enter local discount: ", "The input is kind of DOUBLE");
+                setLocalDiscount(discount);
+                if(discount > 1){
+                    System.out.println("Please again! local discount < 1");
+                }
+            }while(discount > 1);
+
         }
     }
 
@@ -67,13 +74,16 @@ public class DomesticTour extends Tour implements Serializable {
     public void input() {
         super.input();
         
-        this.localDiscount = MyUtil.getAnDouble("Enter local discount: ", "The LOCAL DISCOUNT input is incorrect");
+            double discount;
+            do{
+                discount = MyUtil.getAnDouble("Enter local discount: ", "The input is kind of DOUBLE");
+                setLocalDiscount(discount);
+                if(discount > 1){
+                    System.out.println("Please again! local discount < 1");
+                }
+            }while(discount > 1);  
     }
     
-//    public double getDiscountPrice(){
-//        return localDiscount * ;
-//    }
-
     @Override
     public String getShortDesription() {
         return String.format("Domestic Tour: %s to %s with a discount of %4.2f", this.tourName, this.destination, this.localDiscount);
