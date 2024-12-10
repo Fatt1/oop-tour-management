@@ -88,6 +88,40 @@ public class InvoiceList implements IManager<Invoice> {
         tourScheduleList.saveToData(new SaveDataToFile("Files/TourSchedule.dat"));
     }
 
+    
+    
+//    @Override 
+//    public void add(){
+//        String id = String.format("INV-%03d", ++surrogateKey);
+//        String customerID = CustomerList.getInstance().getIdCustomer();
+//        String employeeId = MyUtil.getId("Input employee id(EXXX): ", "Please input following format(EXXX)", "^E\\d{3}");
+//        
+//        String tsID = TourScheduleList.getInstance().getTourScheduleID();
+//        TourSchedule ts = TourScheduleList.getInstance().searchObjectById(tsID);
+//        int emptySlot = ts.getEmptySlots();
+//        if(emptySlot == 0){
+//            System.out.println("Can't add anymore");
+//            return;
+//        }
+//        System.out.println("Input invoice details");
+//        invoiceList = Arrays.copyOf(invoiceList, existedInvoice + 1);
+//        Invoice inv = new Invoice(id, customerID, employeeId, tsID);
+//        invoiceList[existedInvoice++] = inv;
+//        InvoiceDetailsList invDetailsList = InvoiceDetailsList.getInstance();
+//        String choice;
+//        do {    
+//           
+//            invDetailsList.add(id, ts);
+//             choice = getUserConfirmation();
+//        } while (!choice.equalsIgnoreCase("N"));
+//        inv.setTotalAmount(InvoiceDetailsList.getInstance().getTotalPrice(id));
+//        saveToData(saveBinaryFile);
+//        System.out.println("Add successfully");
+        // save toursscheulde detai
+//        
+//    }
+    
+    
     private String getUserConfirmation() {
         do {
             String choice;

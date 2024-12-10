@@ -343,7 +343,7 @@ public class TourList implements IManager<Tour>, Serializable {
                     filterTourList((o) -> {
                         if(o instanceof InternationalTour){
                             InternationalTour internationalTour = (InternationalTour)o;
-                            return internationalTour.getCountry().equalsIgnoreCase(country);      
+                            return internationalTour.getCountry().contains(country);      
                         }
                          return false;                
                     });
